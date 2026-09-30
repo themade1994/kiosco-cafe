@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kiosco Café</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --guinda: #5A1524;
+    --guinda-deep: #3C0D18;
+    --guinda-line: #7A2C3B;
+    --cream: #F3E7DF;
+    --cream-dim: #D9C4B9;
+    --paper: #FDFBF9;
+    --ink: #1B1613;
+    --ink-soft: #4A423C;
+    --line: #E7DFD8;
+    --brass: #B08A46;
+    --sidebar-w: 268px;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; margin:0; }
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--guinda); color:var(--cream); }
+
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  .app{
+    display:grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    grid-template-rows: 78px 1fr;
+    grid-template-areas:
+      "topbar topbar"
+      "sidebar main";
+    min-height:100vh;
+    min-height:100dvh;
+  }
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    grid-area: topbar;
+    display:grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    background:var(--guinda);
+    border-bottom: 1px solid var(--guinda-deep);
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding: 0 22px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .brand-mark{
+    width:38px; height:38px;
+    border:1.5px solid var(--cream-dim);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .brand-mark svg{ width:18px; height:18px; }
+  .brand-text .name{
+    font-family:'Fraunces', serif;
+    font-size:19px;
+    font-weight:600;
+    color:var(--cream);
+    line-height:1.1;
+    letter-spacing:0.2px;
+  }
+  .brand-text .tagline{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--cream-dim);
+    letter-spacing:0.06em;
+    margin-top:3px;
+  }
+
+  .topbar-right{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding: 0 28px;
+  }
+
+  .search{
+    flex:1;
+    max-width:440px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background: rgba(255,255,255,0.94);
+    border-radius:8px;
+    padding: 9px 14px;
+  }
+  .search svg{ width:15px; height:15px; opacity:0.55; flex-shrink:0; }
+  .search input{
+    border:none; outline:none; background:none;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13.5px;
+    color:var(--ink);
+    width:100%;
+  }
+  .search input::placeholder{ color:#8a8078; }
+
+  .topbar-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .pill{
+    display:flex; align-items:center; gap:8px;
+    border:1px solid rgba(255,255,255,0.28);
+    border-radius:8px;
+    padding: 8px 14px;
+    font-size:13px;
+    color:var(--cream);
+    white-space:nowrap;
+    background:transparent;
+  }
+  .pill svg{ width:14px; height:14px; opacity:0.85; }
+  .pill.credits{
+    background: rgba(255,255,255,0.08);
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.02em;
+  }
+  .pill.credits b{ color:var(--cream); font-weight:500; }
+  .pill.reload{
+    background:var(--brass);
+    border-color:var(--brass);
+    color:var(--guinda-deep);
+    font-weight:500;
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    grid-area: sidebar;
+    background:var(--guinda);
+    display:flex;
+    flex-direction:column;
+    padding: 22px 0 0;
+    overflow-y:auto;
+  }
+
+  .nav-group{ padding: 0 14px; }
+  .nav-item{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding: 12px 12px;
+    border-radius:8px;
+    margin-bottom:2px;
+  }
+  .nav-item svg{ width:19px; height:19px; margin-top:1px; flex-shrink:0; opacity:0.92; }
+  .nav-item .label{
+    font-size:14px;
+    font-weight:500;
+    color:var(--cream);
+    line-height:1.25;
+  }
+  .nav-item .sub{
+    font-size:11.5px;
+    color:var(--cream-dim);
+    margin-top:2px;
+  }
+  .nav-item.active{ background: rgba(255,255,255,0.10); }
+  .nav-item:hover{ background: rgba(255,255,255,0.06); }
+
+  .divider{
+    height:1px;
+    background: rgba(255,255,255,0.12);
+    margin: 16px 22px;
+  }
+
+  .cat-heading{
+    display:flex; align-items:center; gap:10px;
+    padding: 0 26px 10px;
+    font-size:12.5px;
+    color:var(--cream-dim);
+  }
+  .cat-heading svg{ width:14px; height:14px; }
+
+  .cat-list{ padding: 0 14px; flex:1; }
+  .cat-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 8px 12px;
+    border-radius:6px;
+    font-size:13.5px;
+    color:var(--cream);
+  }
+  .cat-item.all{ font-weight:600; }
+  .cat-item .count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--cream-dim);
+  }
+  .cat-item:hover{ background: rgba(255,255,255,0.06); }
+  .cat-more{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 8px 12px;
+    font-size:13px;
+    color:var(--cream-dim);
+  }
+
+  .sidebar-footer{
+    padding: 26px 26px 28px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+  }
+  .sidebar-footer .quote{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:14px;
+    color:var(--cream);
+    line-height:1.5;
+  }
+  .sidebar-footer .stamp{
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--cream-dim);
+    letter-spacing:0.06em;
+  }
+
+  /* ---------- MAIN / GALLERY ---------- */
+  .main{
+    grid-area: main;
+    background:var(--paper);
+    overflow-y:auto;
+  }
+
+  .main-header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    padding: 34px 40px 22px;
+    border-bottom:1px solid var(--line);
+  }
+  .main-header h1{
+    font-family:'Fraunces', serif;
+    font-size:32px;
+    font-weight:600;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .main-header p{
+    margin:0;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .sort{
+    display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding: 9px 14px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .sort svg{ width:13px; height:13px; }
+
+  .gallery{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 28px;
+    padding: 30px 40px 56px;
+  }
+
+  .empty-state{
+    grid-column: 1 / -1;
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    padding: 72px 32px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:14px;
+  }
+  .empty-state svg{ width:34px; height:34px; opacity:0.35; }
+  .empty-state .empty-title{
+    font-family:'Fraunces', serif;
+    font-size:18px;
+    font-weight:600;
+    margin:0;
+    color:var(--ink);
+  }
+  .empty-state .empty-sub{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:360px;
+  }
+
+  .magazine{ display:flex; flex-direction:column; }
+
+  .cover{
+    position:relative;
+    aspect-ratio: 3 / 4;
+    border-radius:4px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:20px;
+    color:var(--cream);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .cover::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(115deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 3px);
+    pointer-events:none;
+  }
+  .cover .edition{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.08em;
+    opacity:0.75;
+    position:relative; z-index:1;
+  }
+  .cover .cover-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.05;
+    font-size:26px;
+    position:relative; z-index:1;
+  }
+  .cover .kicker{
+    font-size:11px;
+    letter-spacing:0.05em;
+    opacity:0.7;
+    margin-bottom:6px;
+    position:relative; z-index:1;
+  }
+
+  .price-badge{
+    position:absolute;
+    top:14px; right:14px;
+    width:42px; height:42px;
+    border-radius:50%;
+    background:var(--ink);
+    color:#fff;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    z-index:2;
+    line-height:1;
+  }
+  .price-badge .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    font-weight:500;
+  }
+  .price-badge .unit{
+    font-size:7.5px;
+    letter-spacing:0.05em;
+    opacity:0.75;
+    margin-top:2px;
+  }
+
+  .magazine-info{ padding: 14px 2px 0; }
+  .magazine-info .title{
+    font-family:'Fraunces', serif;
+    font-size:16.5px;
+    font-weight:600;
+    margin:0 0 3px;
+  }
+  .magazine-info .edition-line{
+    font-size:11.5px;
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .magazine-info .desc{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin:0 0 14px;
+    min-height:38px;
+  }
+
+  .btn-summary{
+    display:block; width:100%;
+    background:var(--guinda);
+    color:var(--cream);
+    border:none;
+    border-radius:6px;
+    padding: 10px 0;
+    font-size:13px;
+    font-weight:500;
+    margin-bottom:8px;
+  }
+  .btn-summary:hover{ background:var(--guinda-deep); }
+
+  .btn-row{ display:flex; gap:8px; }
+  .btn-row button{
+    flex:1;
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding: 9px 0;
+    font-size:12.5px;
+    color:var(--ink);
+  }
+  .btn-row button:hover{ border-color:var(--ink-soft); }
+
+  /* cover palettes — distinct but restrained, no stock imagery */
+  .c1{ background:linear-gradient(160deg,#20242B,#0F1114); }
+  .c2{ background:linear-gradient(160deg,#2B2622,#141110); }
+  .c3{ background:linear-gradient(160deg,#241A1C,#110C0D); }
+  .c4{ background:linear-gradient(160deg,#1D2620,#0E1310); }
+  .c5{ background:linear-gradient(160deg,#151A24,#0A0D12); }
+  .c6{ background:linear-gradient(160deg,#231F2B,#110E15); }
+  .c7{ background:linear-gradient(160deg,#182225,#0B1012); }
+  .c8{ background:linear-gradient(160deg,#2A2118,#14100B); }
+  .c9{ background:linear-gradient(160deg,#1E1B24,#0D0B11); }
+  .c10{ background:linear-gradient(160deg,#182420,#0B120F); }
+  .c11{ background:linear-gradient(160deg,#251C16,#120E0A); }
+  .c12{ background:linear-gradient(160deg,#1B1E26,#0C0D12); }
+
+  /* ---------- BREAKPOINTS ----------
+     >1600px  pantallas grandes / TV — se limita el ancho útil, ver .main-inner
+     1200–1600 escritorio estándar (por defecto arriba)
+     900–1199  laptop pequeña / tablet horizontal — sidebar más angosto
+     700–899   tablet vertical — layout apilado, sidebar horizontal
+     480–699   celular grande — sidebar compacto, topbar en 2 líneas
+     <480      celular pequeño — todo apilado, textos reducidos
+  -------------------------------------------------------------- */
+
+  @media (max-width: 1199px){
+    :root{ --sidebar-w: 224px; }
+    .nav-item .sub, .cat-heading, .sidebar-footer{ display:none; }
+    .gallery{ padding: 26px 28px 48px; }
+    .main-header{ padding: 28px 28px 20px; }
+  }
+
+  @media (max-width: 899px){
+    .app{
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto 1fr;
+      grid-template-areas:
+        "topbar"
+        "sidebar"
+        "main";
+    }
+    .topbar{ grid-template-columns: 1fr; }
+    .brand{ border-right:none; border-bottom:1px solid rgba(255,255,255,0.08); }
+    .topbar-right{ flex-wrap:wrap; gap:12px; padding:14px 20px; }
+    .search{ max-width:none; order:3; flex-basis:100%; }
+    .sidebar{ flex-direction:row; flex-wrap:wrap; padding:14px; overflow-x:auto; }
+    .nav-group, .cat-list{ display:flex; flex-wrap:wrap; padding:0 8px; flex:none; }
+    .nav-item{ flex-direction:row; align-items:center; }
+    .divider{ display:none; }
+    .main-header{ padding:24px 20px 18px; flex-direction:column; align-items:flex-start; gap:12px; }
+    .gallery{ padding:22px 20px 40px; gap:22px; }
+  }
+
+  @media (max-width: 699px){
+    .topbar-actions{ flex-wrap:wrap; gap:8px; }
+    .pill{ padding:7px 11px; font-size:12px; }
+    .brand{ padding:0 16px; }
+    .brand-text .name{ font-size:17px; }
+    .main-header h1{ font-size:26px; }
+    .gallery{ grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:18px; }
+    .empty-state{ padding:48px 20px; }
+  }
+
+  @media (max-width: 479px){
+    .brand-text .tagline{ display:none; }
+    .topbar-right{ padding:12px 14px; }
+    .pill.credits, .pill.reload{ flex:1; justify-content:center; text-align:center; }
+    .pill:not(.credits):not(.reload){ display:none; }
+    .gallery{ grid-template-columns: 1fr 1fr; gap:14px; padding:18px 14px 32px; }
+    .main-header{ padding:20px 14px 16px; }
+    .main-header h1{ font-size:22px; }
+    .sort{ font-size:12px; padding:7px 10px; }
+  }
+
+  @media (min-width: 1600px){
+    .main-header, .gallery{ max-width:1680px; margin-left:auto; margin-right:auto; }
+  }
+
+  /* ---------- AUTENTICACIÓN ---------- */
+  body:not(.logged-in) .app{ display:none; }
+  body.logged-in #auth-screen{ display:none; }
+
+  #auth-screen{
+    min-height:100vh; min-height:100dvh;
+    background:var(--guinda);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .auth-card{
+    width:100%;
+    max-width:400px;
+    background:var(--paper);
+    border-radius:10px;
+    padding:36px 32px;
+    box-shadow:0 24px 60px rgba(0,0,0,0.28);
+  }
+  .auth-brand{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    margin-bottom:26px;
+    text-align:center;
+  }
+  .auth-brand .brand-mark{ border-color:var(--guinda); }
+  .auth-brand .name{
+    font-family:'Fraunces', serif;
+    font-size:21px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .auth-brand .tagline{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+  }
+
+  .auth-tabs{
+    display:flex;
+    border-bottom:1px solid var(--line);
+    margin-bottom:22px;
+  }
+  .auth-tab{
+    flex:1;
+    text-align:center;
+    padding:10px 0;
+    font-size:13.5px;
+    font-weight:500;
+    color:var(--ink-soft);
+    border-bottom:2px solid transparent;
+    cursor:pointer;
+  }
+  .auth-tab.active{ color:var(--guinda); border-color:var(--guinda); }
+
+  .auth-error{
+    font-size:12.5px;
+    color:#B3261E;
+    margin:0 0 14px;
+    min-height:16px;
+  }
+
+  .auth-form{ display:none; }
+  .auth-form.active{ display:block; }
+
+  .field{ margin-bottom:14px; }
+  .field label{
+    display:block;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .field input{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:10px 12px;
+    font-size:13.5px;
+    font-family:inherit;
+    color:var(--ink);
+  }
+  .field input:focus{ outline:none; border-color:var(--guinda); }
+
+  .auth-submit{
+    width:100%;
+    background:var(--guinda);
+    color:var(--cream);
+    border:none;
+    border-radius:6px;
+    padding:12px 0;
+    font-size:13.5px;
+    font-weight:500;
+    margin-top:4px;
+  }
+  .auth-submit:hover{ background:var(--guinda-deep); }
+  .auth-submit:disabled{ opacity:0.6; cursor:default; }
+
+  /* cuenta activa, en el pie del sidebar */
+  .account{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .account-name{
+    font-size:12.5px;
+    color:var(--cream);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .account-logout{
+    flex-shrink:0;
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.28);
+    color:var(--cream-dim);
+    border-radius:6px;
+    padding:6px 10px;
+    font-size:11px;
+  }
+  .account-logout:hover{ border-color:var(--cream-dim); color:var(--cream); }
+</style>
+</head>
+<body>
+
+<!-- ================= AUTENTICACIÓN ================= -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5A1524" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+      </div>
+      <div class="name">Kiosco Café</div>
+      <div class="tagline">REVISTAS DIGITALES · IDEAS QUE SE LEEN</div>
+    </div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" data-tab="login">Iniciar sesión</div>
+      <div class="auth-tab" data-tab="register">Crear cuenta</div>
+    </div>
+
+    <p class="auth-error" id="authError"></p>
+
+    <form class="auth-form active" id="loginForm">
+      <div class="field">
+        <label for="loginEmail">Correo electrónico</label>
+        <input type="email" id="loginEmail" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="loginPassword">Contraseña</label>
+        <input type="password" id="loginPassword" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="auth-submit" id="loginSubmit">Iniciar sesión</button>
+    </form>
+
+    <form class="auth-form" id="registerForm">
+      <div class="field">
+        <label for="registerName">Nombre de usuario</label>
+        <input type="text" id="registerName" required autocomplete="nickname" />
+      </div>
+      <div class="field">
+        <label for="registerEmail">Correo electrónico</label>
+        <input type="email" id="registerEmail" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="registerPassword">Contraseña</label>
+        <input type="password" id="registerPassword" required minlength="6" autocomplete="new-password" />
+      </div>
+      <button type="submit" class="auth-submit" id="registerSubmit">Crear cuenta</button>
+    </form>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- ================= TOP BAR ================= -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+      </div>
+      <div class="brand-text">
+        <div class="name">Kiosco Café</div>
+        <div class="tagline">REVISTAS DIGITALES · IDEAS QUE SE LEEN</div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Buscar revistas, temas, autores o grupos…" />
+      </div>
+      <div class="topbar-actions">
+        <div class="pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>
+          Mis revistas suscritas
+        </div>
+        <div class="pill credits"><b>Créditos: 0</b></div>
+        <button class="pill reload">+ Recargar créditos</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="nav-group">
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        <div>
+          <div class="label">Inicio</div>
+          <div class="sub">Explora todas las revistas</div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3-6 7-6s7 2.7 7 6"/><circle cx="18" cy="9" r="2.4"/><path d="M15.5 14.2c2.7.4 4.5 2.4 4.5 5.8"/></svg>
+        <div>
+          <div class="label">Crear grupo / revista</div>
+          <div class="sub">Forma tu equipo editorial</div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v16H6.5A2.5 2.5 0 0 0 4 21.5v-16z"/><path d="M4 5.5v16"/></svg>
+        <div>
+          <div class="label">Mis revistas</div>
+          <div class="sub">Tus proyectos y ediciones</div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+        <div>
+          <div class="label">Subir nueva revista</div>
+          <div class="sub">Comparte tu publicación</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="cat-heading">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#D9C4B9" stroke-width="1.6"><path d="M20.6 12.6L12 21.2 2.8 12 4 4.7 11.4 3.5 20.6 12.6z"/><circle cx="8.5" cy="8.5" r="1.2" fill="#D9C4B9" stroke="none"/></svg>
+      Categorías
+    </div>
+    <div class="cat-list">
+      <div class="cat-item all"><span>Todas</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Literatura</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Historia</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Ciencia</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Arte y Cultura</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Psicología</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Filosofía</span><span class="count">0</span></div>
+      <div class="cat-more"><span>Más categorías</span><span>›</span></div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="account">
+        <span class="account-name" id="accountEmail">—</span>
+        <button class="account-logout" id="btnLogout">Cerrar sesión</button>
+      </div>
+      <div class="quote">Buenas ideas<br>también se leen.</div>
+      <div class="stamp">KIOSCO CAFÉ</div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN GALLERY ================= -->
+  <main class="main">
+    <div class="main-header">
+      <div>
+        <h1>Kiosco Café</h1>
+        <p>Descubre, lee y apoya el trabajo de creadores independientes.</p>
+      </div>
+      <div class="sort">
+        Más recientes
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4A423C" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </div>
+
+    <div class="gallery">
+
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+        <p class="empty-title">Aún no hay revistas publicadas</p>
+        <p class="empty-sub">Cuando un grupo publique su primera edición, aparecerá aquí.</p>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- ================= FIREBASE: REGISTRO / INICIO DE SESIÓN ================= -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    updateProfile, signOut
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import {
+    getFirestore, doc, setDoc, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  // ⚠️ Reemplaza esto con la configuración real de TU proyecto Firebase
+  // (Firebase console → ⚙ Configuración del proyecto → Tus apps → "SDK setup and configuration")
+  const firebaseConfig = {
+    apiKey: "AIzaSyBZlaqj545RZKkFMsc7mY3C6zAr1clcIRg",
+    authDomain: "kiosco-cafe.firebaseapp.com",
+    projectId: "kiosco-cafe",
+    storageBucket: "kiosco-cafe.firebasestorage.app",
+    messagingSenderId: "432395893182",
+    appId: "1:432395893182:web:4effb1c167ee24ae48e1ef"
+  };
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const auth = getAuth(firebaseApp);
+  const db = getFirestore(firebaseApp);
+
+  // ---------- referencias del DOM ----------
+  const authError = document.getElementById('authError');
+  const tabs = document.querySelectorAll('.auth-tab');
+  const forms = document.querySelectorAll('.auth-form');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const loginSubmit = document.getElementById('loginSubmit');
+  const registerSubmit = document.getElementById('registerSubmit');
+  const accountEmail = document.getElementById('accountEmail');
+  const btnLogout = document.getElementById('btnLogout');
+
+  // ---------- cambio entre pestañas Iniciar sesión / Crear cuenta ----------
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      forms.forEach(f => f.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab + 'Form').classList.add('active');
+      authError.textContent = '';
+    });
+  });
+
+  // ---------- mensajes de error traducidos ----------
+  function mensajeError(code){
+    const mapa = {
+      'auth/invalid-email': 'El correo no tiene un formato válido.',
+      'auth/user-not-found': 'No existe una cuenta con ese correo.',
+      'auth/wrong-password': 'La contraseña es incorrecta.',
+      'auth/invalid-credential': 'Correo o contraseña incorrectos.',
+      'auth/email-already-in-use': 'Ya existe una cuenta con ese correo.',
+      'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
+      'auth/missing-password': 'Escribe una contraseña.',
+      'auth/network-request-failed': 'No hay conexión. Revisa tu internet.'
+    };
+    return mapa[code] || 'Ocurrió un error. Inténtalo de nuevo.';
+  }
+
+  // ---------- iniciar sesión ----------
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    authError.textContent = '';
+    loginSubmit.disabled = true;
+    loginSubmit.textContent = 'Ingresando…';
+    try {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      authError.textContent = mensajeError(err.code);
+    } finally {
+      loginSubmit.disabled = false;
+      loginSubmit.textContent = 'Iniciar sesión';
+    }
+  });
+
+  // ---------- crear cuenta ----------
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    authError.textContent = '';
+    registerSubmit.disabled = true;
+    registerSubmit.textContent = 'Creando cuenta…';
+    try {
+      const nombre = document.getElementById('registerName').value.trim();
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+
+      const credencial = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(credencial.user, { displayName: nombre });
+
+      // Documento base del perfil en Firestore.
+      // Se amplía cuando trabajemos el bloque de "Perfil personal".
+      await setDoc(doc(db, 'usuarios', credencial.user.uid), {
+        nombre,
+        correo: email,
+        resenas: 0,
+        ventas: 0,
+        creadoEn: serverTimestamp()
+      });
+    } catch (err) {
+      authError.textContent = mensajeError(err.code);
+    } finally {
+      registerSubmit.disabled = false;
+      registerSubmit.textContent = 'Crear cuenta';
+    }
+  });
+
+  // ---------- cerrar sesión ----------
+  btnLogout.addEventListener('click', () => signOut(auth));
+
+  // ---------- estado de la sesión ----------
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.body.classList.add('logged-in');
+      accountEmail.textContent = user.displayName || user.email;
+      loginForm.reset();
+      registerForm.reset();
+    } else {
+      document.body.classList.remove('logged-in');
+    }
+  });
+</script>
+
+</body>
+</html>
