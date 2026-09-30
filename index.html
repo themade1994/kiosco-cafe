@@ -496,7 +496,7 @@
   .cf-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .cf-error{ color:#9B1C2E; font-size:13px; margin:0; }
   .cf-ok{ color:#2E6B3A; font-size:13px; margin:0; }
-  .cf-error[hidden],.cf-ok[hidden]{ display:none; }
+  .cf-error[hidden],.cf-ok[hidden],.cf-field[hidden]{ display:none; }
   .btn-primary{ background:var(--guinda); color:var(--cream); border:none; border-radius:8px; padding:12px 20px; font-size:14px; font-weight:500; align-self:flex-start; }
   .btn-primary:hover{ background:var(--guinda-deep); }
   .btn-primary:disabled{ opacity:.6; cursor:default; }
@@ -941,13 +941,13 @@
     </div>
     <div class="cat-list">
       <div class="cat-item all"><span>Todas</span><span class="count">0</span></div>
-      <div class="cat-item"><span>Literatura</span><span class="count">0</span></div>
-      <div class="cat-item"><span>Historia</span><span class="count">0</span></div>
-      <div class="cat-item"><span>Ciencia</span><span class="count">0</span></div>
-      <div class="cat-item"><span>Arte y Cultura</span><span class="count">0</span></div>
-      <div class="cat-item"><span>Psicología</span><span class="count">0</span></div>
-      <div class="cat-item"><span>Filosofía</span><span class="count">0</span></div>
-      <div class="cat-more"><span>Más categorías</span><span>›</span></div>
+      <div class="cat-item"><span>Académico</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Literario</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Ficción</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Arte y cultura</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Ciencia y tecnología</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Sociedad y actualidad</span><span class="count">0</span></div>
+      <div class="cat-item"><span>Otro</span><span class="count">0</span></div>
     </div>
 
     <div class="sidebar-footer">
@@ -1026,13 +1026,26 @@
         <div class="cf-field">
           <label for="crCategoria">Categoría</label>
           <select id="crCategoria">
-            <option>Literatura</option>
-            <option>Historia</option>
-            <option>Ciencia</option>
-            <option>Arte y Cultura</option>
-            <option>Psicología</option>
-            <option>Filosofía</option>
+            <option>Académico</option>
+            <option>Literario</option>
+            <option>Ficción</option>
+            <option>Arte y cultura</option>
+            <option>Ciencia y tecnología</option>
+            <option>Sociedad y actualidad</option>
+            <option>Otro</option>
           </select>
+        </div>
+        <div class="cf-row" id="crCatRow">
+          <div class="cf-field" id="crCatOtroWrap" hidden>
+            <label for="crCatOtro">Tu categoría (1 palabra)</label>
+            <input type="text" id="crCatOtro" maxlength="20" autocomplete="off" placeholder="ej. cocina" />
+            <span class="cf-hint">Obligatoria en "Otro".</span>
+          </div>
+          <div class="cf-field">
+            <label for="crSubcat">Subcategoría (hasta 2 palabras)</label>
+            <input type="text" id="crSubcat" maxlength="30" autocomplete="off" placeholder="ej. terror o filosofía nihilista" />
+            <span class="cf-hint">Opcional. Libre, para precisar el tema.</span>
+          </div>
         </div>
         <div class="cf-field">
           <label for="crPrecio">Precio del cuadernillo (créditos)</label>
@@ -1630,8 +1643,29 @@
     actualizarTotalCrear();
   }
 
+  // categorías generales; "Otro" pide una palabra propia y todas admiten una subcategoría libre
+  const CATEGORIAS = ['Académico', 'Literario', 'Ficción', 'Arte y cultura', 'Ciencia y tecnología', 'Sociedad y actualidad', 'Otro'];
+  const CATEGORIA_ANTIGUA = { 'Literatura': 'Literario', 'Historia': 'Académico', 'Ciencia': 'Ciencia y tecnología',
+    'Arte y Cultura': 'Arte y cultura', 'Psicología': 'Académico', 'Filosofía': 'Académico' };
+  const categoriaDe = r => CATEGORIAS.includes(r.categoria) ? r.categoria : (CATEGORIA_ANTIGUA[r.categoria] || 'Otro');
+  function etiquetaCategoria(r){
+    const base = categoriaDe(r);
+    const nombre = base === 'Otro' && r.categoriaOtro ? r.categoriaOtro : base;
+    return r.subcategoria ? nombre + ' - ' + r.subcategoria : nombre;
+  }
+  const limpiarTxt = t => String(t || '').trim().replace(/\s+/g, ' ');
+  const PALABRA_OK = /^[\p{L}\p{N}-]{2,20}$/u;
+  const SUBCAT_OK = /^[\p{L}\p{N}-]{2,}( [\p{L}\p{N}-]{2,})?$/u;
+  const crCategoriaSel = document.getElementById('crCategoria');
+  function alternarOtro(){
+    document.getElementById('crCatOtroWrap').hidden = crCategoriaSel.value !== 'Otro';
+  }
+  crCategoriaSel.addEventListener('change', () => { marcarInvalidos([]); alternarOtro(); });
+  crForm.addEventListener('reset', () => setTimeout(alternarOtro, 0));
+  alternarOtro();
+
   function marcarInvalidos(ids){
-    ['crNombre', 'crTurnos', 'crPaginas', 'crPlazo'].forEach(id =>
+    ['crNombre', 'crTurnos', 'crPaginas', 'crPlazo', 'crCatOtro', 'crSubcat'].forEach(id =>
       document.getElementById(id).classList.toggle('invalido', ids.includes(id)));
   }
 
@@ -1639,6 +1673,8 @@
   crSelPag.addEventListener('change', () => { marcarInvalidos([]); actualizarTotalCrear(); });
   crSelPlazo.addEventListener('change', () => marcarInvalidos([]));
   document.getElementById('crNombre').addEventListener('input', () => marcarInvalidos([]));
+  document.getElementById('crCatOtro').addEventListener('input', () => marcarInvalidos([]));
+  document.getElementById('crSubcat').addEventListener('input', () => marcarInvalidos([]));
   crFormatoSel.addEventListener('change', () => actualizarPaginasCrear(true));
   crForm.addEventListener('reset', () => setTimeout(() => { marcarInvalidos([]); actualizarPaginasCrear(true); }, 0));
   iniciarSelectoresCrear();
@@ -1655,6 +1691,9 @@
     const paginas = Number(document.getElementById('crPaginas').value);
     const plazo = Number(document.getElementById('crPlazo').value);
     const turnos = Number(document.getElementById('crTurnos').value);
+    const cat = crCategoriaSel.value;
+    const catOtro = cat === 'Otro' ? limpiarTxt(document.getElementById('crCatOtro').value) : '';
+    const subcat = limpiarTxt(document.getElementById('crSubcat').value);
 
     let error = '';
     const rojos = [];
@@ -1668,6 +1707,14 @@
       } else if (!Number.isInteger(plazo) || plazo < 1 || plazo > 7) {
         error = 'Elige el plazo por turno, de 1 a 7 días.';
         rojos.push('crPlazo');
+      } else if (!CATEGORIAS.includes(cat)) {
+        error = 'Elige una categoría.';
+      } else if (cat === 'Otro' && !PALABRA_OK.test(catOtro)) {
+        error = 'En "Otro", escribe tu categoría en una sola palabra (de 2 a 20 letras).';
+        rojos.push('crCatOtro');
+      } else if (subcat && !SUBCAT_OK.test(subcat)) {
+        error = 'La subcategoría admite hasta 2 palabras, solo con letras y números.';
+        rojos.push('crSubcat');
       }
     }
     marcarInvalidos(rojos);
@@ -1683,7 +1730,9 @@
         formato,
         paginasPorTurno: paginas,
         plazoDias: plazo,
-        categoria: document.getElementById('crCategoria').value,
+        categoria: cat,
+        categoriaOtro: catOtro,
+        subcategoria: subcat,
         precio: PRECIO_FORMATO[formato] || PRECIO_FORMATO.revista,
         totalTurnos: turnos,
         estado: 'En formación',
@@ -1741,7 +1790,7 @@
         const m = document.createElement('div');
         m.className = 'creada-m';
         const f = r.creadoEn?.toDate?.();
-        m.textContent = (r.formato === 'libro' ? 'Libro' : 'Revista') + ' · ' + r.paginasPorTurno + ' pág. por turno · ' + r.plazoDias + ' día(s)'
+        m.textContent = (r.formato === 'libro' ? 'Libro' : 'Revista') + ' · ' + etiquetaCategoria(r) + ' · ' + r.paginasPorTurno + ' pág. por turno · ' + r.plazoDias + ' día(s)'
           + (f ? ' · creada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
         info.append(t, m);
         if (conInvitar) {
@@ -3144,11 +3193,11 @@
     catItems.forEach(el => {
       const nombre = catDe(el);
       el.classList.toggle('active', nombre === filtroCat);
-      el.querySelector('.count').textContent = nombre === 'Todas' ? publicadas.length : publicadas.filter(r => r.categoria === nombre).length;
+      el.querySelector('.count').textContent = nombre === 'Todas' ? publicadas.length : publicadas.filter(r => categoriaDe(r) === nombre).length;
     });
     const lista = publicadas.filter(r =>
-      (filtroCat === 'Todas' || r.categoria === filtroCat) &&
-      (!filtroTxt || plano([r.nombre, r.creadorNombre, r.categoria, r.formato].join(' ')).includes(filtroTxt)));
+      (filtroCat === 'Todas' || categoriaDe(r) === filtroCat) &&
+      (!filtroTxt || plano([r.nombre, r.creadorNombre, etiquetaCategoria(r), categoriaDe(r), r.formato].join(' ')).includes(filtroTxt)));
     galeria.querySelectorAll('.rev-card').forEach(n => n.remove());
     vacioGal.style.display = lista.length ? 'none' : '';
     vacioGal.querySelector('.empty-title').textContent = publicadas.length ? 'No hay revistas con ese filtro' : vacioGalTxt[0];
@@ -3168,7 +3217,7 @@
       card.append(pt,
         nodo('div', 'rev-card-t', r.nombre),
         nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
-        nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', r.categoria, r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
+        nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
         nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
         nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
       card.tabIndex = 0;
@@ -3239,7 +3288,7 @@
     const datos = nodo('div');
     datos.append(nodo('h3', null, r.nombre),
       nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
-      nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', r.categoria, r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
+      nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
       nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
       nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
     const cab = nodo('div', 'ficha-cab');
