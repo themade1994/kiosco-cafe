@@ -268,6 +268,64 @@
   }
   .sort svg{ width:13px; height:13px; }
 
+
+  /* ---------- vistas (navegación interna) ---------- */
+  .view{ display:none; }
+  .view.active{ display:block; }
+  .nav-item[data-view], .account-name{ cursor:pointer; }
+  .account-name:hover{ text-decoration:underline; }
+  .nav-item:focus-visible, .account-name:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+
+  /* ---------- perfil personal ---------- */
+  .perfil-body{ padding: 28px 40px 56px; max-width: 980px; }
+  .perfil-stats{ display:flex; gap:40px; margin-bottom:34px; }
+  .stat{ display:flex; flex-direction:column; gap:2px; }
+  .stat-n{ font-family:'Fraunces', serif; font-size:30px; font-weight:600; color:var(--ink); line-height:1.1; }
+  .stat-l{ font-size:13px; color:var(--ink-soft); }
+  .perfil-h{ font-family:'Fraunces', serif; font-size:19px; font-weight:600; color:var(--ink); margin:0 0 12px; }
+  .perfil-body .empty-state{ padding:36px 24px; margin-bottom:34px; }
+  .perfil-error{ color:#9B1C2E; font-size:13px; margin:0 0 20px; }
+  .perfil-error[hidden]{ display:none; }
+  @media (max-width: 899px){ .perfil-body{ padding:22px 20px 40px; } .perfil-stats{ gap:28px; } }
+
+  /* ---------- perfil público ---------- */
+  .enlace-perfil{ background:none; border:0; padding:0; margin:0; font:inherit; color:inherit; text-align:inherit;
+    text-decoration:underline; text-decoration-color:var(--brass); text-underline-offset:3px; cursor:pointer; }
+  .enlace-perfil:hover{ color:var(--guinda); }
+  .enlace-perfil:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+
+  /* ---------- bandeja con pestañas ---------- */
+  .tabs{ display:flex; gap:4px; padding:0 40px; border-bottom:1px solid var(--line); overflow-x:auto; }
+  .tab{ background:none; border:0; padding:12px 16px; margin-bottom:-1px; font:inherit; font-weight:500; color:var(--ink-soft);
+    border-bottom:2px solid transparent; cursor:pointer; display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
+  .tab:hover{ color:var(--ink); }
+  .tab.active{ color:var(--ink); border-bottom-color:var(--guinda); }
+  .tab:focus-visible{ outline:2px solid var(--brass); outline-offset:-2px; }
+  .tab-n, .nav-n{ background:var(--guinda); color:var(--cream); border-radius:999px; font-size:11px; font-weight:600; padding:1px 7px; line-height:1.5; }
+  .nav-n{ background:var(--brass); color:#1B1613; margin-left:6px; }
+  .tab-n[hidden], .nav-n[hidden]{ display:none; }
+  .tab-panel[hidden]{ display:none; }
+  @media (max-width: 899px){ .tabs{ padding:0 12px; } }
+
+  /* ---------- chat por revista ---------- */
+  .msg-modo{ display:flex; gap:6px; }
+  .msg-modo button{ background:transparent; border:1px solid var(--line); border-radius:999px; padding:6px 14px; font:inherit; font-size:13px; font-weight:500; color:var(--ink-soft); cursor:pointer; }
+  .msg-modo button:hover{ border-color:var(--ink-soft); color:var(--ink); }
+  .msg-modo button.active{ border-color:var(--guinda); background:#fff; color:var(--ink); }
+  .msg-modo button:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+  .msg-hilo-head small{ font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:400; color:var(--ink-soft); margin-left:8px; }
+  .burbuja-de{ display:block; font-size:11.5px; font-weight:600; margin-bottom:2px; opacity:.75; }
+  .msg-modo-aviso{ font-size:12.5px; color:var(--ink-soft); margin:0; }
+
+  /* ---------- subir revista (portada y PDFs) ---------- */
+  .subir-input{ display:none; }
+  .portada-fila{ display:flex; align-items:center; gap:12px; margin:10px 0 8px; }
+  .portada-thumb{ width:54px; height:72px; border:1px solid var(--line); border-radius:4px; background:#fff; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; text-align:center; font-size:11px; color:var(--ink-soft); flex-shrink:0; }
+  .portada-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .subir-info{ flex:1; min-width:0; }
+  .subir-info .cf-error{ margin-top:6px; }
+
   .gallery{
     display:grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -427,6 +485,134 @@
   .c10{ background:linear-gradient(160deg,#182420,#0B120F); }
   .c11{ background:linear-gradient(160deg,#251C16,#120E0A); }
   .c12{ background:linear-gradient(160deg,#1B1E26,#0C0D12); }
+
+  /* ---------- bloques 3 y 4: créditos, crear grupo, lista de creadas ---------- */
+  .form-crear{ padding:28px 40px 56px; max-width:620px; display:flex; flex-direction:column; gap:18px; }
+  .cf-field{ display:flex; flex-direction:column; gap:6px; }
+  .cf-field label{ font-size:13px; font-weight:500; color:var(--ink); }
+  .cf-field input,.cf-field select{ font-family:inherit; font-size:14px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); width:100%; }
+  .cf-field input:focus,.cf-field select:focus{ outline:2px solid var(--brass); outline-offset:1px; }
+  .cf-hint{ font-size:12px; color:var(--ink-soft); }
+  .cf-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .cf-error{ color:#9B1C2E; font-size:13px; margin:0; }
+  .cf-ok{ color:#2E6B3A; font-size:13px; margin:0; }
+  .cf-error[hidden],.cf-ok[hidden]{ display:none; }
+  .btn-primary{ background:var(--guinda); color:var(--cream); border:none; border-radius:8px; padding:12px 20px; font-size:14px; font-weight:500; align-self:flex-start; }
+  .btn-primary:hover{ background:var(--guinda-deep); }
+  .btn-primary:disabled{ opacity:.6; cursor:default; }
+  .lista-creadas{ display:flex; flex-direction:column; gap:10px; margin-bottom:34px; }
+  .creada{ border:1px solid var(--line); border-radius:8px; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  .creada-t{ font-family:'Fraunces', serif; font-size:16.5px; font-weight:600; }
+  .creada-m{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft); margin-top:3px; }
+  .estado{ font-size:12px; border:1px solid var(--brass); color:var(--ink); border-radius:999px; padding:3px 10px; white-space:nowrap; }
+  dialog.dlg{ border:none; border-radius:12px; padding:26px; max-width:340px; width:calc(100% - 40px); background:var(--paper); color:var(--ink); box-shadow:0 10px 40px rgba(0,0,0,.25); }
+  dialog.dlg::backdrop{ background:rgba(27,22,19,.5); }
+  .dlg h3{ font-family:'Fraunces', serif; margin:0 0 6px; font-size:20px; }
+  .dlg p{ margin:0 0 16px; font-size:13px; color:var(--ink-soft); }
+  .dlg-montos{ display:flex; gap:8px; margin-bottom:14px; }
+  .dlg-montos button{ flex:1; padding:12px 0; border:1px solid var(--line); border-radius:8px; background:#fff; font-family:'IBM Plex Mono', monospace; font-size:14px; color:var(--ink); }
+  .dlg-montos button:hover{ border-color:var(--guinda); }
+  .dlg-cerrar{ width:100%; background:transparent; border:none; color:var(--ink-soft); font-size:13px; padding:8px; }
+  @media (max-width: 899px){ .form-crear{ padding:22px 20px 40px; } .cf-row{ grid-template-columns:1fr; } }
+
+  /* ---------- bloques 5 y 6: mis revistas y mensajes ---------- */
+  .msg-wrap{ display:grid; grid-template-columns:320px 1fr; min-height:480px; }
+  .msg-lista{ border-right:1px solid var(--line); padding:20px; display:flex; flex-direction:column; gap:10px; }
+  .msg-nuevo{ display:flex; gap:8px; }
+  .msg-nuevo input,.msg-enviar input{ flex:1; min-width:0; font-family:inherit; font-size:14px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); }
+  .msg-nuevo input:focus,.msg-enviar input:focus{ outline:2px solid var(--brass); outline-offset:1px; }
+  .msg-nuevo .btn-primary,.msg-enviar .btn-primary{ padding:10px 14px; }
+  .conv{ text-align:left; background:transparent; border:1px solid var(--line); border-radius:8px; padding:10px 12px; color:var(--ink); display:flex; flex-direction:column; gap:3px; }
+  .conv:hover{ border-color:var(--ink-soft); }
+  .conv.active{ border-color:var(--guinda); background:#fff; }
+  .conv b{ font-size:14px; font-weight:600; }
+  .conv span{ font-size:12.5px; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .msg-vacio{ font-size:13px; color:var(--ink-soft); margin:0; }
+  .msg-hilo{ display:flex; flex-direction:column; min-width:0; }
+  .msg-hilo-head{ padding:16px 24px; border-bottom:1px solid var(--line); font-family:'Fraunces', serif; font-weight:600; font-size:17px; display:flex; align-items:center; gap:12px; }
+  .msg-volver{ display:none; background:none; border:none; font-size:14px; color:var(--guinda); padding:0; }
+  .msg-burbujas{ flex:1; overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:8px; min-height:300px; max-height:calc(100dvh - 330px); }
+  .burbuja{ max-width:70%; padding:9px 13px; border-radius:12px; font-size:14px; line-height:1.4; overflow-wrap:anywhere; background:#F1EAE4; align-self:flex-start; }
+  .burbuja.mia{ background:var(--guinda); color:var(--cream); align-self:flex-end; }
+  .msg-enviar{ display:flex; gap:8px; padding:14px 24px; border-top:1px solid var(--line); }
+  .msg-enviar[hidden]{ display:none; }
+  @media (max-width: 899px){
+    .msg-wrap{ grid-template-columns:1fr; }
+    .msg-lista{ border-right:none; padding:20px; }
+    .msg-hilo{ display:none; }
+    .msg-wrap.en-hilo .msg-lista{ display:none; }
+    .msg-wrap.en-hilo .msg-hilo{ display:flex; }
+    .msg-volver{ display:inline-block; }
+    .msg-hilo-head,.msg-burbujas,.msg-enviar{ padding-left:20px; padding-right:20px; }
+  }
+
+  /* ---------- bloque 7: invitar colaboradores ---------- */
+  .creada-acc{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .creada-inv{ font-size:12px; color:var(--ink-soft); }
+  .btn-sec{ background:transparent; border:1px solid var(--guinda); color:var(--guinda); border-radius:8px; padding:6px 12px; font-size:13px; font-weight:500; }
+  .btn-sec:hover{ background:var(--guinda); color:var(--cream); }
+  .cf-field textarea{ font-family:inherit; font-size:14px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); width:100%; resize:vertical; min-height:74px; }
+  .cf-field textarea:focus{ outline:2px solid var(--brass); outline-offset:1px; }
+  dialog.dlg.ancho{ max-width:480px; }
+  .dlg form{ display:flex; flex-direction:column; gap:14px; }
+  .dlg-acciones{ display:flex; gap:10px; align-items:center; }
+  .dlg-acciones .dlg-cerrar{ width:auto; padding:8px 12px; }
+  .inv{ border:1px solid var(--line); border-radius:8px; padding:14px 16px; margin-bottom:10px; display:flex; flex-direction:column; gap:6px; }
+  .inv-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+  .inv-de{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+  .inv-txt{ font-size:13.5px; line-height:1.45; margin:0; overflow-wrap:anywhere; }
+  .inv-txt b{ font-weight:600; }
+  .inv-vacio{ font-size:13px; color:var(--ink-soft); margin:0 0 20px; }
+
+  /* ---------- bloque 16: reseñas ---------- */
+  .estrellas{ color:#B8862B; letter-spacing:1px; }
+  .res-fila{ padding:8px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .res-fila .res-q{ margin-top:2px; overflow-wrap:anywhere; }
+  .res-form{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .res-form textarea{ font-family:inherit; font-size:14px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); resize:vertical; min-height:70px; }
+  .res-pick{ display:flex; gap:4px; }
+  .res-pick button{ background:none; border:none; font-size:26px; line-height:1; color:#C9BDB3; padding:0 2px; }
+  .res-pick button.on{ color:#B8862B; }
+
+  /* ---------- bloque 13: galería ---------- */
+  .cat-item{ cursor:pointer; }
+  .cat-item.active{ background:rgba(255,255,255,0.12); }
+  .rev-card{ display:flex; flex-direction:column; gap:8px; }
+  .rev-portada{ aspect-ratio:3/4; border:1px solid var(--line); border-radius:6px; background:#F1EAE4; overflow:hidden; display:flex; align-items:center; justify-content:center; text-align:center; font-family:'Fraunces', serif; font-size:16px; color:var(--ink-soft); }
+  .rev-portada:not(:has(img)){ padding:12px; }
+  .rev-portada img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .rev-card{ cursor:pointer; }
+  .ficha-cab{ display:flex; gap:16px; align-items:flex-start; margin-bottom:6px; }
+  .ficha-cab .rev-portada{ width:110px; flex:none; }
+  .ficha-chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .ficha-paginas{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .ficha-paginas canvas{ width:100%; height:auto; border:1px solid var(--line); background:#fff; }
+  .ficha-hist summary{ cursor:pointer; font-size:14px; padding:6px 0; }
+  .hist-fila{ font-size:13px; padding:5px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:10px; }
+  .hist-fila span:last-child{ color:var(--ink-soft); white-space:nowrap; }
+  .rev-card-t{ font-family:'Fraunces', serif; font-size:17px; font-weight:600; line-height:1.25; }
+  .rev-card-m{ font-size:12.5px; color:var(--ink-soft); }
+
+  /* ---------- bloque 11: aprobación y versiones ---------- */
+  dialog.dlg-ancho{ max-width:560px; max-height:88dvh; overflow-y:auto; }
+  .rev-cab{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+  .rev-h{ font-family:'Fraunces', serif; font-size:15px; margin:16px 0 4px; }
+  .rev-fila{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; padding:9px 0; border-bottom:1px solid var(--line); }
+  .rev-acciones{ display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .rev-luz{ display:flex; align-items:center; gap:8px; font-size:14px; }
+  .luz{ width:12px; height:12px; border-radius:50%; background:#BBB; display:inline-block; flex:none; }
+  .luz.verde{ background:#2E6B3A; }
+  .luz.rojo{ background:#9B1C2E; }
+
+  /* ---------- bloque 8: turnos ---------- */
+  .turnos-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:8px; margin-bottom:14px; }
+  .turno{ border:1px solid var(--line); background:#fff; border-radius:8px; padding:10px 6px; font-size:13px; font-weight:500; color:var(--ink); display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .turno small{ font-size:11px; font-weight:400; color:var(--ink-soft); max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .turno:hover:not(:disabled){ border-color:var(--guinda); }
+  .turno.sel{ border-color:var(--guinda); outline:2px solid var(--guinda); }
+  .turno:disabled{ background:#F1EAE4; color:var(--ink-soft); cursor:default; }
+  .inv-acc{ display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; align-items:center; }
+  .inv-aviso{ font-size:12.5px; color:#9B1C2E; margin:0; }
 
   /* ---------- BREAKPOINTS ----------
      >1600px  pantallas grandes / TV — se limita el ancho útil, ver .main-inner
@@ -637,8 +823,12 @@
 
     <form class="auth-form active" id="loginForm">
       <div class="field">
-        <label for="loginEmail">Correo electrónico</label>
-        <input type="email" id="loginEmail" required autocomplete="email" />
+        <label for="loginUsuario">Nombre de usuario</label>
+        <input type="text" id="loginUsuario" required autocomplete="username" autocapitalize="none" spellcheck="false" />
+      </div>
+      <div class="field">
+        <label for="loginNumero">Número de 6 dígitos</label>
+        <input type="text" id="loginNumero" required inputmode="numeric" maxlength="6" autocomplete="off" />
       </div>
       <div class="field">
         <label for="loginPassword">Contraseña</label>
@@ -650,11 +840,13 @@
     <form class="auth-form" id="registerForm">
       <div class="field">
         <label for="registerName">Nombre de usuario</label>
-        <input type="text" id="registerName" required autocomplete="nickname" />
+        <input type="text" id="registerName" required maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false" />
+        <span class="cf-hint">De 3 a 20 caracteres: letras, números y . - _</span>
       </div>
       <div class="field">
-        <label for="registerEmail">Correo electrónico</label>
-        <input type="email" id="registerEmail" required autocomplete="email" />
+        <label for="registerNumero">Número de 6 dígitos</label>
+        <input type="text" id="registerNumero" required inputmode="numeric" maxlength="6" autocomplete="off" />
+        <span class="cf-hint">Elige uno que recuerdes, como un teléfono. Sin correo: no hay recuperación de contraseña.</span>
       </div>
       <div class="field">
         <label for="registerPassword">Contraseña</label>
@@ -689,8 +881,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>
           Mis revistas suscritas
         </div>
-        <div class="pill credits"><b>Créditos: 0</b></div>
-        <button class="pill reload">+ Recargar créditos</button>
+        <div class="pill credits"><b>Créditos: <span id="creditosN">0</span></b></div>
+        <button class="pill reload" id="btnRecargar" type="button">+ Recargar créditos</button>
       </div>
     </div>
   </header>
@@ -698,32 +890,39 @@
   <!-- ================= SIDEBAR ================= -->
   <aside class="sidebar">
     <div class="nav-group">
-      <div class="nav-item active">
+      <div class="nav-item active" data-view="inicio" role="button" tabindex="0">
         <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
         <div>
           <div class="label">Inicio</div>
           <div class="sub">Explora todas las revistas</div>
         </div>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" data-view="crear" role="button" tabindex="0">
         <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3-6 7-6s7 2.7 7 6"/><circle cx="18" cy="9" r="2.4"/><path d="M15.5 14.2c2.7.4 4.5 2.4 4.5 5.8"/></svg>
         <div>
           <div class="label">Crear grupo / revista</div>
           <div class="sub">Forma tu equipo editorial</div>
         </div>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" data-view="mis-revistas" role="button" tabindex="0">
         <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v16H6.5A2.5 2.5 0 0 0 4 21.5v-16z"/><path d="M4 5.5v16"/></svg>
         <div>
           <div class="label">Mis revistas</div>
           <div class="sub">Tus proyectos y ediciones</div>
         </div>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" data-view="subir" role="button" tabindex="0">
         <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
         <div>
-          <div class="label">Subir nueva revista</div>
-          <div class="sub">Comparte tu publicación</div>
+          <div class="label">Subir contenido</div>
+          <div class="sub">Tu PDF y las portadas</div>
+        </div>
+      </div>
+      <div class="nav-item" data-view="mensajes" role="button" tabindex="0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M4 5h16v11H9l-5 4V5z"/></svg>
+        <div>
+          <div class="label">Bandeja<span class="nav-n" id="navBandejaN" hidden>0</span></div>
+          <div class="sub">Invitaciones, turnos y mensajes</div>
         </div>
       </div>
     </div>
@@ -747,7 +946,7 @@
 
     <div class="sidebar-footer">
       <div class="account">
-        <span class="account-name" id="accountEmail">—</span>
+        <span class="account-name" id="accountEmail" data-view="perfil" role="button" tabindex="0" title="Ver mi perfil">—</span>
         <button class="account-logout" id="btnLogout">Cerrar sesión</button>
       </div>
       <div class="quote">Buenas ideas<br>también se leen.</div>
@@ -757,7 +956,9 @@
 
   <!-- ================= MAIN GALLERY ================= -->
   <main class="main">
-    <div class="main-header">
+    
+    <section class="view active" id="view-inicio">
+      <div class="main-header">
       <div>
         <h1>Kiosco Café</h1>
         <p>Descubre, lee y apoya el trabajo de creadores independientes.</p>
@@ -777,11 +978,308 @@
       </div>
 
     </div>
+    </section>
+
+    <section class="view" id="view-crear">
+      <div class="main-header">
+        <div>
+          <h1>Crear grupo / revista</h1>
+          <p>Forma tu equipo editorial.</p>
+        </div>
+      </div>
+      <form class="form-crear" id="formCrear" novalidate>
+        <div class="cf-field">
+          <label for="crNombre">Nombre de la revista</label>
+          <input type="text" id="crNombre" maxlength="60" autocomplete="off" />
+        </div>
+        <div class="cf-field">
+          <label for="crFormato">Formato</label>
+          <select id="crFormato">
+            <option value="revista">Revista</option>
+            <option value="libro">Libro</option>
+          </select>
+        </div>
+        <div class="cf-field">
+          <label for="crCategoria">Categoría</label>
+          <select id="crCategoria">
+            <option>Literatura</option>
+            <option>Historia</option>
+            <option>Ciencia</option>
+            <option>Arte y Cultura</option>
+            <option>Psicología</option>
+            <option>Filosofía</option>
+          </select>
+        </div>
+        <div class="cf-field">
+          <label for="crPrecio">Precio del cuadernillo (créditos)</label>
+          <input type="number" id="crPrecio" min="1" max="100" step="1" value="5" inputmode="numeric" />
+          <span class="cf-hint">Número entero, de 1 a 100. Se reparte entre la app y quienes hicieron la revista.</span>
+        </div>
+        <div class="cf-row">
+          <div class="cf-field">
+            <label for="crPaginas">Páginas por turno</label>
+            <input type="number" id="crPaginas" min="1" max="50" step="1" inputmode="numeric" />
+            <span class="cf-hint">Número entero, de 1 a 50.</span>
+          </div>
+          <div class="cf-field">
+            <label for="crPlazo">Plazo por turno (días)</label>
+            <input type="number" id="crPlazo" min="1" max="7" step="1" inputmode="numeric" />
+            <span class="cf-hint">Número entero, de 1 a 7.</span>
+          </div>
+        </div>
+        <div class="cf-field">
+          <label for="crTurnos">Cantidad de turnos</label>
+          <input type="number" id="crTurnos" min="2" max="20" step="1" inputmode="numeric" />
+          <span class="cf-hint">Número entero, de 2 a 20. Cada colaborador ocupa un turno.</span>
+        </div>
+        <p class="cf-error" id="crError" hidden></p>
+        <p class="cf-ok" id="crOk" hidden></p>
+        <button type="submit" class="btn-primary" id="crSubmit">Crear grupo</button>
+      </form>
+    </section>
+
+    <section class="view" id="view-mis-revistas">
+      <div class="main-header">
+        <div>
+          <h1>Mis revistas</h1>
+          <p id="misRevistasSub">Tus proyectos y ediciones.</p>
+        </div>
+      </div>
+      <div class="perfil-body">
+        <h2 class="perfil-h">Creadas por ti</h2>
+        <div class="lista-creadas" id="misRevistasLista"></div>
+        <div class="empty-state" id="misRevistasVacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+          <p class="empty-title">Aún no tienes revistas</p>
+          <p class="empty-sub">Las revistas que crees o en las que colabores aparecerán aquí.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-mensajes">
+      <div class="main-header">
+        <div>
+          <h1>Bandeja</h1>
+          <p>Invitaciones, turnos y mensajes en un solo lugar.</p>
+        </div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Bandeja">
+        <button type="button" class="tab active" role="tab" id="tabInvitaciones" data-tab="invitaciones" aria-selected="true" aria-controls="panelInvitaciones">Invitaciones<span class="tab-n" id="tabInvN" hidden>0</span></button>
+        <button type="button" class="tab" role="tab" id="tabTurnos" data-tab="turnos" aria-selected="false" aria-controls="panelTurnos" tabindex="-1">Turnos</button>
+        <button type="button" class="tab" role="tab" id="tabMensajes" data-tab="mensajes" aria-selected="false" aria-controls="panelMensajes" tabindex="-1">Mensajes</button>
+      </div>
+
+      <div class="tab-panel" id="panelInvitaciones" role="tabpanel" aria-labelledby="tabInvitaciones">
+        <div class="perfil-body">
+          <h2 class="perfil-h">Recibidas</h2>
+          <p class="cf-error" id="invError" hidden></p>
+          <div id="invRecibidas"></div>
+          <p class="inv-vacio" id="invRecibidasVacio">No tienes invitaciones por ahora.</p>
+
+          <h2 class="perfil-h">Enviadas</h2>
+          <div class="lista-creadas" id="invEnviadas"></div>
+          <p class="inv-vacio" id="invEnviadasVacio">Aún no has enviado invitaciones. Puedes hacerlo desde Mis revistas.</p>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panelTurnos" role="tabpanel" aria-labelledby="tabTurnos" hidden>
+        <div class="perfil-body">
+          <h2 class="perfil-h">Mis turnos</h2>
+          <div class="lista-creadas" id="bandejaTurnosPropios"></div>
+          <p class="inv-vacio" id="bandejaTurnosPropiosVacio">No tienes turnos aceptados. Cuando aceptes una invitación, aparecerá aquí con su plazo.</p>
+
+          <h2 class="perfil-h">Turnos de tus revistas</h2>
+          <div class="lista-creadas" id="bandejaTurnosCreador"></div>
+          <p class="inv-vacio" id="bandejaTurnosCreadorVacio">Todavía nadie ha tomado un turno en tus revistas.</p>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panelMensajes" role="tabpanel" aria-labelledby="tabMensajes" hidden>
+        <div class="msg-wrap" id="msgWrap">
+        <div class="msg-lista">
+          <div class="msg-modo" role="group" aria-label="Tipo de conversación">
+            <button type="button" class="active" data-modo="directos" aria-pressed="true">Directos</button>
+            <button type="button" data-modo="revistas" aria-pressed="false">Revistas</button>
+          </div>
+          <p class="cf-error" id="msgError" hidden></p>
+          <div id="msgDirectos">
+            <form class="msg-nuevo" id="formNuevoMsg">
+            <input type="text" id="msgBuscarUsuario" placeholder="usuario" autocomplete="off" autocapitalize="none" spellcheck="false" />
+            <input type="text" id="msgBuscarNumero" placeholder="000000" autocomplete="off" inputmode="numeric" maxlength="6" style="max-width:88px;" />
+            <button type="submit" class="btn-primary">Escribir</button>
+          </form>
+            <div id="msgConvs"></div>
+            <p class="msg-vacio" id="msgConvsVacio">Aún no tienes conversaciones.</p>
+          </div>
+          <div id="msgRevistas" hidden>
+            <p class="msg-modo-aviso">Un chat por cada revista que creas o en la que colaboras. Lo ven tú y quienes tienen turno en ella.</p>
+            <div id="chatRevLista"></div>
+            <p class="msg-vacio" id="chatRevVacio">Aún no tienes revistas. Crea una o acepta una invitación para abrir su chat.</p>
+          </div>
+        </div>
+        <div class="msg-hilo">
+          <div class="msg-hilo-head">
+            <button type="button" class="msg-volver" id="msgVolver">‹ Volver</button>
+            <span id="msgHiloNombre">Selecciona una conversación</span>
+          </div>
+          <div class="msg-burbujas" id="msgBurbujas"></div>
+          <form class="msg-enviar" id="formEnviarMsg" hidden>
+            <input type="text" id="msgTexto" maxlength="1000" autocomplete="off" placeholder="Escribe un mensaje…" />
+            <button type="submit" class="btn-primary">Enviar</button>
+          </form>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-subir">
+      <div class="main-header">
+        <div>
+          <h1>Subir contenido</h1>
+          <p>Tu PDF en cada turno y la portada de tus revistas.</p>
+        </div>
+      </div>
+      <div class="perfil-body">
+        <h2 class="perfil-h">Mis entregas</h2>
+        <div class="lista-creadas" id="subirEntregas"></div>
+        <p class="inv-vacio" id="subirEntregasVacio">Aún no tienes turnos. Cuando aceptes una invitación, podrás subir tu PDF aquí.</p>
+
+        <h2 class="perfil-h">Portada y avance de tus revistas</h2>
+        <div class="lista-creadas" id="subirRevistas"></div>
+        <p class="inv-vacio" id="subirRevistasVacio">Aún no has creado revistas.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-perfil">
+      <div class="main-header">
+        <div>
+          <h1 id="perfilNombre">Mi perfil</h1>
+          <p id="perfilCorreo"></p>
+          <p id="perfilDesde"></p>
+        </div>
+      </div>
+      <div class="perfil-body">
+        <div class="perfil-stats">
+          <div class="stat"><span class="stat-n" id="perfilResenas">0</span><span class="stat-l">reseñas recibidas</span></div>
+          <div class="stat"><span class="stat-n" id="perfilVentas">0</span><span class="stat-l">ventas</span></div>
+        </div>
+        <p class="perfil-error" id="perfilError" hidden></p>
+
+        <h2 class="perfil-h">Creado y publicado</h2>
+        <div class="lista-creadas" id="perfilCreadas"></div>
+        <div class="empty-state" id="perfilCreadasVacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+          <p class="empty-title">Aún no has publicado nada</p>
+          <p class="empty-sub">Tus revistas publicadas aparecerán aquí.</p>
+        </div>
+
+        <h2 class="perfil-h">Colaboraciones en proceso</h2>
+        <div class="lista-creadas" id="perfilColabs"></div>
+        <div class="empty-state" id="perfilColabsVacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+          <p class="empty-title">No tienes colaboraciones en curso</p>
+          <p class="empty-sub">Cuando aceptes una invitación, verás aquí el tiempo que te queda para entregar.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-perfil-publico">
+      <div class="main-header">
+        <div>
+          <h1 id="ppNombre">Perfil</h1>
+          <p id="ppUsuario"></p>
+          <p id="ppDesde"></p>
+        </div>
+      </div>
+      <div class="perfil-body">
+        <div class="perfil-stats">
+          <div class="stat"><span class="stat-n" id="ppResenas">0</span><span class="stat-l">reseñas recibidas</span></div>
+          <div class="stat"><span class="stat-n" id="ppVentas">0</span><span class="stat-l">ventas</span></div>
+        </div>
+        <p class="perfil-error" id="ppError" hidden></p>
+
+        <h2 class="perfil-h">Publicado</h2>
+        <div class="lista-creadas" id="ppCreadas"></div>
+        <div class="empty-state" id="ppVacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+          <p class="empty-title">Aún no tiene publicaciones</p>
+          <p class="empty-sub">Sus revistas publicadas aparecerán aquí.</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
 </div>
 
+<dialog class="dlg" id="dlgRecarga">
+  <h3>Recargar créditos</h3>
+  <p>Recarga simulada: no se cobra nada.</p>
+  <div class="dlg-montos">
+    <button type="button" data-monto="10">+10</button>
+    <button type="button" data-monto="50">+50</button>
+    <button type="button" data-monto="100">+100</button>
+  </div>
+  <button type="button" class="dlg-cerrar" id="dlgCerrar">Cancelar</button>
+</dialog>
+
+<dialog class="dlg ancho" id="dlgInvitar">
+  <h3>Invitar colaborador</h3>
+  <p id="invRevistaNombre"></p>
+  <form id="formInvitar" novalidate>
+    <div class="cf-row">
+      <div class="cf-field">
+        <label for="invBuscarUsuario">Usuario</label>
+        <input type="text" id="invBuscarUsuario" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="nombre.usuario" />
+      </div>
+      <div class="cf-field">
+        <label for="invBuscarNumero">Número</label>
+        <input type="text" id="invBuscarNumero" autocomplete="off" inputmode="numeric" maxlength="6" placeholder="482915" />
+      </div>
+    </div>
+    <div class="cf-field">
+      <label for="invResumen">Resumen del proyecto</label>
+      <textarea id="invResumen" maxlength="500" placeholder="¿De qué trata la revista?"></textarea>
+    </div>
+    <div class="cf-field">
+      <label for="invObjetivo">Objetivo de la invitación</label>
+      <textarea id="invObjetivo" maxlength="500" placeholder="¿Qué esperas que aporte esta persona?"></textarea>
+      <span class="cf-hint">Resumen y objetivo son obligatorios (mínimo 10 caracteres cada uno).</span>
+    </div>
+    <p class="cf-error" id="invFormError" hidden></p>
+    <p class="cf-ok" id="invFormOk" hidden></p>
+    <div class="dlg-acciones">
+      <button type="submit" class="btn-primary" id="invEnviar">Enviar invitación</button>
+      <button type="button" class="dlg-cerrar" id="invCerrar">Cerrar</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="dlg ancho" id="dlgTurnos">
+  <h3 id="turnosTitulo">Propón tu turno</h3>
+  <p id="turnosInfo"></p>
+  <div class="turnos-grid" id="turnosGrid"></div>
+  <p class="cf-error" id="turnosError" hidden></p>
+  <div class="dlg-acciones">
+    <button type="button" class="btn-primary" id="turnosAceptar" disabled>Proponer este turno</button>
+    <button type="button" class="dlg-cerrar" id="turnosCerrar">Cancelar</button>
+  </div>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
 <!-- ================= FIREBASE: REGISTRO / INICIO DE SESIÓN ================= -->
+<dialog class="dlg dlg-ancho" id="dlgFicha">
+  <div id="fichaCuerpo"></div>
+  <button type="button" class="dlg-cerrar" id="fichaCerrar">Cerrar</button>
+</dialog>
+
+<dialog class="dlg dlg-ancho" id="dlgRevision">
+  <h3 id="revTitulo">Revisión</h3>
+  <div id="revCuerpo"></div>
+  <button type="button" class="dlg-cerrar" id="revCerrar">Cerrar</button>
+</dialog>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import {
@@ -790,7 +1288,9 @@
     updateProfile, signOut
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
   import {
-    getFirestore, doc, setDoc, serverTimestamp
+    getFirestore, doc, getDoc, setDoc, serverTimestamp,
+    increment, collection, addDoc, query, where, getDocs, onSnapshot,
+    writeBatch, Timestamp, Bytes, runTransaction
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
   // ⚠️ Reemplaza esto con la configuración real de TU proyecto Firebase
@@ -818,6 +1318,7 @@
   const registerSubmit = document.getElementById('registerSubmit');
   const accountEmail = document.getElementById('accountEmail');
   const btnLogout = document.getElementById('btnLogout');
+  let registrando = false; // evita que onAuthStateChanged cree el perfil antes de que termine el registro
 
   // ---------- cambio entre pestañas Iniciar sesión / Crear cuenta ----------
   tabs.forEach(tab => {
@@ -833,17 +1334,65 @@
   // ---------- mensajes de error traducidos ----------
   function mensajeError(code){
     const mapa = {
-      'auth/invalid-email': 'El correo no tiene un formato válido.',
-      'auth/user-not-found': 'No existe una cuenta con ese correo.',
-      'auth/wrong-password': 'La contraseña es incorrecta.',
-      'auth/invalid-credential': 'Correo o contraseña incorrectos.',
-      'auth/email-already-in-use': 'Ya existe una cuenta con ese correo.',
+      'auth/invalid-email': 'El usuario o el número no tienen un formato válido.',
+      'auth/user-not-found': 'Usuario, número o contraseña incorrectos.',
+      'auth/wrong-password': 'Usuario, número o contraseña incorrectos.',
+      'auth/invalid-credential': 'Usuario, número o contraseña incorrectos.',
+      'auth/email-already-in-use': 'Ese usuario con ese número ya existe. Cambia el número o el nombre.',
       'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
       'auth/missing-password': 'Escribe una contraseña.',
       'auth/network-request-failed': 'No hay conexión. Revisa tu internet.'
     };
     return mapa[code] || 'Ocurrió un error. Inténtalo de nuevo.';
   }
+
+  // ---------- identidad: usuario + número de 6 dígitos (sin correo) ----------
+  // Firebase Auth exige un correo, así que se fabrica uno interno que la persona nunca ve.
+  const DOMINIO_INTERNO = 'kioscocafe.app';
+
+  function validarUsuarioNumero(usuarioCrudo, numeroCrudo){
+    const usuario = (usuarioCrudo || '').trim().toLowerCase();
+    const numero = (numeroCrudo || '').trim();
+    if (!/^[a-z0-9._-]{3,20}$/.test(usuario)) return { error: 'El usuario debe tener de 3 a 20 caracteres: letras, números y . - _ (sin tildes ni espacios).' };
+    if (!/^[a-z0-9]/.test(usuario) || !/[a-z0-9]$/.test(usuario)) return { error: 'El usuario debe empezar y terminar con una letra o un número.' };
+    if (/[._-]{2}/.test(usuario)) return { error: 'El usuario no puede llevar dos símbolos seguidos.' };
+    if (!/^[0-9]{6}$/.test(numero)) return { error: 'El número debe tener exactamente 6 dígitos.' };
+    return { usuario, numero };
+  }
+
+  function validarIdentidad(usuarioCrudo, numeroCrudo){
+    const base = validarUsuarioNumero(usuarioCrudo, numeroCrudo);
+    if (base.error) return base;
+    return { ...base, correo: base.usuario + '-' + base.numero + '@' + DOMINIO_INTERNO };
+  }
+
+  // busca en /usuarios por el par público (usuario, número) — nunca por el correo interno,
+  // que la persona no conoce (está oculto a propósito)
+  async function buscarPorUsuarioNumero(usuarioCrudo, numeroCrudo){
+    const id = validarUsuarioNumero(usuarioCrudo, numeroCrudo);
+    if (id.error) return { error: id.error };
+    const snap = await getDocs(query(
+      collection(db, 'usuarios'),
+      where('usuario', '==', id.usuario),
+      where('numero', '==', id.numero)
+    ));
+    return { hit: snap.docs[0] || null };
+  }
+
+  // { usuario, numero } de una cuenta nueva; null si es una cuenta anterior con correo real
+  function identidadDe(user){
+    const c = (user && user.email) || '';
+    if (!c.endsWith('@' + DOMINIO_INTERNO)) return null;
+    const local = c.slice(0, -('@' + DOMINIO_INTERNO).length);
+    return { usuario: local.slice(0, -7), numero: local.slice(-6) };
+  }
+
+  // los campos de número solo aceptan dígitos
+  ['loginNumero', 'registerNumero'].forEach(id => {
+    document.getElementById(id).addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6);
+    });
+  });
 
   // ---------- iniciar sesión ----------
   loginForm.addEventListener('submit', async (e) => {
@@ -852,9 +1401,10 @@
     loginSubmit.disabled = true;
     loginSubmit.textContent = 'Ingresando…';
     try {
-      const email = document.getElementById('loginEmail').value.trim();
+      const id = validarIdentidad(document.getElementById('loginUsuario').value, document.getElementById('loginNumero').value);
+      if (id.error) { authError.textContent = id.error; return; }
       const password = document.getElementById('loginPassword').value;
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, id.correo, password);
     } catch (err) {
       authError.textContent = mensajeError(err.code);
     } finally {
@@ -870,25 +1420,34 @@
     registerSubmit.disabled = true;
     registerSubmit.textContent = 'Creando cuenta…';
     try {
-      const nombre = document.getElementById('registerName').value.trim();
-      const email = document.getElementById('registerEmail').value.trim();
+      const id = validarIdentidad(document.getElementById('registerName').value, document.getElementById('registerNumero').value);
+      if (id.error) { authError.textContent = id.error; return; }
+      const nombre = id.usuario;
+      const email = id.correo;
       const password = document.getElementById('registerPassword').value;
 
+      registrando = true;
       const credencial = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(credencial.user, { displayName: nombre });
+      accountEmail.textContent = nombre;
 
       // Documento base del perfil en Firestore.
       // Se amplía cuando trabajemos el bloque de "Perfil personal".
       await setDoc(doc(db, 'usuarios', credencial.user.uid), {
         nombre,
+        usuario: id.usuario,
+        numero: id.numero,
         correo: email,
         resenas: 0,
         ventas: 0,
+        creditos: 0,
         creadoEn: serverTimestamp()
       });
+      cargarPerfil(credencial.user);
     } catch (err) {
       authError.textContent = mensajeError(err.code);
     } finally {
+      registrando = false;
       registerSubmit.disabled = false;
       registerSubmit.textContent = 'Crear cuenta';
     }
@@ -897,17 +1456,2409 @@
   // ---------- cerrar sesión ----------
   btnLogout.addEventListener('click', () => signOut(auth));
 
+
+  // ---------- perfil personal ----------
+  const perfilEls = {
+    nombre: document.getElementById('perfilNombre'),
+    correo: document.getElementById('perfilCorreo'),
+    desde: document.getElementById('perfilDesde'),
+    resenas: document.getElementById('perfilResenas'),
+    ventas: document.getElementById('perfilVentas'),
+    error: document.getElementById('perfilError')
+  };
+
+  function limpiarPerfil(){
+    perfilEls.nombre.textContent = 'Mi perfil';
+    perfilEls.correo.textContent = '';
+    perfilEls.desde.textContent = '';
+    perfilEls.resenas.textContent = '0';
+    perfilEls.ventas.textContent = '0';
+    creditosN.textContent = '0';
+    document.getElementById('perfilCreadas').innerHTML = '';
+    document.getElementById('perfilCreadasVacio').style.display = '';
+    document.getElementById('misRevistasLista').innerHTML = '';
+    document.getElementById('misRevistasVacio').style.display = '';
+    document.getElementById('misRevistasSub').textContent = 'Tus proyectos y ediciones.';
+    perfilEls.error.hidden = true;
+  }
+
+  async function cargarPerfil(user){
+    perfilEls.error.hidden = true;
+    perfilEls.nombre.textContent = user.displayName || 'Mi perfil';
+    const idu = identidadDe(user);
+    perfilEls.correo.textContent = idu ? idu.usuario + ' · ' + idu.numero : (user.email || '');
+    try {
+      const ref = doc(db, 'usuarios', user.uid);
+      let snap = await getDoc(ref);
+      if (!snap.exists()) {
+        // cuentas anteriores al registro con perfil: se crea el documento base
+        await setDoc(ref, {
+          nombre: user.displayName || '',
+          correo: user.email || '',
+          resenas: 0,
+          ventas: 0,
+        creditos: 0,
+          creadoEn: serverTimestamp()
+        });
+        snap = await getDoc(ref);
+      }
+      const d = snap.data() || {};
+      perfilEls.nombre.textContent = d.nombre || user.displayName || 'Mi perfil';
+      perfilEls.resenas.textContent = textoResenas(d);
+      perfilEls.ventas.textContent = d.ventas ?? 0;
+      creditosN.textContent = d.creditos ?? 0;
+      cargarCreadas(user.uid);
+      const fecha = d.creadoEn && d.creadoEn.toDate ? d.creadoEn.toDate()
+                  : (user.metadata && user.metadata.creationTime ? new Date(user.metadata.creationTime) : null);
+      perfilEls.desde.textContent = fecha
+        ? 'Miembro desde ' + fecha.toLocaleDateString('es', { month: 'long', year: 'numeric' })
+        : '';
+    } catch (err) {
+      perfilEls.error.textContent = 'No se pudo cargar tu perfil. Revisa las reglas de Firestore e inténtalo de nuevo.';
+      perfilEls.error.hidden = false;
+      console.error('Perfil:', err);
+    }
+  }
+  window.cargarPerfil = () => auth.currentUser && cargarPerfil(auth.currentUser);
+
+  // ---------- créditos simulados (bloque 3) ----------
+  const creditosN = document.getElementById('creditosN');
+  const dlgRecarga = document.getElementById('dlgRecarga');
+  document.getElementById('btnRecargar').addEventListener('click', () => {
+    if (auth.currentUser) dlgRecarga.showModal();
+  });
+  document.getElementById('dlgCerrar').addEventListener('click', () => dlgRecarga.close());
+  dlgRecarga.querySelectorAll('[data-monto]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const u = auth.currentUser;
+      if (!u) return;
+      const ref = doc(db, 'usuarios', u.uid);
+      btn.disabled = true;
+      try {
+        await setDoc(ref, { creditos: increment(Number(btn.dataset.monto)) }, { merge: true });
+        const snap = await getDoc(ref);
+        creditosN.textContent = (snap.data() || {}).creditos ?? 0;
+        dlgRecarga.close();
+      } catch (err) {
+        console.error('Recarga:', err);
+        alert('No se pudo recargar. Inténtalo de nuevo.');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  });
+
+  // ---------- crear grupo / revista (bloque 4) ----------
+  const crForm = document.getElementById('formCrear');
+  const crError = document.getElementById('crError');
+  const crOk = document.getElementById('crOk');
+  const crSubmit = document.getElementById('crSubmit');
+
+  crForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    crError.hidden = true;
+    crOk.hidden = true;
+    const u = auth.currentUser;
+    if (!u) return;
+
+    const nombre = document.getElementById('crNombre').value.trim();
+    const formato = document.getElementById('crFormato').value;
+    const paginas = Number(document.getElementById('crPaginas').value);
+    const plazo = Number(document.getElementById('crPlazo').value);
+    const turnos = Number(document.getElementById('crTurnos').value);
+
+    let error = '';
+    if (nombre.length < 3) error = 'El nombre debe tener al menos 3 caracteres.';
+    else if (!Number.isInteger(paginas) || paginas < 1 || paginas > 50) error = 'Las páginas por turno deben ser un número entero entre 1 y 50.';
+    else if (!Number.isInteger(plazo) || plazo < 1 || plazo > 7) error = 'El plazo debe ser un número entero de 1 a 7 días.';
+    else if (!Number.isInteger(turnos) || turnos < 2 || turnos > 20) error = 'La cantidad de turnos debe ser un número entero entre 2 y 20.';
+    else if (!Number.isInteger(Number(document.getElementById('crPrecio').value)) || Number(document.getElementById('crPrecio').value) < 1 || Number(document.getElementById('crPrecio').value) > 100) error = 'El precio debe ser un número entero de 1 a 100 créditos.';
+    if (error) { crError.textContent = error; crError.hidden = false; return; }
+
+    crSubmit.disabled = true;
+    crSubmit.textContent = 'Creando…';
+    try {
+      await addDoc(collection(db, 'revistas'), {
+        creadorId: u.uid,
+        creadorNombre: u.displayName || '',
+        nombre,
+        formato,
+        paginasPorTurno: paginas,
+        plazoDias: plazo,
+        categoria: document.getElementById('crCategoria').value,
+        precio: Number(document.getElementById('crPrecio').value),
+        totalTurnos: turnos,
+        estado: 'En formación',
+        creadoEn: serverTimestamp()
+      });
+      crForm.reset();
+      crOk.textContent = 'Grupo creado. Lo verás en Mis revistas y en tu perfil.';
+      crOk.hidden = false;
+      cargarCreadas(u.uid);
+    } catch (err) {
+      console.error('Crear revista:', err);
+      crError.textContent = 'No se pudo crear el grupo. Revisa las reglas de Firestore e inténtalo de nuevo.';
+      crError.hidden = false;
+    } finally {
+      crSubmit.disabled = false;
+      crSubmit.textContent = 'Crear grupo';
+    }
+  });
+
+  // lista de lo creado: se pinta en el perfil y en "Mis revistas" (bloque 5)
+  let creadas = [];
+  let invitaciones = [];
+  let cancelarInvitaciones = null;
+  let turnosPropios = [];
+  let turnosCreador = [];
+  let cancelarTurnos = [];
+  let temporizador = null;
+
+  async function cargarCreadas(uid){
+    try {
+      const snap = await getDocs(query(collection(db, 'revistas'), where('creadorId', '==', uid)));
+      creadas = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.creadoEn?.toMillis?.() || 0) - (a.creadoEn?.toMillis?.() || 0));
+      pintarCreadas();
+    } catch (err) {
+      console.error('Revistas creadas:', err);
+    }
+  }
+
+  function pintarCreadas(){
+    const yo = auth.currentUser;
+    const destinos = [
+      [document.getElementById('perfilCreadas'), document.getElementById('perfilCreadasVacio'), false],
+      [document.getElementById('misRevistasLista'), document.getElementById('misRevistasVacio'), true]
+    ];
+    destinos.forEach(([cont, vacio, conInvitar]) => {
+      cont.innerHTML = '';
+      creadas.forEach(r => {
+        const fila = document.createElement('div');
+        fila.className = 'creada';
+        const info = document.createElement('div');
+        const t = document.createElement('div');
+        t.className = 'creada-t';
+        t.textContent = r.nombre;
+        const m = document.createElement('div');
+        m.className = 'creada-m';
+        const f = r.creadoEn?.toDate?.();
+        m.textContent = (r.formato === 'libro' ? 'Libro' : 'Revista') + ' · ' + r.paginasPorTurno + ' pág. por turno · ' + r.plazoDias + ' día(s)'
+          + (f ? ' · creada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
+        info.append(t, m);
+        if (conInvitar) {
+          const ocup = turnosCreador.filter(x => x.revistaId === r.id).sort((a, b) => a.n - b.n);
+          const tl = document.createElement('div');
+          tl.className = 'creada-m';
+          tl.append('Turnos ocupados: ' + ocup.length + ' de ' + (r.totalTurnos || 5) + (ocup.length ? ' · ' : ''));
+          ocup.forEach((x, k) => {
+            if (k) tl.append(', ');
+            tl.append('T' + x.n + ' ');
+            if (x.usuarioId) tl.append(enlacePerfil(x.usuarioId, x.usuarioNombre || 'Usuario'));
+            else tl.append(x.usuarioNombre || '');
+          });
+          info.append(tl);
+        }
+        const acc = document.createElement('div');
+        acc.className = 'creada-acc';
+        if (conInvitar && yo) {
+          const n = invitaciones.filter(i => i.deId === yo.uid && i.revistaId === r.id).length;
+          if (n) {
+            const c = document.createElement('span');
+            c.className = 'creada-inv';
+            c.textContent = n + (n === 1 ? ' invitación enviada' : ' invitaciones enviadas');
+            acc.append(c);
+          }
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'btn-sec';
+          b.textContent = 'Invitar';
+          b.addEventListener('click', () => abrirInvitar(r));
+          acc.append(b);
+          const rv = document.createElement('button');
+          rv.type = 'button';
+          rv.className = 'btn-sec';
+          rv.textContent = 'Revisión';
+          rv.addEventListener('click', () => abrirRevision(r.id, r.nombre));
+          acc.append(rv);
+        }
+        const est = document.createElement('span');
+        est.className = 'estado';
+        est.textContent = r.estado || 'En formación';
+        acc.append(est);
+        fila.append(info, acc);
+        cont.append(fila);
+      });
+      vacio.style.display = creadas.length ? 'none' : '';
+    });
+    pintarChatsRevista();
+    pintarSubir();
+    const sub = document.getElementById('misRevistasSub');
+    if (sub) sub.textContent = creadas.length
+      ? creadas.length + (creadas.length === 1 ? ' proyecto creado por ti.' : ' proyectos creados por ti.')
+      : 'Tus proyectos y ediciones.';
+  }
+
+  // ---------- invitar colaboradores (bloque 7) ----------
+  const dlgInvitar = document.getElementById('dlgInvitar');
+  const invForm = document.getElementById('formInvitar');
+  const invFormError = document.getElementById('invFormError');
+  const invFormOk = document.getElementById('invFormOk');
+  const invEnviar = document.getElementById('invEnviar');
+  let revistaInvitando = null;
+
+  function abrirInvitar(revista){
+    revistaInvitando = revista;
+    invForm.reset();
+    invFormError.hidden = true;
+    invFormOk.hidden = true;
+    document.getElementById('invRevistaNombre').textContent = 'Para: ' + revista.nombre;
+    dlgInvitar.showModal();
+  }
+  document.getElementById('invCerrar').addEventListener('click', () => dlgInvitar.close());
+
+  invForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    invFormError.hidden = true;
+    invFormOk.hidden = true;
+    const yo = auth.currentUser;
+    if (!yo || !revistaInvitando) return;
+
+    const usuarioTxt = document.getElementById('invBuscarUsuario').value;
+    const numeroTxt = document.getElementById('invBuscarNumero').value;
+    const resumen = document.getElementById('invResumen').value.trim();
+    const objetivo = document.getElementById('invObjetivo').value.trim();
+
+    let error = '';
+    if (resumen.length < 10) error = 'El resumen es obligatorio (mínimo 10 caracteres).';
+    else if (objetivo.length < 10) error = 'El objetivo es obligatorio (mínimo 10 caracteres).';
+    if (error) { invFormError.textContent = error; invFormError.hidden = false; return; }
+
+    invEnviar.disabled = true;
+    invEnviar.textContent = 'Enviando…';
+    try {
+      const res = await buscarPorUsuarioNumero(usuarioTxt, numeroTxt);
+      if (res.error) {
+        invFormError.textContent = res.error;
+        invFormError.hidden = false;
+        return;
+      }
+      const hit = res.hit;
+      if (!hit) {
+        invFormError.textContent = 'No encontramos a ningún usuario con ese nombre y número.';
+        invFormError.hidden = false;
+        return;
+      }
+      if (hit.id === yo.uid) {
+        invFormError.textContent = 'No puedes invitarte a ti mismo.';
+        invFormError.hidden = false;
+        return;
+      }
+      const repetida = invitaciones.some(i => i.revistaId === revistaInvitando.id && i.paraId === hit.id && ['pendiente','propuesta','acordada','contrapropuesta'].includes(i.estado));
+      if (repetida) {
+        invFormError.textContent = 'Ya le enviaste una invitación pendiente a esta persona para esta revista.';
+        invFormError.hidden = false;
+        return;
+      }
+      const d = hit.data();
+      await addDoc(collection(db, 'invitaciones'), {
+        revistaId: revistaInvitando.id,
+        revistaNombre: revistaInvitando.nombre,
+        deId: yo.uid,
+        deNombre: yo.displayName || '',
+        paraId: hit.id,
+        paraNombre: d.nombre || (d.usuario ? d.usuario + ' · ' + d.numero : ''),
+        participantes: [yo.uid, hit.id],
+        resumen,
+        objetivo,
+        totalTurnos: revistaInvitando.totalTurnos || 5,
+        plazoDias: revistaInvitando.plazoDias,
+        paginasPorTurno: revistaInvitando.paginasPorTurno,
+        estado: 'pendiente',
+        creadoEn: serverTimestamp()
+      });
+      invForm.reset();
+      invFormOk.textContent = 'Invitación enviada a ' + (d.nombre || (d.usuario + ' · ' + d.numero)) + '.';
+      invFormOk.hidden = false;
+    } catch (err) {
+      console.error('Invitar:', err);
+      invFormError.textContent = 'No se pudo enviar la invitación. Revisa las reglas de Firestore e inténtalo de nuevo.';
+      invFormError.hidden = false;
+    } finally {
+      invEnviar.disabled = false;
+      invEnviar.textContent = 'Enviar invitación';
+    }
+  });
+
+  function iniciarInvitaciones(uid){
+    if (cancelarInvitaciones) cancelarInvitaciones();
+    cancelarInvitaciones = onSnapshot(
+      query(collection(db, 'invitaciones'), where('participantes', 'array-contains', uid)),
+      (snap) => {
+        invitaciones = snap.docs.map(d => {
+          const x = d.data({ serverTimestamps: 'estimate' });
+          return { id: d.id, ...x, ms: x.creadoEn?.toMillis?.() || Date.now() };
+        }).sort((a, b) => b.ms - a.ms);
+        pintarRecibidas(uid);
+        pintarCreadas();
+      },
+      (err) => {
+        console.error('Invitaciones:', err);
+        const el = document.getElementById('invError');
+        el.textContent = 'No se pudieron cargar las invitaciones. Revisa las reglas de Firestore.';
+        el.hidden = false;
+      }
+    );
+  }
+
+  function detenerInvitaciones(){
+    if (cancelarInvitaciones) cancelarInvitaciones();
+    cancelarInvitaciones = null;
+    invitaciones = [];
+    creadas = [];
+    document.getElementById('invRecibidas').innerHTML = '';
+    document.getElementById('invRecibidasVacio').hidden = false;
+    document.getElementById('invError').hidden = true;
+    if (dlgInvitar.open) dlgInvitar.close();
+  }
+
+  function pintarRecibidas(uid){
+    const cont = document.getElementById('invRecibidas');
+    cont.innerHTML = '';
+    const mias = invitaciones.filter(i => i.paraId === uid);
+    mias.forEach(i => {
+      const card = document.createElement('div');
+      card.className = 'inv';
+      const top = document.createElement('div');
+      top.className = 'inv-top';
+      const izq = document.createElement('div');
+      const t = document.createElement('div');
+      t.className = 'creada-t';
+      t.textContent = i.revistaNombre;
+      const de = document.createElement('div');
+      de.className = 'inv-de';
+      de.append('Te invita ');
+      if (i.deId) de.append(enlacePerfil(i.deId, i.deNombre || 'un usuario'));
+      else de.append(i.deNombre || 'un usuario');
+      izq.append(t, de);
+      const est = document.createElement('span');
+      est.className = 'estado';
+      est.textContent = etiquetaEstado(i);
+      top.append(izq, est);
+      const r = document.createElement('p');
+      r.className = 'inv-txt';
+      const rb = document.createElement('b');
+      rb.textContent = 'Resumen: ';
+      r.append(rb, document.createTextNode(i.resumen));
+      const o = document.createElement('p');
+      o.className = 'inv-txt';
+      const ob = document.createElement('b');
+      ob.textContent = 'Objetivo: ';
+      o.append(ob, document.createTextNode(i.objetivo));
+      card.append(top, r, o);
+      const abierta = ['pendiente', 'propuesta', 'acordada', 'contrapropuesta'].includes(i.estado);
+      if (abierta) {
+        const nota = document.createElement('p');
+        nota.className = 'inv-aviso';
+        const plazo = 'Tu plazo de ' + i.plazoDias + ' día(s) empieza cuando aceptes.';
+        if (i.estado === 'propuesta') nota.textContent = 'Propusiste el Turno ' + i.turnoPropuesto + '. Esperando que el creador responda.';
+        else if (i.estado === 'acordada') nota.textContent = 'El creador confirmó el Turno ' + i.turnoAcordado + '. ' + plazo;
+        else if (i.estado === 'contrapropuesta') nota.textContent = 'El creador propone el Turno ' + i.turnoAcordado + ' en lugar del Turno ' + i.turnoPropuesto + '. ' + plazo;
+        if (nota.textContent) card.append(nota);
+
+        const acc = document.createElement('div');
+        acc.className = 'inv-acc';
+        if (i.estado === 'acordada' || i.estado === 'contrapropuesta') {
+          const ok = document.createElement('button');
+          ok.type = 'button';
+          ok.className = 'btn-primary';
+          ok.textContent = 'Aceptar turno ' + i.turnoAcordado;
+          ok.addEventListener('click', () => aceptarTurnoFinal(i));
+          acc.append(ok);
+        }
+        if (i.plazoDias && i.totalTurnos) {
+          if (i.estado !== 'propuesta') {
+            const pr = document.createElement('button');
+            pr.type = 'button';
+            pr.className = i.estado === 'pendiente' ? 'btn-primary' : 'btn-sec';
+            pr.textContent = i.estado === 'pendiente' ? 'Elegir turno' : 'Proponer otro turno';
+            pr.addEventListener('click', () => abrirTurnos(i, 'proponer'));
+            acc.append(pr);
+          }
+        } else if (i.estado === 'pendiente') {
+          const av = document.createElement('p');
+          av.className = 'inv-aviso';
+          av.textContent = 'Esta invitación es de una versión anterior y no trae los datos del turno. Pide que te la reenvíen.';
+          acc.append(av);
+        }
+        const no = document.createElement('button');
+        no.type = 'button';
+        no.className = 'btn-sec';
+        no.textContent = i.estado === 'propuesta' ? 'Retirarme' : 'Rechazar';
+        no.addEventListener('click', () => rechazarInvitacion(i));
+        acc.append(no);
+        card.append(acc);
+      }
+      cont.append(card);
+    });
+    document.getElementById('invRecibidasVacio').hidden = mias.length > 0;
+    const pend = invitaciones.filter(i =>
+      (i.paraId === uid && ['pendiente', 'acordada', 'contrapropuesta'].includes(i.estado))
+      || (i.deId === uid && i.estado === 'propuesta')).length;
+    [document.getElementById('tabInvN'), document.getElementById('navBandejaN')].forEach(el => {
+      el.textContent = pend;
+      el.hidden = pend === 0;
+    });
+    pintarEnviadas(uid);
+  }
+
+  function pintarEnviadas(uid){
+    const cont = document.getElementById('invEnviadas');
+    cont.innerHTML = '';
+    const mias = invitaciones.filter(i => i.deId === uid);
+    mias.forEach(i => {
+      const fila = document.createElement('div');
+      fila.className = 'creada';
+      const info = document.createElement('div');
+      const t = document.createElement('div');
+      t.className = 'creada-t';
+      t.textContent = i.revistaNombre;
+      const m = document.createElement('div');
+      m.className = 'creada-m';
+      m.append('Para ');
+      if (i.paraId) m.append(enlacePerfil(i.paraId, i.paraNombre || 'un usuario'));
+      else m.append(i.paraNombre || 'un usuario');
+      info.append(t, m);
+      const detalle = i.estado === 'propuesta' ? (i.paraNombre || 'La persona') + ' propone el Turno ' + i.turnoPropuesto
+        : i.estado === 'acordada' ? 'Turno ' + i.turnoAcordado + ' confirmado; esperando que acepte'
+        : i.estado === 'contrapropuesta' ? 'Contrapropusiste el Turno ' + i.turnoAcordado + '; esperando respuesta'
+        : '';
+      if (detalle) {
+        const dl = document.createElement('div');
+        dl.className = 'creada-m';
+        dl.textContent = detalle;
+        info.append(dl);
+      }
+      const est = document.createElement('span');
+      est.className = 'estado';
+      est.textContent = etiquetaEstado(i);
+      const acc = document.createElement('div');
+      acc.className = 'creada-acc';
+      if (i.estado === 'propuesta') {
+        const ok = document.createElement('button');
+        ok.type = 'button';
+        ok.className = 'btn-primary';
+        ok.textContent = 'Confirmar turno ' + i.turnoPropuesto;
+        ok.addEventListener('click', () => confirmarPropuesta(i));
+        const ct = document.createElement('button');
+        ct.type = 'button';
+        ct.className = 'btn-sec';
+        ct.textContent = 'Contraproponer';
+        ct.addEventListener('click', () => abrirTurnos(i, 'contra'));
+        acc.append(ok, ct);
+      }
+      acc.append(est);
+      fila.append(info, acc);
+      cont.append(fila);
+    });
+    document.getElementById('invEnviadasVacio').hidden = mias.length > 0;
+  }
+
+  // ---------- turnos en la invitación (bloque 8) ----------
+  const dlgTurnos = document.getElementById('dlgTurnos');
+  const turnosGrid = document.getElementById('turnosGrid');
+  const turnosError = document.getElementById('turnosError');
+  const turnosAceptar = document.getElementById('turnosAceptar');
+  let invActual = null;
+  let turnoElegido = null;
+
+  function mostrarErrorTurnos(txt){
+    turnosError.textContent = txt;
+    turnosError.hidden = !txt;
+  }
+
+  let modoTurnos = 'proponer'; // 'proponer' (invitado) o 'contra' (creador)
+
+  function textoBotonTurnos(){
+    return modoTurnos === 'contra' ? 'Contraproponer este turno' : 'Proponer este turno';
+  }
+
+  async function abrirTurnos(inv, modo = 'proponer'){
+    invActual = inv;
+    modoTurnos = modo;
+    turnoElegido = null;
+    turnosAceptar.disabled = true;
+    turnosAceptar.textContent = textoBotonTurnos();
+    mostrarErrorTurnos('');
+    const contra = modo === 'contra';
+    document.getElementById('turnosTitulo').textContent = contra ? 'Contraproponer un turno' : 'Propón tu turno';
+    document.getElementById('turnosInfo').textContent = contra
+      ? inv.revistaNombre + ' · ' + (inv.paraNombre || 'La persona') + ' propuso el Turno ' + inv.turnoPropuesto
+        + '. Elige otro turno libre para proponerle.'
+      : inv.revistaNombre + ' · ' + inv.paginasPorTurno + ' pág. por turno. El creador debe confirmar tu turno; tu plazo de '
+        + inv.plazoDias + ' día(s) empieza cuando aceptes el turno confirmado.';
+    turnosGrid.textContent = 'Cargando turnos…';
+    dlgTurnos.showModal();
+    await pintarTurnos();
+  }
+
+  async function pintarTurnos(){
+    try {
+      const snap = await getDocs(query(collection(db, 'turnos'), where('revistaId', '==', invActual.revistaId)));
+      const ocupados = new Map(snap.docs.map(d => [d.data().n, d.data()]));
+      turnosGrid.innerHTML = '';
+      for (let n = 1; n <= invActual.totalTurnos; n++) {
+        const o = ocupados.get(n);
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'turno' + (turnoElegido === n ? ' sel' : '');
+        const a = document.createElement('span');
+        a.textContent = 'Turno ' + n;
+        const c = document.createElement('small');
+        c.textContent = o ? (o.usuarioNombre || 'Ocupado') : 'Libre';
+        b.append(a, c);
+        if (o) b.disabled = true;
+        else b.addEventListener('click', () => {
+          turnoElegido = n;
+          turnosAceptar.disabled = false;
+          turnosGrid.querySelectorAll('.turno').forEach(x => x.classList.remove('sel'));
+          b.classList.add('sel');
+        });
+        turnosGrid.append(b);
+      }
+    } catch (err) {
+      console.error('Turnos:', err);
+      turnosGrid.textContent = '';
+      mostrarErrorTurnos('No se pudieron cargar los turnos. Revisa las reglas de Firestore.');
+    }
+  }
+
+  document.getElementById('turnosCerrar').addEventListener('click', () => dlgTurnos.close());
+
+  // el invitado propone un turno, o el creador contrapropone otro
+  turnosAceptar.addEventListener('click', async () => {
+    const yo = auth.currentUser;
+    if (!yo || !invActual || !turnoElegido) return;
+    const inv = invActual;
+    const n = turnoElegido;
+    const modo = modoTurnos;
+    if (modo === 'proponer' && turnosPropios.some(t => t.revistaId === inv.revistaId)) {
+      mostrarErrorTurnos('Ya tienes un turno en esta revista.');
+      return;
+    }
+    mostrarErrorTurnos('');
+    turnosAceptar.disabled = true;
+    turnosAceptar.textContent = 'Enviando…';
+    try {
+      const batch = writeBatch(db);
+      batch.update(doc(db, 'invitaciones', inv.id), modo === 'proponer'
+        ? { estado: 'propuesta', turnoPropuesto: n, turnoAcordado: null, respondidaEn: serverTimestamp() }
+        : { estado: 'contrapropuesta', turnoAcordado: n, respondidaEn: serverTimestamp() });
+      batch.set(doc(collection(db, 'eventos')), {
+        revistaId: inv.revistaId,
+        tipo: modo === 'proponer' ? 'turno_propuesto' : 'turno_contrapropuesto',
+        turno: n,
+        usuarioId: yo.uid,
+        usuarioNombre: yo.displayName || '',
+        creadoEn: serverTimestamp()
+      });
+      await batch.commit();
+      dlgTurnos.close();
+    } catch (err) {
+      console.error('Negociar turno:', err);
+      mostrarErrorTurnos('No se pudo enviar. Revisa las reglas de Firestore e inténtalo de nuevo.');
+    } finally {
+      turnosAceptar.textContent = textoBotonTurnos();
+      turnosAceptar.disabled = !turnoElegido;
+    }
+  });
+
+  // el creador confirma el turno que propuso el invitado
+  async function confirmarPropuesta(inv){
+    const yo = auth.currentUser;
+    if (!yo || !inv.turnoPropuesto) return;
+    try {
+      const batch = writeBatch(db);
+      batch.update(doc(db, 'invitaciones', inv.id), {
+        estado: 'acordada',
+        turnoAcordado: inv.turnoPropuesto,
+        respondidaEn: serverTimestamp()
+      });
+      batch.set(doc(collection(db, 'eventos')), {
+        revistaId: inv.revistaId,
+        tipo: 'turno_confirmado',
+        turno: inv.turnoPropuesto,
+        usuarioId: yo.uid,
+        usuarioNombre: yo.displayName || '',
+        creadoEn: serverTimestamp()
+      });
+      await batch.commit();
+    } catch (err) {
+      console.error('Confirmar turno:', err);
+      alert('No se pudo confirmar el turno. Revisa las reglas de Firestore e inténtalo de nuevo.');
+    }
+  }
+
+  // el invitado acepta el turno acordado: aquí empieza a correr su plazo
+  async function aceptarTurnoFinal(inv){
+    const yo = auth.currentUser;
+    const n = inv.turnoAcordado;
+    const aviso = document.getElementById('invError');
+    aviso.hidden = true;
+    if (!yo || !n) return;
+    if (turnosPropios.some(t => t.revistaId === inv.revistaId)) {
+      aviso.textContent = 'Ya tienes un turno en esta revista.';
+      aviso.hidden = false;
+      return;
+    }
+    const ahora = Date.now();
+    try {
+      const batch = writeBatch(db);
+      batch.set(doc(db, 'turnos', inv.revistaId + '_' + n), {
+        revistaId: inv.revistaId,
+        revistaNombre: inv.revistaNombre,
+        creadorId: inv.deId,
+        creadorNombre: inv.deNombre || '',
+        n,
+        usuarioId: yo.uid,
+        usuarioNombre: yo.displayName || '',
+        paginasPorTurno: inv.paginasPorTurno,
+        plazoDias: inv.plazoDias,
+        inicio: Timestamp.fromMillis(ahora),
+        vence: Timestamp.fromMillis(ahora + inv.plazoDias * 86400000)
+      });
+      batch.update(doc(db, 'invitaciones', inv.id), {
+        estado: 'aceptada',
+        turno: n,
+        respondidaEn: serverTimestamp()
+      });
+      batch.set(doc(collection(db, 'eventos')), {
+        revistaId: inv.revistaId,
+        tipo: 'turno_aceptado',
+        turno: n,
+        usuarioId: yo.uid,
+        usuarioNombre: yo.displayName || '',
+        creadoEn: serverTimestamp()
+      });
+      await batch.commit();
+    } catch (err) {
+      console.error('Aceptar turno acordado:', err);
+      aviso.textContent = 'No se pudo aceptar el Turno ' + n + '. Puede que otra persona ya lo haya tomado: propón otro turno.';
+      aviso.hidden = false;
+    }
+  }
+
+  function etiquetaEstado(i){
+    switch (i.estado) {
+      case 'pendiente': return 'Pendiente';
+      case 'propuesta': return 'Turno propuesto';
+      case 'acordada': return 'Turno confirmado';
+      case 'contrapropuesta': return 'Contrapropuesta';
+      case 'aceptada': return 'Aceptada · Turno ' + i.turno;
+      case 'rechazada': return 'Rechazada';
+      default: return i.estado;
+    }
+  }
+
+  async function rechazarInvitacion(inv){
+    const yo = auth.currentUser;
+    if (!yo || !confirm('¿Rechazar la invitación a "' + inv.revistaNombre + '"?')) return;
+    try {
+      const batch = writeBatch(db);
+      batch.update(doc(db, 'invitaciones', inv.id), { estado: 'rechazada', respondidaEn: serverTimestamp() });
+      batch.set(doc(collection(db, 'eventos')), {
+        revistaId: inv.revistaId,
+        tipo: 'invitacion_rechazada',
+        usuarioId: yo.uid,
+        usuarioNombre: yo.displayName || '',
+        creadoEn: serverTimestamp()
+      });
+      await batch.commit();
+    } catch (err) {
+      console.error('Rechazar:', err);
+      alert('No se pudo rechazar la invitación. Inténtalo de nuevo.');
+    }
+  }
+
+  function restante(ms){
+    if (ms <= 0) return 'Plazo vencido';
+    const min = Math.floor(ms / 60000);
+    const d = Math.floor(min / 1440), h = Math.floor((min % 1440) / 60), m = min % 60;
+    if (d) return 'Quedan ' + d + ' d ' + h + ' h';
+    if (h) return 'Quedan ' + h + ' h ' + m + ' min';
+    return 'Quedan ' + m + ' min';
+  }
+
+  function pintarColabs(){
+    const cont = document.getElementById('perfilColabs');
+    cont.innerHTML = '';
+    const ahora = Date.now();
+    turnosPropios.forEach(t => {
+      const vence = t.vence?.toMillis?.() || 0;
+      const fila = document.createElement('div');
+      fila.className = 'creada';
+      const info = document.createElement('div');
+      const ti = document.createElement('div');
+      ti.className = 'creada-t';
+      ti.textContent = t.revistaNombre;
+      const m = document.createElement('div');
+      m.className = 'creada-m';
+      m.textContent = 'Turno ' + t.n + ' · ' + t.paginasPorTurno + ' pág. · vence el '
+        + new Date(vence).toLocaleString('es', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      info.append(ti, m);
+      if (t.creadorId) {
+        const co = document.createElement('div');
+        co.className = 'creada-m';
+        co.append('Coordina ', enlacePerfil(t.creadorId, t.creadorNombre || 'el creador'));
+        info.append(co);
+      }
+      const est = document.createElement('span');
+      est.className = 'estado';
+      est.textContent = restante(vence - ahora);
+      fila.append(info, est);
+      cont.append(fila);
+    });
+    document.getElementById('perfilColabsVacio').style.display = turnosPropios.length ? 'none' : '';
+    pintarTurnosBandeja();
+  }
+
+  function pintarTurnosBandeja(){
+    const fmt = ms => new Date(ms).toLocaleString('es', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    const ahora = Date.now();
+
+    const propios = document.getElementById('bandejaTurnosPropios');
+    propios.innerHTML = '';
+    turnosPropios.forEach(t => {
+      const vence = t.vence?.toMillis?.() || 0;
+      const fila = document.createElement('div');
+      fila.className = 'creada';
+      const info = document.createElement('div');
+      const ti = document.createElement('div');
+      ti.className = 'creada-t';
+      ti.textContent = t.revistaNombre;
+      const m = document.createElement('div');
+      m.className = 'creada-m';
+      m.textContent = 'Turno ' + t.n + ' · ' + t.paginasPorTurno + ' pág. · vence el ' + fmt(vence);
+      info.append(ti, m);
+      if (t.creadorId) {
+        const co = document.createElement('div');
+        co.className = 'creada-m';
+        co.append('Coordina ', enlacePerfil(t.creadorId, t.creadorNombre || 'el creador'));
+        info.append(co);
+      }
+      const est = document.createElement('span');
+      est.className = 'estado';
+      est.textContent = restante(vence - ahora);
+      fila.append(info, est);
+      propios.append(fila);
+    });
+    document.getElementById('bandejaTurnosPropiosVacio').hidden = turnosPropios.length > 0;
+
+    const deCreador = document.getElementById('bandejaTurnosCreador');
+    deCreador.innerHTML = '';
+    const grupos = new Map();
+    turnosCreador.forEach(t => {
+      if (!grupos.has(t.revistaId)) grupos.set(t.revistaId, []);
+      grupos.get(t.revistaId).push(t);
+    });
+    grupos.forEach((lista, revistaId) => {
+      lista.sort((a, b) => a.n - b.n);
+      const rev = creadas.find(r => r.id === revistaId);
+      const fila = document.createElement('div');
+      fila.className = 'creada';
+      const info = document.createElement('div');
+      const ti = document.createElement('div');
+      ti.className = 'creada-t';
+      ti.textContent = (rev && rev.nombre) || lista[0].revistaNombre || 'Revista';
+      info.append(ti);
+      lista.forEach(t => {
+        const vence = t.vence?.toMillis?.() || 0;
+        const l = document.createElement('div');
+        l.className = 'creada-m';
+        l.append('Turno ' + t.n + ' · ');
+        if (t.usuarioId) l.append(enlacePerfil(t.usuarioId, t.usuarioNombre || 'Usuario'));
+        else l.append(t.usuarioNombre || 'Usuario');
+        if (vence) l.append(' · ' + restante(vence - ahora));
+        info.append(l);
+      });
+      const est = document.createElement('span');
+      est.className = 'estado';
+      est.textContent = lista.length + ' de ' + ((rev && rev.totalTurnos) || lista[0].totalTurnos || '?') + ' ocupados';
+      fila.append(info, est);
+      deCreador.append(fila);
+    });
+    document.getElementById('bandejaTurnosCreadorVacio').hidden = grupos.size > 0;
+    pintarChatsRevista();
+    pintarSubir();
+  }
+
+  function iniciarTurnos(uid){
+    detenerTurnos();
+    cancelarTurnos.push(onSnapshot(
+      query(collection(db, 'turnos'), where('usuarioId', '==', uid)),
+      (snap) => {
+        turnosPropios = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (a.vence?.toMillis?.() || 0) - (b.vence?.toMillis?.() || 0));
+        pintarColabs();
+      },
+      (err) => console.error('Turnos propios:', err)
+    ));
+    cancelarTurnos.push(onSnapshot(
+      query(collection(db, 'turnos'), where('creadorId', '==', uid)),
+      (snap) => {
+        turnosCreador = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        pintarTurnosBandeja();
+        pintarCreadas();
+      },
+      (err) => console.error('Turnos creador:', err)
+    ));
+    temporizador = setInterval(pintarColabs, 60000);
+  }
+
+  function detenerTurnos(){
+    cancelarTurnos.forEach(f => f());
+    cancelarTurnos = [];
+    if (temporizador) clearInterval(temporizador);
+    temporizador = null;
+    turnosPropios = [];
+    turnosCreador = [];
+    document.getElementById('perfilColabs').innerHTML = '';
+    document.getElementById('perfilColabsVacio').style.display = '';
+    if (dlgTurnos.open) dlgTurnos.close();
+  }
+
+  // ---------- bandeja de mensajes (bloque 6) ----------
+  const msgEls = {
+    wrap: document.getElementById('msgWrap'),
+    convs: document.getElementById('msgConvs'),
+    convsVacio: document.getElementById('msgConvsVacio'),
+    burbujas: document.getElementById('msgBurbujas'),
+    hiloNombre: document.getElementById('msgHiloNombre'),
+    enviar: document.getElementById('formEnviarMsg'),
+    texto: document.getElementById('msgTexto'),
+    error: document.getElementById('msgError')
+  };
+  let mensajes = [];
+  let hiloActual = null; // { uid, nombre }
+  let chatActual = null; // { id, nombre, creadorId } (chat de revista abierto)
+  let chatsRevista = [];
+  let cancelarChats = null;
+  let cancelarMensajes = null;
+
+  function iniciarMensajes(uid){
+    if (cancelarMensajes) cancelarMensajes();
+    cancelarMensajes = onSnapshot(
+      query(collection(db, 'mensajes'), where('participantes', 'array-contains', uid)),
+      (snap) => {
+        mensajes = snap.docs.map(d => {
+          const x = d.data({ serverTimestamps: 'estimate' });
+          return { ...x, ms: x.creadoEn?.toMillis?.() || Date.now() };
+        });
+        pintarConversaciones(uid);
+        pintarHilo(uid);
+      },
+      (err) => {
+        console.error('Mensajes:', err);
+        msgEls.error.textContent = 'No se pudieron cargar los mensajes. Revisa las reglas de Firestore.';
+        msgEls.error.hidden = false;
+      }
+    );
+  }
+
+  function detenerMensajes(){
+    if (cancelarMensajes) cancelarMensajes();
+    cancelarMensajes = null;
+    mensajes = [];
+    hiloActual = null;
+    msgEls.convs.innerHTML = '';
+    msgEls.convsVacio.hidden = false;
+    msgEls.burbujas.innerHTML = '';
+    msgEls.hiloNombre.textContent = 'Selecciona una conversación';
+    msgEls.enviar.hidden = true;
+    msgEls.wrap.classList.remove('en-hilo');
+    msgEls.error.hidden = true;
+  }
+
+  function otroDe(m, uid){
+    return m.de === uid ? { uid: m.para, nombre: m.paraNombre } : { uid: m.de, nombre: m.deNombre };
+  }
+
+  function pintarConversaciones(uid){
+    const mapa = new Map();
+    mensajes.forEach(m => {
+      const o = otroDe(m, uid);
+      const previo = mapa.get(o.uid);
+      if (!previo || m.ms > previo.ms) mapa.set(o.uid, { uid: o.uid, nombre: o.nombre, texto: m.texto, ms: m.ms });
+    });
+    const lista = [...mapa.values()].sort((a, b) => b.ms - a.ms);
+    msgEls.convs.innerHTML = '';
+    lista.forEach(c => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'conv' + (hiloActual && hiloActual.uid === c.uid ? ' active' : '');
+      const n = document.createElement('b');
+      n.textContent = c.nombre || 'Usuario';
+      const t = document.createElement('span');
+      t.textContent = c.texto;
+      b.append(n, t);
+      b.addEventListener('click', () => abrirHilo(c.uid, c.nombre));
+      msgEls.convs.append(b);
+    });
+    msgEls.convsVacio.hidden = lista.length > 0;
+  }
+
+  function abrirHilo(uid, nombre){
+    hiloActual = { uid, nombre: nombre || 'Usuario' };
+    chatActual = null;
+    msgEls.wrap.classList.add('en-hilo');
+    msgEls.error.hidden = true;
+    const yo = auth.currentUser;
+    if (yo) { pintarConversaciones(yo.uid); pintarHilo(yo.uid); }
+    msgEls.texto.focus();
+  }
+
+  function pintarHilo(uid){
+    if (chatActual) return;
+    msgEls.burbujas.innerHTML = '';
+    if (!hiloActual) { msgEls.enviar.hidden = true; return; }
+    msgEls.hiloNombre.textContent = '';
+    msgEls.hiloNombre.append(enlacePerfil(hiloActual.uid, hiloActual.nombre));
+    msgEls.enviar.hidden = false;
+    mensajes
+      .filter(m => otroDe(m, uid).uid === hiloActual.uid)
+      .sort((a, b) => a.ms - b.ms)
+      .forEach(m => {
+        const d = document.createElement('div');
+        d.className = 'burbuja' + (m.de === uid ? ' mia' : '');
+        d.textContent = m.texto;
+        msgEls.burbujas.append(d);
+      });
+    msgEls.burbujas.scrollTop = msgEls.burbujas.scrollHeight;
+  }
+
+  document.getElementById('msgVolver').addEventListener('click', () => {
+    hiloActual = null;
+    chatActual = null;
+    pintarChatsRevista();
+    msgEls.wrap.classList.remove('en-hilo');
+    msgEls.hiloNombre.textContent = 'Selecciona una conversación';
+    const yo = auth.currentUser;
+    if (yo) { pintarConversaciones(yo.uid); pintarHilo(yo.uid); }
+  });
+
+  // buscar a quién escribir: usuario + número (nunca correo, la persona no lo conoce)
+  document.getElementById('formNuevoMsg').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const yo = auth.currentUser;
+    const campoUsuario = document.getElementById('msgBuscarUsuario');
+    const campoNumero = document.getElementById('msgBuscarNumero');
+    msgEls.error.hidden = true;
+    if (!yo) return;
+    try {
+      const res = await buscarPorUsuarioNumero(campoUsuario.value, campoNumero.value);
+      if (res.error) {
+        msgEls.error.textContent = res.error;
+        msgEls.error.hidden = false;
+        return;
+      }
+      const hit = res.hit;
+      if (!hit) {
+        msgEls.error.textContent = 'No encontramos a ningún usuario con ese nombre y número.';
+        msgEls.error.hidden = false;
+        return;
+      }
+      if (hit.id === yo.uid) {
+        msgEls.error.textContent = 'No puedes escribirte a ti mismo.';
+        msgEls.error.hidden = false;
+        return;
+      }
+      const d = hit.data();
+      campoUsuario.value = '';
+      campoNumero.value = '';
+      abrirHilo(hit.id, d.nombre || (d.usuario + ' · ' + d.numero));
+    } catch (err) {
+      msgEls.error.textContent = 'No encontramos a ningún usuario con ese nombre y número.';
+      msgEls.error.hidden = false;
+    }
+  });
+
+  msgEls.enviar.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const yo = auth.currentUser;
+    const texto = msgEls.texto.value.trim();
+    if (yo && chatActual && texto) { enviarChatRevista(yo, texto); return; }
+    if (!yo || !hiloActual || !texto) return;
+    msgEls.texto.value = '';
+    try {
+      await addDoc(collection(db, 'mensajes'), {
+        de: yo.uid,
+        deNombre: yo.displayName || '',
+        para: hiloActual.uid,
+        paraNombre: hiloActual.nombre,
+        participantes: [yo.uid, hiloActual.uid],
+        texto,
+        creadoEn: serverTimestamp()
+      });
+    } catch (err) {
+      console.error('Enviar mensaje:', err);
+      msgEls.texto.value = texto;
+      msgEls.error.textContent = 'No se pudo enviar el mensaje. Inténtalo de nuevo.';
+      msgEls.error.hidden = false;
+    }
+  });
+
+  // ---------- perfil público (ver el perfil de otra persona) ----------
+  function irAPerfil(uid){
+    const yo = auth.currentUser;
+    location.hash = (yo && yo.uid === uid) ? 'perfil' : 'usuario/' + uid;
+  }
+
+  // nombre clicable que lleva al perfil; cierra cualquier diálogo abierto
+  function enlacePerfil(uid, texto){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'enlace-perfil';
+    b.textContent = texto;
+    b.title = 'Ver perfil';
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('dialog[open]').forEach(d => d.close());
+      irAPerfil(uid);
+    });
+    return b;
+  }
+
+  const ppEls = {
+    nombre: document.getElementById('ppNombre'),
+    usuario: document.getElementById('ppUsuario'),
+    desde: document.getElementById('ppDesde'),
+    resenas: document.getElementById('ppResenas'),
+    ventas: document.getElementById('ppVentas'),
+    error: document.getElementById('ppError'),
+    lista: document.getElementById('ppCreadas'),
+    vacio: document.getElementById('ppVacio')
+  };
+  let ppToken = 0; // descarta respuestas de un perfil que ya no se está mirando
+
+  function limpiarPerfilPublico(){
+    ppToken++;
+    ppEls.nombre.textContent = 'Perfil';
+    ppEls.usuario.textContent = '';
+    ppEls.desde.textContent = '';
+    ppEls.resenas.textContent = '0';
+    ppEls.ventas.textContent = '0';
+    ppEls.error.hidden = true;
+    ppEls.lista.innerHTML = '';
+    ppEls.vacio.style.display = '';
+  }
+
+  async function cargarPerfilPublico(uid){
+    limpiarPerfilPublico();
+    const token = ppToken;
+    ppEls.nombre.textContent = 'Cargando…';
+    try {
+      const snap = await getDoc(doc(db, 'usuarios', uid));
+      if (token !== ppToken) return;
+      if (!snap.exists()) {
+        ppEls.nombre.textContent = 'Usuario no encontrado';
+        return;
+      }
+      const d = snap.data() || {};
+      ppEls.nombre.textContent = d.nombre || d.usuario || 'Usuario';
+      ppEls.usuario.textContent = d.usuario && d.numero ? d.usuario + ' · ' + d.numero : '';
+      ppEls.resenas.textContent = textoResenas(d);
+      ppEls.ventas.textContent = d.ventas ?? 0;
+      const f = d.creadoEn && d.creadoEn.toDate ? d.creadoEn.toDate() : null;
+      ppEls.desde.textContent = f
+        ? 'Miembro desde ' + f.toLocaleDateString('es', { month: 'long', year: 'numeric' }) : '';
+    } catch (err) {
+      if (token !== ppToken) return;
+      ppEls.nombre.textContent = 'Perfil';
+      ppEls.error.textContent = 'No se pudo cargar este perfil. Revisa las reglas de Firestore e inténtalo de nuevo.';
+      ppEls.error.hidden = false;
+      console.error('Perfil público:', err);
+      return;
+    }
+    // solo lo publicado es público; lo que está en formación nunca se muestra aquí
+    try {
+      const rs = await getDocs(query(collection(db, 'revistas'),
+        where('creadorId', '==', uid), where('estado', '==', 'Publicada')));
+      if (token !== ppToken) return;
+      const lista = rs.docs.map(x => ({ id: x.id, ...x.data() }))
+        .sort((a, b) => (b.creadoEn?.toMillis?.() || 0) - (a.creadoEn?.toMillis?.() || 0));
+      lista.forEach(r => {
+        const fila = document.createElement('div');
+        fila.className = 'creada';
+        const info = document.createElement('div');
+        const t = document.createElement('div');
+        t.className = 'creada-t';
+        t.textContent = r.nombre;
+        const m = document.createElement('div');
+        m.className = 'creada-m';
+        m.textContent = (r.formato === 'libro' ? 'Libro' : 'Revista') + ' · ' + r.paginasPorTurno + ' pág. por turno';
+        info.append(t, m);
+        fila.append(info);
+        ppEls.lista.append(fila);
+      });
+      ppEls.vacio.style.display = lista.length ? 'none' : '';
+    } catch (err) {
+      console.warn('Publicaciones del perfil público:', err);
+    }
+  }
+
+  // #usuario/<uid> abre el perfil de esa persona (el de uno mismo redirige a "Mi perfil")
+  function sincronizarPerfilPublico(){
+    const h = location.hash.slice(1);
+    const yo = auth.currentUser;
+    if (!h.startsWith('usuario/') || !yo) return;
+    const uid = h.slice('usuario/'.length);
+    if (!uid) return;
+    if (uid === yo.uid) { location.replace('#perfil'); return; }
+    cargarPerfilPublico(uid);
+  }
+  window.addEventListener('hashchange', sincronizarPerfilPublico);
+
+  // ---------- chat por revista (ítem 4) ----------
+  function revistasConChat(){
+    const mapa = new Map();
+    const yo = auth.currentUser;
+    creadas.forEach(r => mapa.set(r.id, { id: r.id, nombre: r.nombre, creadorId: yo ? yo.uid : '' }));
+    turnosPropios.forEach(t => {
+      if (!mapa.has(t.revistaId)) mapa.set(t.revistaId, { id: t.revistaId, nombre: t.revistaNombre, creadorId: t.creadorId || '' });
+    });
+    return [...mapa.values()];
+  }
+
+  function pintarChatsRevista(){
+    const cont = document.getElementById('chatRevLista');
+    if (!cont) return;
+    const lista = revistasConChat().map(r => {
+      const ms = chatsRevista.filter(m => m.revistaId === r.id).sort((a, b) => b.ms - a.ms);
+      return { ...r, ultimo: ms[0] || null };
+    }).sort((a, b) => (b.ultimo ? b.ultimo.ms : 0) - (a.ultimo ? a.ultimo.ms : 0) || (a.nombre || '').localeCompare(b.nombre || ''));
+    cont.innerHTML = '';
+    lista.forEach(r => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'conv' + (chatActual && chatActual.id === r.id ? ' active' : '');
+      const n = document.createElement('b');
+      n.textContent = r.nombre || 'Revista';
+      const t = document.createElement('span');
+      t.textContent = r.ultimo ? ((r.ultimo.deNombre || 'Alguien') + ': ' + r.ultimo.texto) : 'Sin mensajes todavía';
+      b.append(n, t);
+      b.addEventListener('click', () => abrirChatRevista(r));
+      cont.append(b);
+    });
+    document.getElementById('chatRevVacio').hidden = lista.length > 0;
+  }
+
+  function abrirChatRevista(r){
+    chatActual = { id: r.id, nombre: r.nombre, creadorId: r.creadorId };
+    hiloActual = null;
+    msgEls.wrap.classList.add('en-hilo');
+    msgEls.error.hidden = true;
+    pintarChatsRevista();
+    pintarChatActual();
+    msgEls.texto.focus();
+  }
+
+  function pintarChatActual(){
+    if (!chatActual) return;
+    const yo = auth.currentUser;
+    msgEls.hiloNombre.textContent = '';
+    const small = document.createElement('small');
+    small.textContent = 'Chat de la revista';
+    msgEls.hiloNombre.append(chatActual.nombre || 'Revista', small);
+    msgEls.enviar.hidden = false;
+    msgEls.burbujas.innerHTML = '';
+    const lista = chatsRevista.filter(m => m.revistaId === chatActual.id).sort((a, b) => a.ms - b.ms);
+    if (!lista.length) {
+      const v = document.createElement('p');
+      v.className = 'msg-vacio';
+      v.textContent = 'Aún no hay mensajes. Escribe el primero.';
+      msgEls.burbujas.append(v);
+    }
+    lista.forEach(m => {
+      const d = document.createElement('div');
+      const mia = yo && m.de === yo.uid;
+      d.className = 'burbuja' + (mia ? ' mia' : '');
+      if (!mia) {
+        const quien = document.createElement('span');
+        quien.className = 'burbuja-de';
+        quien.append(m.de ? enlacePerfil(m.de, m.deNombre || 'Usuario') : (m.deNombre || 'Usuario'));
+        d.append(quien);
+      }
+      d.append(document.createTextNode(m.texto));
+      msgEls.burbujas.append(d);
+    });
+    msgEls.burbujas.scrollTop = msgEls.burbujas.scrollHeight;
+  }
+
+  async function enviarChatRevista(yo, texto){
+    const c = chatActual;
+    msgEls.texto.value = '';
+    msgEls.error.hidden = true;
+    try {
+      // quién participa ahora: el creador y todos los que tienen turno
+      const miembros = new Set([yo.uid]);
+      if (c.creadorId) miembros.add(c.creadorId);
+      try {
+        const snap = await getDocs(query(collection(db, 'turnos'), where('revistaId', '==', c.id)));
+        snap.docs.forEach(d => { const u = d.data().usuarioId; if (u) miembros.add(u); });
+      } catch (e) {
+        console.warn('Miembros del chat:', e);
+      }
+      await addDoc(collection(db, 'chatsRevista'), {
+        revistaId: c.id,
+        revistaNombre: c.nombre || '',
+        de: yo.uid,
+        deNombre: yo.displayName || '',
+        texto,
+        participantes: [...miembros],
+        creadoEn: serverTimestamp()
+      });
+    } catch (err) {
+      console.error('Enviar al chat de revista:', err);
+      msgEls.texto.value = texto;
+      msgEls.error.textContent = 'No se pudo enviar el mensaje al chat. Revisa las reglas de Firestore e inténtalo de nuevo.';
+      msgEls.error.hidden = false;
+    }
+  }
+
+  function iniciarChatsRevista(uid){
+    if (cancelarChats) cancelarChats();
+    cancelarChats = onSnapshot(
+      query(collection(db, 'chatsRevista'), where('participantes', 'array-contains', uid)),
+      (snap) => {
+        chatsRevista = snap.docs.map(d => {
+          const x = d.data({ serverTimestamps: 'estimate' });
+          return { ...x, ms: x.creadoEn?.toMillis?.() || Date.now() };
+        });
+        pintarChatsRevista();
+        if (chatActual) pintarChatActual();
+      },
+      (err) => {
+        console.error('Chats de revista:', err);
+        msgEls.error.textContent = 'No se pudieron cargar los chats de revista. Revisa las reglas de Firestore.';
+        msgEls.error.hidden = false;
+      }
+    );
+  }
+
+  function detenerChatsRevista(){
+    if (cancelarChats) cancelarChats();
+    cancelarChats = null;
+    chatsRevista = [];
+    chatActual = null;
+    document.getElementById('chatRevLista').innerHTML = '';
+    document.getElementById('chatRevVacio').hidden = false;
+  }
+
+  // alternar entre conversaciones directas y chats de revista
+  function ponerModoMensajes(modo){
+    document.querySelectorAll('.msg-modo button').forEach(b => {
+      const on = b.dataset.modo === modo;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    document.getElementById('msgDirectos').hidden = modo !== 'directos';
+    document.getElementById('msgRevistas').hidden = modo !== 'revistas';
+    // al cambiar de modo se cierra la conversación abierta
+    hiloActual = null;
+    chatActual = null;
+    msgEls.burbujas.innerHTML = '';
+    msgEls.hiloNombre.textContent = 'Selecciona una conversación';
+    msgEls.enviar.hidden = true;
+    msgEls.wrap.classList.remove('en-hilo');
+    msgEls.error.hidden = true;
+    const yo = auth.currentUser;
+    if (yo) pintarConversaciones(yo.uid);
+    pintarChatsRevista();
+  }
+  document.querySelectorAll('.msg-modo button').forEach(b => {
+    b.addEventListener('click', () => ponerModoMensajes(b.dataset.modo));
+  });
+
+  // ---------- aprobación y versiones (bloque 11) ----------
+  const dlgRev = document.getElementById('dlgRevision');
+  const revCuerpo = document.getElementById('revCuerpo');
+  const DIA = 86400000;
+  let rev = null;
+  const nodo = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const botonRev = (txt, cls, fn) => { const b = nodo('button', cls, txt); b.type = 'button'; b.addEventListener('click', fn); return b; };
+
+  function cerrarRev(){ if (rev) rev.cancelar.forEach(f => f()); rev = null; }
+  dlgRev.addEventListener('close', cerrarRev);
+  document.getElementById('revCerrar').addEventListener('click', () => dlgRev.close());
+
+  function abrirRevision(revistaId, nombre){
+    cerrarRev();
+    const R = rev = { id: revistaId, r: null, turnos: [], archivos: [], aprob: [], cancelar: [], sync: false };
+    document.getElementById('revTitulo').textContent = nombre;
+    revCuerpo.textContent = 'Cargando…';
+    const falla = e => { console.error('Revisión:', e); revCuerpo.textContent = 'No se pudo cargar la revisión. Revisa las reglas de Firestore.'; };
+    const escuchar = (col, fn) => R.cancelar.push(onSnapshot(
+      query(collection(db, col), where('revistaId', '==', revistaId)),
+      s => { fn(s.docs.map(d => ({ id: d.id, ...d.data() }))); pintarRev(); }, falla));
+    escuchar('turnos', x => { R.turnos = x.sort((a, b) => a.n - b.n); });
+    escuchar('archivos', x => { R.archivos = x.filter(a => a.tipo === 'pdf'); R.portada = x.find(a => a.tipo === 'portada'); R.final = x.find(a => a.tipo === 'final'); });
+    escuchar('aprobaciones', x => { R.aprob = x; });
+    R.cancelar.push(onSnapshot(doc(db, 'revistas', revistaId),
+      s => { R.r = s.exists() ? { id: s.id, ...s.data() } : null; pintarRev(); }, falla));
+    dlgRev.showModal();
+  }
+
+  function calcRev(){
+    const { r, turnos, archivos, aprob } = rev;
+    const total = r.totalTurnos || 5;
+    const meta = n => archivos.find(a => a.turno === n);
+    const llenos = turnos.length >= total;
+    const entregados = turnos.length > 0 && turnos.every(t => meta(t.n));
+    const sello = turnos.map(t => t.n + ':' + (meta(t.n) ? (meta(t.n).version || 1) : 0)).join(',');
+    const personas = [{ uid: r.creadorId, nombre: r.creadorNombre || 'Creador', rol: 'Creador' }];
+    turnos.forEach(t => {
+      if (!personas.some(p => p.uid === t.usuarioId)) personas.push({ uid: t.usuarioId, nombre: t.usuarioNombre || 'Colaborador', rol: 'Turno ' + t.n });
+    });
+    personas.forEach(p => {
+      p.a = aprob.find(x => x.usuarioId === p.uid) || null;
+      p.vigente = !!p.a && p.a.sello === sello;
+    });
+    const verdes = personas.filter(p => p.vigente && p.a.color === 'verde').length;
+    const estado = !llenos ? 'En formación' : !entregados ? 'En producción' : verdes === personas.length ? 'Aprobada' : 'En revisión';
+    return { total, meta, llenos, entregados, sello, personas, verdes, estado };
+  }
+
+  function pintarRev(){
+    const yo = auth.currentUser;
+    if (!rev || !rev.r || !yo) return;
+    const r = rev.r, c = calcRev(), ahora = Date.now();
+    const publicada = r.estado === 'Publicada';
+    const soyCreador = yo.uid === r.creadorId;
+    const actual = r.estado || 'En formación';
+    if (soyCreador && !rev.sync && c.estado !== actual && ['En formación', 'En producción', 'En revisión', 'Aprobada'].includes(actual)) {
+      rev.sync = true;
+      setDoc(doc(db, 'revistas', rev.id), { estado: c.estado }, { merge: true })
+        .catch(e => console.error('Estado de la revista:', e))
+        .finally(() => { if (rev) rev.sync = false; });
+    }
+    revCuerpo.innerHTML = '';
+    const cab = nodo('div', 'rev-cab');
+    cab.append(nodo('span', 'estado', publicada ? 'Publicada' : c.estado),
+      nodo('span', 'creada-m', 'Turnos ' + rev.turnos.length + '/' + c.total
+        + ' · PDFs ' + rev.turnos.filter(t => c.meta(t.n)).length + '/' + rev.turnos.length
+        + ' · Verdes vigentes ' + c.verdes + '/' + c.personas.length));
+    revCuerpo.append(cab);
+
+    revCuerpo.append(nodo('h4', 'rev-h', 'Entregas'));
+    if (!rev.turnos.length) revCuerpo.append(nodo('p', 'msg-vacio', 'Todavía nadie tiene un turno.'));
+    rev.turnos.forEach(t => {
+      const m = c.meta(t.n), vence = t.vence?.toMillis?.() || 0;
+      const fila = nodo('div', 'rev-fila'), info = nodo('div'), acc = nodo('div', 'creada-acc');
+      info.append(nodo('div', 'creada-t', 'Turno ' + t.n + ' · ' + (t.usuarioNombre || 'Colaborador')),
+        nodo('div', 'creada-m', m
+          ? 'PDF v' + (m.version || 1) + ' · ' + m.nombreArchivo + ' · ' + m.paginas + ' pág.'
+          : 'Sin PDF · ' + restante(vence - ahora) + (t.prorrogas ? ' · ' + t.prorrogas + ' prórroga(s)' : '')));
+      if (m) {
+        acc.append(botonRev('Ver PDF', 'btn-sec', () => { if (!archivosMeta.has(m.clave)) archivosMeta.set(m.clave, m); verArchivo(m.clave); }));
+      } else {
+        if (!publicada && t.usuarioId === yo.uid) acc.append(botonRev('Prórroga +3 días', 'btn-sec', () => prorrogar(t)));
+        if (!publicada && soyCreador && vence < ahora) acc.append(botonRev('Eliminar', 'btn-sec', () => eliminarTurno(t)));
+      }
+      fila.append(info, acc);
+      revCuerpo.append(fila);
+    });
+
+    revCuerpo.append(nodo('h4', 'rev-h', 'Semáforo'));
+    c.personas.forEach(p => {
+      const fila = nodo('div', 'rev-fila'), izq = nodo('div', 'rev-luz');
+      izq.append(nodo('span', 'luz ' + (p.vigente ? p.a.color : 'gris')), nodo('span', null, p.nombre + ' · ' + p.rol));
+      fila.append(izq, nodo('div', 'creada-m', !p.a ? 'Sin responder'
+        : !p.vigente ? 'Luz desactualizada: hubo cambios'
+        : p.a.color === 'rojo' ? 'Protesta: ' + p.a.motivo : 'Aprobó'));
+      revCuerpo.append(fila);
+    });
+
+    if (publicada) {
+      revCuerpo.append(nodo('p', 'cf-ok', 'Revista publicada' + (r.paginasTotales ? ' · ' + r.paginasTotales + ' páginas' : '') + '.'));
+      const f = rev.final;
+      if (f) revCuerpo.append(botonRev('Ver cuadernillo completo', 'btn-primary', () => { if (!archivosMeta.has(f.clave)) archivosMeta.set(f.clave, f); verArchivo(f.clave); }));
+    } else if (c.estado === 'Aprobada') {
+      revCuerpo.append(nodo('p', 'cf-ok', 'Todos en verde: la revista está lista para publicarse.'));
+      if (soyCreador) {
+        const bp = botonRev('Publicar cuadernillo', 'btn-primary', () => publicarRevista(bp));
+        revCuerpo.append(bp);
+      }
+    }
+    const yoP = c.personas.find(p => p.uid === yo.uid);
+    if (yoP && !publicada) {
+      const acc = nodo('div', 'rev-acciones');
+      if (!(c.llenos && c.entregados)) {
+        acc.append(nodo('span', 'creada-m', 'Podrás votar cuando todos los turnos estén ocupados y tengan PDF.'));
+      } else {
+        acc.append(botonRev('Aprobar (verde)', 'btn-primary', () => ponerLuz('verde', c.sello)),
+          botonRev('Protestar (rojo)', 'btn-sec', () => ponerLuz('rojo', c.sello)));
+        if (yoP.a) acc.append(botonRev('Quitar mi luz', 'btn-sec', quitarLuz));
+      }
+      revCuerpo.append(acc);
+    }
+  }
+
+  function eventoRev(batch, tipo, extra){
+    const yo = auth.currentUser;
+    batch.set(doc(collection(db, 'eventos')), {
+      revistaId: rev.id, tipo, usuarioId: yo.uid, usuarioNombre: yo.displayName || '',
+      creadoEn: serverTimestamp(), ...extra
+    });
+  }
+
+  async function ponerLuz(color, sello){
+    const yo = auth.currentUser;
+    let motivo = '';
+    if (color === 'rojo') {
+      motivo = (prompt('¿Qué debe cambiar? Escribe el motivo de tu protesta:') || '').trim().slice(0, 300);
+      if (!motivo) return;
+    }
+    try {
+      const batch = writeBatch(db);
+      batch.set(doc(db, 'aprobaciones', rev.id + '_' + yo.uid), {
+        revistaId: rev.id, usuarioId: yo.uid, usuarioNombre: yo.displayName || '',
+        color, motivo, sello, ts: serverTimestamp()
+      });
+      eventoRev(batch, color === 'verde' ? 'aprobado' : 'protesta', { detalle: motivo });
+      await batch.commit();
+    } catch (err) { console.error('Luz:', err); alert('No se pudo guardar tu luz. Revisa las reglas de Firestore.'); }
+  }
+
+  async function quitarLuz(){
+    const yo = auth.currentUser;
+    try {
+      const batch = writeBatch(db);
+      batch.delete(doc(db, 'aprobaciones', rev.id + '_' + yo.uid));
+      eventoRev(batch, 'luz_retirada', {});
+      await batch.commit();
+    } catch (err) { console.error('Quitar luz:', err); alert('No se pudo quitar tu luz.'); }
+  }
+
+  // prórroga de 3 días, sin tope
+  async function prorrogar(t){
+    try {
+      const batch = writeBatch(db);
+      const base = Math.max(t.vence?.toMillis?.() || 0, Date.now());
+      batch.update(doc(db, 'turnos', t.id), { vence: Timestamp.fromMillis(base + 3 * DIA), prorrogas: increment(1) });
+      eventoRev(batch, 'prorroga', { turno: t.n, detalle: '+3 días' });
+      await batch.commit();
+    } catch (err) { console.error('Prórroga:', err); alert('No se pudo dar la prórroga. Revisa las reglas de Firestore.'); }
+  }
+
+  // el creador saca a quien no subió su PDF a tiempo; solo ese turno se reinicia
+  async function eliminarTurno(t){
+    if (!confirm('¿Eliminar a ' + (t.usuarioNombre || 'esta persona') + ' del Turno ' + t.n + '? El turno quedará libre para invitar a otra persona.')) return;
+    try {
+      const batch = writeBatch(db);
+      batch.delete(doc(db, 'turnos', t.id));
+      batch.delete(doc(db, 'aprobaciones', rev.id + '_' + t.usuarioId));
+      const inv = invitaciones.find(i => i.revistaId === rev.id && i.paraId === t.usuarioId && i.estado === 'aceptada');
+      if (inv) batch.update(doc(db, 'invitaciones', inv.id), { estado: 'retirada', respondidaEn: serverTimestamp() });
+      eventoRev(batch, 'colaborador_eliminado', { turno: t.n, detalle: t.usuarioNombre || '' });
+      await batch.commit();
+    } catch (err) { console.error('Eliminar turno:', err); alert('No se pudo eliminar el turno. Revisa las reglas de Firestore.'); }
+  }
+
+  // ---------- publicación del cuadernillo (bloque 12) ----------
+  // Une portada + PDFs en el orden de los turnos y guarda un solo PDF final.
+  async function publicarRevista(btn){
+    const yo = auth.currentUser;
+    if (!rev || !rev.r || !yo || yo.uid !== rev.r.creadorId) return;
+    const c = calcRev(), r = rev.r;
+    if (c.estado !== 'Aprobada') { alert('Todavía no están todos los turnos entregados y en verde.'); return; }
+    if (!confirm('¿Publicar \"' + r.nombre + '\"? Después ya no se podrán cambiar los PDF.')) return;
+    btn.disabled = true;
+    btn.textContent = 'Armando el PDF…';
+    try {
+      const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm');
+      const out = await PDFDocument.create();
+      if (rev.portada) {
+        try {
+          const img = await out.embedJpg(await leerArchivo(rev.portada.clave));
+          const W = 595, H = 842, k = Math.min(W / img.width, H / img.height);
+          out.addPage([W, H]).drawImage(img, { x: (W - img.width * k) / 2, y: (H - img.height * k) / 2, width: img.width * k, height: img.height * k });
+        } catch (e) { console.warn('Portada omitida:', e); }
+      }
+      for (const t of rev.turnos) {             // ya vienen ordenados por número de turno
+        const m = c.meta(t.n);
+        btn.textContent = 'Uniendo turno ' + t.n + '…';
+        const src = await PDFDocument.load(await leerArchivo(m.clave));
+        (await out.copyPages(src, src.getPageIndices())).forEach(pg => out.addPage(pg));
+      }
+      const bytes = await out.save();
+      const clave = rev.id + '_final';
+      btn.textContent = 'Guardando…';
+      await guardarArchivo(clave, bytes, {
+        revistaId: rev.id, revistaNombre: r.nombre, creadorId: r.creadorId, turno: null, tipo: 'final',
+        usuarioId: yo.uid, usuarioNombre: yo.displayName || '',
+        nombreArchivo: r.nombre + '.pdf', paginas: out.getPageCount(), mime: 'application/pdf'
+      });
+      await setDoc(doc(db, 'revistas', rev.id), {
+        estado: 'Publicada', publicadaEn: serverTimestamp(), paginasTotales: out.getPageCount(), pdfFinal: clave
+      }, { merge: true });
+    } catch (err) {
+      console.error('Publicar:', err);
+      alert('No se pudo publicar. Revisa que todos los PDF se abran bien e inténtalo de nuevo.');
+      btn.disabled = false;
+      btn.textContent = 'Publicar cuadernillo';
+    }
+  }
+
+  // ---------- galería dinámica (bloque 13) ----------
+  const galeria = document.querySelector('#view-inicio .gallery');
+  const vacioGal = galeria.querySelector('.empty-state');
+  const vacioGalTxt = [vacioGal.querySelector('.empty-title').textContent, vacioGal.querySelector('.empty-sub').textContent];
+  const catItems = [...document.querySelectorAll('.cat-list .cat-item')];
+  const catDe = el => el.querySelector('span').textContent;
+  const portadaCache = new Map();   // revistaId -> url (o null si no tiene portada)
+  let publicadas = [];
+  let filtroCat = 'Todas';
+  let filtroTxt = '';
+  let cancelarGaleria = null;
+  let cancelarCreditos = null;
+  const plano = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+  function irAInicio(){
+    if (!document.getElementById('view-inicio').classList.contains('active')) {
+      document.querySelector('.nav-item[data-view="inicio"]').click();
+    }
+  }
+  catItems.forEach(el => el.addEventListener('click', () => { filtroCat = catDe(el); pintarGaleria(); irAInicio(); }));
+  document.querySelector('.search input').addEventListener('input', e => { filtroTxt = plano(e.target.value.trim()); pintarGaleria(); irAInicio(); });
+
+  async function portadaUrl(id){
+    if (portadaCache.has(id)) return portadaCache.get(id);
+    let url = null;
+    try {
+      const b = await leerArchivo(id + '_portada');
+      if (b.length) url = URL.createObjectURL(new Blob([b], { type: 'image/jpeg' }));
+    } catch (e) { /* sin portada */ }
+    portadaCache.set(id, url);
+    return url;
+  }
+
+  function pintarGaleria(){
+    catItems.forEach(el => {
+      const nombre = catDe(el);
+      el.classList.toggle('active', nombre === filtroCat);
+      el.querySelector('.count').textContent = nombre === 'Todas' ? publicadas.length : publicadas.filter(r => r.categoria === nombre).length;
+    });
+    const lista = publicadas.filter(r =>
+      (filtroCat === 'Todas' || r.categoria === filtroCat) &&
+      (!filtroTxt || plano([r.nombre, r.creadorNombre, r.categoria, r.formato].join(' ')).includes(filtroTxt)));
+    galeria.querySelectorAll('.rev-card').forEach(n => n.remove());
+    vacioGal.style.display = lista.length ? 'none' : '';
+    vacioGal.querySelector('.empty-title').textContent = publicadas.length ? 'No hay revistas con ese filtro' : vacioGalTxt[0];
+    vacioGal.querySelector('.empty-sub').textContent = publicadas.length ? 'Prueba con otra categoría o con otra búsqueda.' : vacioGalTxt[1];
+    lista.forEach(r => {
+      const card = nodo('article', 'rev-card');
+      const pt = nodo('div', 'rev-portada', r.nombre);
+      portadaUrl(r.id).then(url => {
+        if (!url) return;
+        const img = document.createElement('img');
+        img.alt = 'Portada de ' + r.nombre;
+        img.src = url;
+        pt.textContent = '';
+        pt.append(img);
+      });
+      const f = r.publicadaEn?.toDate?.();
+      card.append(pt,
+        nodo('div', 'rev-card-t', r.nombre),
+        nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
+        nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', r.categoria, r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
+        nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
+        nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
+      card.tabIndex = 0;
+      card.setAttribute('role', 'button');
+      card.addEventListener('click', () => abrirFicha(r));
+      card.addEventListener('keydown', e => { if (e.key === 'Enter') abrirFicha(r); });
+      galeria.append(card);
+    });
+  }
+
+  function iniciarGaleria(){
+    if (cancelarCreditos) cancelarCreditos();
+    if (auth.currentUser) {
+      cancelarCreditos = onSnapshot(doc(db, 'usuarios', auth.currentUser.uid), s => {
+        const d = s.data() || {};
+        creditosN.textContent = d.creditos ?? 0;
+        perfilEls.ventas.textContent = d.ventas ?? 0;
+        perfilEls.resenas.textContent = textoResenas(d);
+      }, e => console.error('Créditos:', e));
+    }
+    if (cancelarGaleria) cancelarGaleria();
+    cancelarGaleria = onSnapshot(
+      query(collection(db, 'revistas'), where('estado', '==', 'Publicada')),
+      snap => {
+        publicadas = snap.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: 'estimate' }) }))
+          .sort((a, b) => (b.publicadaEn?.toMillis?.() || 0) - (a.publicadaEn?.toMillis?.() || 0));
+        pintarGaleria();
+      },
+      err => console.error('Galería:', err));
+  }
+
+  function detenerGaleria(){
+    if (cancelarGaleria) cancelarGaleria();
+    cancelarGaleria = null;
+    if (cancelarCreditos) cancelarCreditos();
+    cancelarCreditos = null;
+    publicadas = [];
+    portadaCache.forEach(u => { if (u) URL.revokeObjectURL(u); });
+    portadaCache.clear();
+    pintarGaleria();
+  }
+
+  // ---------- ficha: vista previa e historial (bloque 14) ----------
+  const dlgFicha = document.getElementById('dlgFicha');
+  const fichaCuerpo = document.getElementById('fichaCuerpo');
+  document.getElementById('fichaCerrar').addEventListener('click', () => dlgFicha.close());
+  const ETIQ_EVENTO = {
+    turno_propuesto: 'propuso un turno', turno_contrapropuesto: 'contrapropuso un turno',
+    turno_confirmado: 'confirmó un turno', turno_aceptado: 'aceptó su turno',
+    invitacion_rechazada: 'rechazó la invitación', pdf_subido: 'subió un PDF', portada_subida: 'subió la portada',
+    aprobado: 'aprobó (verde)', protesta: 'protestó (rojo)', luz_retirada: 'retiró su luz',
+    prorroga: 'tomó una prórroga', revista_publicada: 'publicó el cuadernillo'
+  };
+  const fmtDia = ms => new Date(ms).toLocaleDateString('es', { day: 'numeric', month: 'short' });
+
+  function abrirFicha(r){
+    fichaCuerpo.innerHTML = '';
+    const pt = nodo('div', 'rev-portada', r.nombre);
+    portadaUrl(r.id).then(url => {
+      if (!url) return;
+      const img = document.createElement('img');
+      img.alt = 'Portada de ' + r.nombre;
+      img.src = url;
+      pt.textContent = '';
+      pt.append(img);
+    });
+    const f = r.publicadaEn?.toDate?.();
+    const datos = nodo('div');
+    datos.append(nodo('h3', null, r.nombre),
+      nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
+      nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', r.categoria, r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
+      nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
+      nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
+    const cab = nodo('div', 'ficha-cab');
+    cab.append(pt, datos);
+
+    const proceso = nodo('div', 'ficha-chips');
+    proceso.textContent = 'Cargando…';
+    const hist = nodo('div');
+    const muestra = nodo('div', 'ficha-paginas', 'Cargando páginas…');
+    const botonLeer = () => botonRev('Leer cuadernillo completo', 'btn-primary', async () => {
+      const clave = r.id + '_final';
+      try {
+        if (!archivosMeta.has(clave)) {
+          const m = await getDoc(doc(db, 'archivos', clave));
+          if (m.exists()) archivosMeta.set(clave, m.data());
+        }
+        verArchivo(clave);
+      } catch (e) { console.error('Leer cuadernillo:', e); alert('No se pudo abrir el cuadernillo.'); }
+    });
+    fichaCuerpo.append(cab,
+      nodo('h4', 'rev-h', 'Sobre este proceso'), proceso,
+      nodo('h4', 'rev-h', 'Páginas de muestra'), muestra,
+      nodo('div', 'rev-acciones', null), nodo('div', 'ficha-resenas'), hist);
+    dlgFicha.showModal();
+    const accion = fichaCuerpo.querySelector('.rev-acciones');
+    accion.textContent = 'Comprobando acceso…';
+    cargarProceso(r, proceso, hist).then(turnos => pintarAccionFicha(r, accion, turnos, botonLeer));
+    cargarMuestra(r, muestra);
+  }
+
+  async function cargarProceso(r, proceso, hist){
+    try {
+      const [tSnap, eSnap] = await Promise.all([
+        getDocs(query(collection(db, 'turnos'), where('revistaId', '==', r.id))),
+        getDocs(query(collection(db, 'eventos'), where('revistaId', '==', r.id)))
+      ]);
+      const turnos = tSnap.docs.map(d => d.data()).sort((a, b) => a.n - b.n);
+      const ev = eSnap.docs.map(d => ({ ...d.data(), ms: d.data().creadoEn?.toMillis?.() || 0 })).sort((a, b) => a.ms - b.ms);
+      const cuenta = t => ev.filter(e => e.tipo === t).length;
+      const pdfs = ev.filter(e => e.tipo === 'pdf_subido');
+      const cambios = pdfs.length - new Set(pdfs.map(e => e.turno)).size;
+      const etiquetas = [turnos.length + (turnos.length === 1 ? ' colaborador' : ' colaboradores')];
+      const ini = ev.length ? ev[0].ms : 0, fin = r.publicadaEn?.toMillis?.() || 0;
+      if (ini && fin && fin >= ini) {
+        const d = Math.max(1, Math.round((fin - ini) / 86400000));
+        etiquetas.push('Proceso de ' + d + (d === 1 ? ' día' : ' días'));
+      }
+      if (cambios > 0) etiquetas.push(cambios + (cambios === 1 ? ' cambio de PDF' : ' cambios de PDF'));
+      if (cuenta('protesta')) etiquetas.push(cuenta('protesta') + ' protesta(s)');
+      if (cuenta('prorroga')) etiquetas.push(cuenta('prorroga') + ' prórroga(s)');
+      if (cuenta('colaborador_eliminado')) etiquetas.push(cuenta('colaborador_eliminado') + ' reinicio(s) de turno');
+      if (etiquetas.length <= 2 && !cambios) etiquetas.push('Sin contratiempos');
+      proceso.textContent = '';
+      etiquetas.forEach(t => proceso.append(nodo('span', 'estado', t)));
+      if (turnos.length) proceso.after(nodo('div', 'rev-card-m', 'Turnos: ' + turnos.map(t => 'T' + t.n + ' ' + (t.usuarioNombre || 'Colaborador')).join(' · ')));
+
+      const det = nodo('details', 'ficha-hist');
+      det.append(nodo('summary', null, 'Historial completo (' + ev.length + ' eventos)'));
+      ev.forEach(e => {
+        const que = e.tipo === 'colaborador_eliminado' ? 'eliminó a ' + (e.detalle || 'un colaborador')
+          : (ETIQ_EVENTO[e.tipo] || String(e.tipo || 'evento').replace(/_/g, ' '));
+        const fila = nodo('div', 'hist-fila');
+        fila.append(nodo('span', null, (e.usuarioNombre || 'Alguien') + ' ' + que + (e.turno ? ' (Turno ' + e.turno + ')' : '')),
+          nodo('span', null, e.ms ? fmtDia(e.ms) : ''));
+        det.append(fila);
+      });
+      hist.append(det);
+      return turnos;
+    } catch (err) {
+      console.error('Proceso:', err);
+      proceso.textContent = 'No se pudo cargar el historial.';
+      return [];
+    }
+  }
+
+  // muestra: renderiza unas páginas del cuadernillo con pdf.js
+  async function cargarMuestra(r, cont){
+    try {
+      const v = '4.0.379';
+      const pdfjs = await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@' + v + '/build/pdf.min.mjs');
+      pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + v + '/build/pdf.worker.min.mjs';
+      const pdf = await pdfjs.getDocument({ data: await leerArchivo(r.id + '_final') }).promise;
+      const desde = pdf.numPages > 4 ? 2 : 1;           // si hay portada, se salta: ya se ve arriba
+      const hasta = Math.min(pdf.numPages, desde + 2);
+      cont.textContent = '';
+      for (let n = desde; n <= hasta; n++) {
+        const pg = await pdf.getPage(n);
+        const base = pg.getViewport({ scale: 1 });
+        const vp = pg.getViewport({ scale: Math.min(2, 420 / base.width * (window.devicePixelRatio || 1)) });
+        const cv = document.createElement('canvas');
+        cv.width = vp.width; cv.height = vp.height;
+        cont.append(cv);
+        await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+      }
+    } catch (err) {
+      console.error('Muestra:', err);
+      cont.textContent = 'No se pudo mostrar la vista previa. Puedes abrir el cuadernillo completo.';
+    }
+  }
+
+  // ---------- reseñas y reputación (bloque 16) ----------
+  const estrellasTxt = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+  function textoResenas(d){
+    const n = d.resenas || 0;
+    return n ? n + ' · ★ ' + ((d.estrellasSuma || 0) / n).toFixed(1) : '0';
+  }
+
+  async function cargarResenas(r, uids, puede){
+    const cont = fichaCuerpo.querySelector('.ficha-resenas');
+    const yo = auth.currentUser;
+    if (!cont || !yo) return;
+    try {
+      const snap = await getDocs(query(collection(db, 'resenas'), where('revistaId', '==', r.id)));
+      const lista = snap.docs.map(d => d.data()).sort((a, b) => (b.creadoEn?.toMillis?.() || 0) - (a.creadoEn?.toMillis?.() || 0));
+      const prom = lista.length ? lista.reduce((t, x) => t + x.estrellas, 0) / lista.length : 0;
+      cont.textContent = '';
+      cont.append(nodo('h4', 'rev-h', 'Reseñas'));
+      const resumen = nodo('div', 'rev-card-m');
+      if (lista.length) resumen.append(nodo('span', 'estrellas', estrellasTxt(Math.round(prom))), ' ' + prom.toFixed(1) + ' · ' + lista.length + (lista.length === 1 ? ' reseña' : ' reseñas'));
+      else resumen.textContent = 'Aún no hay reseñas.';
+      cont.append(resumen);
+      lista.forEach(x => {
+        const fila = nodo('div', 'res-fila');
+        const f = x.creadoEn?.toMillis?.();
+        fila.append(nodo('div', 'creada-m', (x.compradorNombre || 'Lector') + (f ? ' · ' + fmtDia(f) : '')),
+          nodo('div', 'estrellas', estrellasTxt(x.estrellas)));
+        if (x.comentario) fila.append(nodo('div', 'res-q', x.comentario));
+        cont.append(fila);
+      });
+      if (puede && !lista.some(x => x.compradorId === yo.uid)) cont.append(formularioResena(r, uids, cont));
+      else if (!puede && !lista.some(x => x.compradorId === yo.uid)) cont.append(nodo('p', 'creada-m', 'Solo quienes compraron la revista pueden reseñarla.'));
+    } catch (err) {
+      console.error('Reseñas:', err);
+      cont.textContent = 'No se pudieron cargar las reseñas.';
+    }
+  }
+
+  function formularioResena(r, uids, cont){
+    const yo = auth.currentUser;
+    let estrellas = 0;
+    const form = nodo('div', 'res-form');
+    const pick = nodo('div', 'res-pick');
+    const botones = [1, 2, 3, 4, 5].map(n => {
+      const b = botonRev('★', '', () => { estrellas = n; botones.forEach((x, i) => x.classList.toggle('on', i < n)); });
+      b.setAttribute('aria-label', n + (n === 1 ? ' estrella' : ' estrellas'));
+      pick.append(b);
+      return b;
+    });
+    const txt = document.createElement('textarea');
+    txt.maxLength = 500;
+    txt.placeholder = 'Tu comentario (opcional)';
+    const err = nodo('p', 'cf-error');
+    err.hidden = true;
+    const enviar = botonRev('Publicar reseña', 'btn-primary', async () => {
+      if (!estrellas) { err.textContent = 'Elige de 1 a 5 estrellas.'; err.hidden = false; return; }
+      err.hidden = true;
+      enviar.disabled = true;
+      try {
+        const batch = writeBatch(db);
+        batch.set(doc(db, 'resenas', yo.uid + '_' + r.id), {
+          revistaId: r.id, revistaNombre: r.nombre, compradorId: yo.uid, compradorNombre: yo.displayName || '',
+          estrellas, comentario: txt.value.trim(), participantes: uids, creadoEn: serverTimestamp()
+        });
+        uids.forEach(uid => batch.update(doc(db, 'usuarios', uid), { resenas: increment(1), estrellasSuma: increment(estrellas) }));
+        await batch.commit();
+        cargarResenas(r, uids, true);
+      } catch (e) {
+        console.error('Publicar reseña:', e);
+        err.textContent = 'No se pudo publicar la reseña. Revisa las reglas de Firestore.';
+        err.hidden = false;
+        enviar.disabled = false;
+      }
+    });
+    form.append(nodo('div', 'creada-m', 'Deja tu reseña'), pick, txt, err, enviar);
+    return form;
+  }
+
+  // ---------- compra y reparto de créditos (bloque 15) ----------
+  const APP_PCT = 20;                                   // % del precio que se queda la app
+  const precioDe = r => (Number.isInteger(r.precio) && r.precio > 0 ? r.precio : 5);
+
+  // la app se queda el APP_PCT %; el resto se divide en partes iguales (enteras) entre quienes hicieron la revista;
+  // lo que sobra por redondeo también se queda la app, así no se pierde ningún crédito
+  function repartoDe(precio, n){
+    const cuota = Math.floor(precio * (100 - APP_PCT) / 100 / n);
+    return { cuota, app: precio - cuota * n };
+  }
+
+  async function pintarAccionFicha(r, accion, turnos, botonLeer){
+    const yo = auth.currentUser;
+    if (!yo) return;
+    const uids = [...new Set([r.creadorId, ...turnos.map(t => t.usuarioId)])];
+    const esParte = uids.includes(yo.uid);
+    let comprada = false;
+    if (!esParte) {
+      try { comprada = (await getDoc(doc(db, 'compras', yo.uid + '_' + r.id))).exists(); }
+      catch (e) { console.error('Compra:', e); }
+    }
+    cargarResenas(r, uids, comprada && !esParte);
+    accion.textContent = '';
+    if (esParte || comprada) {
+      accion.append(botonLeer(), nodo('span', 'creada-m', esParte ? 'Eres parte de esta revista: la lees gratis.' : 'Ya la compraste.'));
+      return;
+    }
+    const precio = precioDe(r), { cuota, app } = repartoDe(precio, uids.length);
+    const comprar = botonRev('Comprar por ' + precio + ' créditos', 'btn-primary', async () => {
+      if (!confirm('¿Comprar \"' + r.nombre + '\" por ' + precio + ' créditos?')) return;
+      comprar.disabled = true;
+      comprar.textContent = 'Comprando…';
+      try {
+        await runTransaction(db, async (tx) => {
+          const refC = doc(db, 'compras', yo.uid + '_' + r.id), refU = doc(db, 'usuarios', yo.uid);
+          const c = await tx.get(refC), u = await tx.get(refU);
+          if (c.exists()) throw errorUsuario('Ya compraste esta revista.');
+          if (((u.data() || {}).creditos || 0) < precio) throw errorUsuario('No te alcanzan los créditos. Recarga y vuelve a intentarlo.');
+          tx.update(refU, { creditos: increment(-precio) });
+          uids.forEach(uid => tx.update(doc(db, 'usuarios', uid), { creditos: increment(cuota), ventas: increment(1) }));
+          tx.set(refC, {
+            compradorId: yo.uid, compradorNombre: yo.displayName || '', revistaId: r.id, revistaNombre: r.nombre,
+            precio, cuota, appParte: app, participantes: uids, creadoEn: serverTimestamp()
+          });
+        });
+        pintarAccionFicha(r, accion, turnos, botonLeer);
+      } catch (err) {
+        console.error('Comprar:', err);
+        alert(err.usuario ? err.message : 'No se pudo completar la compra. Revisa las reglas de Firestore.');
+        comprar.disabled = false;
+        comprar.textContent = 'Comprar por ' + precio + ' créditos';
+      }
+    });
+    accion.append(comprar, nodo('span', 'creada-m',
+      'Reparto: ' + cuota + ' crédito(s) para cada una de las ' + uids.length + ' personas que la hicieron y ' + app + ' para la app.'));
+  }
+
+  // ---------- subir revista: portada y PDFs por turno (bloque 10) ----------
+  // Los archivos se guardan en Firestore partidos en trozos. Todo el acceso a archivos pasa por
+  // guardarArchivo() y leerArchivo(): para pasar a Firebase Storage solo hay que reescribir esas dos.
+  const TROZO = 800000;              // bytes por documento (el límite de Firestore es ~1 MiB)
+  const MAX_PDF = 3 * 1024 * 1024;   // 3 MB por PDF
+  let archivosMeta = new Map();      // clave -> metadatos
+  let metaPropia = new Map();
+  let metaCreador = new Map();
+  let cancelarArchivos = [];
+  const subiendo = new Set();
+  const erroresSubida = new Map();
+  const urlsCache = new Map();       // clave -> { ms, url }
+
+  async function guardarArchivo(clave, bytes, meta){
+    const previo = archivosMeta.get(clave);
+    const partes = Math.max(1, Math.ceil(bytes.length / TROZO));
+    // los trozos se suben en lotes pequeños (Firestore limita cada lote a ~10 MB); el registro y el evento van al final
+    const POR_LOTE = 6;
+    for (let ini = 0; ini < partes; ini += POR_LOTE) {
+      const lote = writeBatch(db);
+      for (let i = ini; i < Math.min(partes, ini + POR_LOTE); i++) {
+        lote.set(doc(db, 'archivos', clave, 'partes', String(i)), {
+          i,
+          datos: Bytes.fromUint8Array(bytes.slice(i * TROZO, (i + 1) * TROZO))
+        });
+      }
+      await lote.commit();
+    }
+    const batch = writeBatch(db);
+    for (let i = partes; i < ((previo && previo.partes) || 0); i++) {
+      batch.delete(doc(db, 'archivos', clave, 'partes', String(i)));
+    }
+    batch.set(doc(db, 'archivos', clave), {
+      ...meta, clave, bytes: bytes.length, partes, subidoEn: serverTimestamp(),
+      version: ((previo && (previo.version || 1)) || 0) + 1
+    });
+    batch.set(doc(collection(db, 'eventos')), {
+      revistaId: meta.revistaId,
+      tipo: meta.tipo === 'pdf' ? 'pdf_subido' : meta.tipo === 'final' ? 'revista_publicada' : 'portada_subida',
+      turno: meta.tipo === 'pdf' ? meta.turno : null,
+      usuarioId: meta.usuarioId,
+      usuarioNombre: meta.usuarioNombre || '',
+      creadoEn: serverTimestamp()
+    });
+    await batch.commit();
+  }
+
+  async function leerArchivo(clave){
+    const meta = archivosMeta.get(clave);
+    const snap = await getDocs(collection(db, 'archivos', clave, 'partes'));
+    const trozos = snap.docs.map(d => d.data()).sort((a, b) => a.i - b.i).map(p => p.datos.toUint8Array());
+    if (meta && trozos.length !== meta.partes) throw new Error('Archivo incompleto');
+    const total = trozos.reduce((n, t) => n + t.length, 0);
+    const salida = new Uint8Array(total);
+    let pos = 0;
+    trozos.forEach(t => { salida.set(t, pos); pos += t.length; });
+    return salida;
+  }
+
+  async function urlArchivo(clave){
+    const meta = archivosMeta.get(clave);
+    if (!meta) return null;
+    const ms = meta.subidoEn?.toMillis?.() || 0;
+    const c = urlsCache.get(clave);
+    if (c && c.ms === ms) return c.url;
+    const bytes = await leerArchivo(clave);
+    const url = URL.createObjectURL(new Blob([bytes], { type: meta.mime || 'application/octet-stream' }));
+    if (c) URL.revokeObjectURL(c.url);
+    urlsCache.set(clave, { ms, url });
+    return url;
+  }
+
+  async function verArchivo(clave){
+    const w = window.open('', '_blank');
+    try {
+      const url = await urlArchivo(clave);
+      if (!url) throw new Error('Sin archivo');
+      if (w) w.location.href = url;
+      else {
+        const a = document.createElement('a');
+        a.href = url; a.target = '_blank'; a.rel = 'noopener';
+        a.click();
+      }
+    } catch (err) {
+      console.error('Abrir archivo:', err);
+      if (w) w.close();
+      alert('No se pudo abrir el archivo. Inténtalo de nuevo.');
+    }
+  }
+
+  function errorUsuario(msg){ const e = new Error(msg); e.usuario = true; return e; }
+
+  async function ejecutarSubida(clave, tarea){
+    if (subiendo.has(clave)) return;
+    erroresSubida.delete(clave);
+    subiendo.add(clave);
+    pintarSubir();
+    try {
+      await tarea();
+    } catch (err) {
+      console.error('Subida:', err);
+      erroresSubida.set(clave, err.usuario ? err.message
+        : 'No se pudo subir el archivo. Revisa las reglas de Firestore e inténtalo de nuevo.');
+    } finally {
+      subiendo.delete(clave);
+      pintarSubir();
+    }
+  }
+
+  async function subirPDF(t, file){
+    const yo = auth.currentUser;
+    if (!yo) return;
+    const clave = t.revistaId + '_t' + t.n;
+    await ejecutarSubida(clave, async () => {
+      if (!(file.type === 'application/pdf' || /\.pdf$/i.test(file.name))) throw errorUsuario('El archivo debe ser un PDF.');
+      if (file.size > MAX_PDF) throw errorUsuario('Tu PDF pesa ' + tamanoLegible(file.size) + ' y el máximo es 3 MB.');
+      if (!window.PDFLib) throw errorUsuario('No se pudo cargar el lector de PDF. Recarga la página e inténtalo de nuevo.');
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      let paginas;
+      try {
+        const pdf = await window.PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+        paginas = pdf.getPageCount();
+      } catch (e) {
+        throw errorUsuario('No se pudo leer el PDF. Puede estar dañado.');
+      }
+      if (paginas !== t.paginasPorTurno) {
+        throw errorUsuario('Tu PDF tiene ' + paginas + ' página(s) y este turno pide exactamente ' + t.paginasPorTurno + '.');
+      }
+      await guardarArchivo(clave, bytes, {
+        tipo: 'pdf',
+        revistaId: t.revistaId,
+        revistaNombre: t.revistaNombre || '',
+        turno: t.n,
+        usuarioId: yo.uid,
+        usuarioNombre: yo.displayName || '',
+        creadorId: t.creadorId,
+        nombreArchivo: file.name,
+        mime: 'application/pdf',
+        paginas
+      });
+    });
+  }
+
+  async function comprimirImagen(file){
+    const bmp = await createImageBitmap(file);
+    const esc = Math.min(1, 900 / Math.max(bmp.width, bmp.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(bmp.width * esc));
+    canvas.height = Math.max(1, Math.round(bmp.height * esc));
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+    let calidad = 0.85, blob;
+    do {
+      blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', calidad));
+      calidad -= 0.1;
+    } while (blob && blob.size > 400000 && calidad > 0.3);
+    if (!blob) throw new Error('No se pudo procesar la imagen');
+    return new Uint8Array(await blob.arrayBuffer());
+  }
+
+  async function subirPortada(r, file){
+    const yo = auth.currentUser;
+    if (!yo) return;
+    const clave = r.id + '_portada';
+    await ejecutarSubida(clave, async () => {
+      if (!file.type.startsWith('image/')) throw errorUsuario('La portada debe ser una imagen (JPG, PNG o WebP).');
+      if (file.size > 12 * 1024 * 1024) throw errorUsuario('La imagen es demasiado grande (máximo 12 MB).');
+      let bytes;
+      try { bytes = await comprimirImagen(file); }
+      catch (e) { throw errorUsuario('No se pudo leer la imagen. Prueba con otra.'); }
+      await guardarArchivo(clave, bytes, {
+        tipo: 'portada',
+        revistaId: r.id,
+        revistaNombre: r.nombre || '',
+        usuarioId: yo.uid,
+        usuarioNombre: yo.displayName || '',
+        creadorId: yo.uid,
+        nombreArchivo: file.name,
+        mime: 'image/jpeg'
+      });
+    });
+  }
+
+  function tamanoLegible(b){
+    return b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+  }
+
+  function selectorArchivo(texto, clase, accept, bloqueado, alElegir){
+    const caja = document.createElement('span');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = accept;
+    input.className = 'subir-input';
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = clase;
+    b.textContent = texto;
+    b.disabled = bloqueado;
+    b.addEventListener('click', () => input.click());
+    input.addEventListener('change', () => {
+      const f = input.files && input.files[0];
+      input.value = '';
+      if (f) alElegir(f);
+    });
+    caja.append(input, b);
+    return caja;
+  }
+
+  function pintarSubir(){
+    const entregas = document.getElementById('subirEntregas');
+    const revistas = document.getElementById('subirRevistas');
+    if (!entregas || !revistas) return;
+    const ahora = Date.now();
+    const fmtFecha = ms => new Date(ms).toLocaleDateString('es', { day: 'numeric', month: 'short' });
+
+    // --- como colaborador: un PDF por turno ---
+    entregas.innerHTML = '';
+    turnosPropios.forEach(t => {
+      const clave = t.revistaId + '_t' + t.n;
+      const meta = archivosMeta.get(clave);
+      const vence = t.vence?.toMillis?.() || 0;
+      const ocupado = subiendo.has(clave);
+      const fila = document.createElement('div');
+      fila.className = 'creada';
+      const info = document.createElement('div');
+      info.className = 'subir-info';
+      const ti = document.createElement('div');
+      ti.className = 'creada-t';
+      ti.textContent = t.revistaNombre;
+      const m = document.createElement('div');
+      m.className = 'creada-m';
+      m.textContent = 'Turno ' + t.n + ' · exactamente ' + t.paginasPorTurno + ' pág. · ' + restante(vence - ahora);
+      info.append(ti, m);
+      if (meta) {
+        const d = document.createElement('div');
+        d.className = 'creada-m';
+        const ms = meta.subidoEn?.toMillis?.();
+        d.textContent = meta.nombreArchivo + ' · ' + tamanoLegible(meta.bytes) + ' · ' + meta.paginas + ' pág.'
+          + (ms ? ' · subido el ' + fmtFecha(ms) : '');
+        info.append(d);
+      }
+      const err = erroresSubida.get(clave);
+      if (err) {
+        const e = document.createElement('p');
+        e.className = 'cf-error';
+        e.textContent = err;
+        info.append(e);
+      }
+      const acc = document.createElement('div');
+      acc.className = 'creada-acc';
+      if (meta) {
+        const ver = document.createElement('button');
+        ver.type = 'button';
+        ver.className = 'btn-sec';
+        ver.textContent = 'Ver PDF';
+        ver.addEventListener('click', () => verArchivo(clave));
+        acc.append(ver);
+      }
+      acc.append(selectorArchivo(
+        ocupado ? 'Subiendo…' : (meta ? 'Reemplazar PDF' : 'Subir PDF'),
+        meta ? 'btn-sec' : 'btn-primary', 'application/pdf,.pdf', ocupado, f => subirPDF(t, f)));
+      const est = document.createElement('span');
+      est.className = 'estado';
+      est.textContent = meta ? 'Entregado' : 'Por entregar';
+      const rvb = document.createElement('button');
+      rvb.type = 'button';
+      rvb.className = 'btn-sec';
+      rvb.textContent = 'Revisión';
+      rvb.addEventListener('click', () => abrirRevision(t.revistaId, t.revistaNombre));
+      acc.append(rvb);
+      acc.append(est);
+      fila.append(info, acc);
+      entregas.append(fila);
+    });
+    document.getElementById('subirEntregasVacio').hidden = turnosPropios.length > 0;
+
+    // --- como creador: portada y avance de cada revista ---
+    revistas.innerHTML = '';
+    creadas.forEach(r => {
+      const pk = r.id + '_portada';
+      const metaP = archivosMeta.get(pk);
+      const total = r.totalTurnos || 5;
+      const ocup = turnosCreador.filter(x => x.revistaId === r.id).sort((a, b) => a.n - b.n);
+      const porN = new Map(ocup.map(x => [x.n, x]));
+      const entregados = ocup.filter(x => archivosMeta.has(r.id + '_t' + x.n)).length;
+
+      const fila = document.createElement('div');
+      fila.className = 'creada';
+      const info = document.createElement('div');
+      info.className = 'subir-info';
+      const ti = document.createElement('div');
+      ti.className = 'creada-t';
+      ti.textContent = r.nombre;
+      const m = document.createElement('div');
+      m.className = 'creada-m';
+      m.textContent = entregados + ' de ' + total + ' entregas · ' + ocup.length + ' de ' + total + ' turnos ocupados';
+      info.append(ti, m);
+
+      const pf = document.createElement('div');
+      pf.className = 'portada-fila';
+      const thumb = document.createElement('div');
+      thumb.className = 'portada-thumb';
+      if (metaP) {
+        const img = document.createElement('img');
+        img.alt = 'Portada de ' + r.nombre;
+        thumb.append(img);
+        urlArchivo(pk).then(u => { if (u) img.src = u; }).catch(() => { thumb.textContent = '—'; });
+      } else {
+        thumb.textContent = 'Sin portada';
+      }
+      const ocupadoP = subiendo.has(pk);
+      pf.append(thumb, selectorArchivo(
+        ocupadoP ? 'Subiendo…' : (metaP ? 'Cambiar portada' : 'Subir portada'),
+        metaP ? 'btn-sec' : 'btn-primary', 'image/*', ocupadoP, f => subirPortada(r, f)));
+      info.append(pf);
+      const errP = erroresSubida.get(pk);
+      if (errP) {
+        const e = document.createElement('p');
+        e.className = 'cf-error';
+        e.textContent = errP;
+        info.append(e);
+      }
+
+      for (let n = 1; n <= total; n++) {
+        const x = porN.get(n);
+        const l = document.createElement('div');
+        l.className = 'creada-m';
+        l.append('Turno ' + n + ' · ');
+        if (!x) {
+          l.append('Libre');
+        } else {
+          if (x.usuarioId) l.append(enlacePerfil(x.usuarioId, x.usuarioNombre || 'Usuario'));
+          else l.append(x.usuarioNombre || 'Usuario');
+          const ck = r.id + '_t' + n;
+          if (archivosMeta.has(ck)) {
+            l.append(' · Entregado · ');
+            const ver = document.createElement('button');
+            ver.type = 'button';
+            ver.className = 'enlace-perfil';
+            ver.textContent = 'Ver PDF';
+            ver.addEventListener('click', () => verArchivo(ck));
+            l.append(ver);
+          } else {
+            l.append(' · Sin entrega');
+          }
+        }
+        info.append(l);
+      }
+      const est = document.createElement('span');
+      est.className = 'estado';
+      est.textContent = r.estado || 'En formación';
+      fila.append(info, est);
+      revistas.append(fila);
+    });
+    document.getElementById('subirRevistasVacio').hidden = creadas.length > 0;
+  }
+
+  function recomponerArchivos(){
+    archivosMeta = new Map([...metaPropia, ...metaCreador]);
+    pintarSubir();
+  }
+
+  function iniciarArchivos(uid){
+    detenerArchivos();
+    const mapa = (snap) => new Map(snap.docs.map(d => [d.id, d.data({ serverTimestamps: 'estimate' })]));
+    cancelarArchivos.push(onSnapshot(
+      query(collection(db, 'archivos'), where('usuarioId', '==', uid)),
+      (snap) => { metaPropia = mapa(snap); recomponerArchivos(); },
+      (err) => console.error('Archivos propios:', err)
+    ));
+    cancelarArchivos.push(onSnapshot(
+      query(collection(db, 'archivos'), where('creadorId', '==', uid)),
+      (snap) => { metaCreador = mapa(snap); recomponerArchivos(); },
+      (err) => console.error('Archivos de mis revistas:', err)
+    ));
+  }
+
+  function detenerArchivos(){
+    cancelarArchivos.forEach(c => c());
+    cancelarArchivos = [];
+    metaPropia = new Map();
+    metaCreador = new Map();
+    archivosMeta = new Map();
+    subiendo.clear();
+    erroresSubida.clear();
+    urlsCache.forEach(v => URL.revokeObjectURL(v.url));
+    urlsCache.clear();
+    if (document.getElementById('subirEntregas')) pintarSubir();
+  }
+
+  // ---------- bandeja: pestañas ----------
+  const pestanas = [...document.querySelectorAll('.tabs .tab')];
+  function abrirBandeja(nombre){
+    pestanas.forEach(t => {
+      const activa = t.dataset.tab === nombre;
+      t.classList.toggle('active', activa);
+      t.setAttribute('aria-selected', activa ? 'true' : 'false');
+      t.tabIndex = activa ? 0 : -1;
+      const panel = document.getElementById('panel' + t.dataset.tab.charAt(0).toUpperCase() + t.dataset.tab.slice(1));
+      if (panel) panel.hidden = !activa;
+    });
+  }
+  window.abrirBandeja = abrirBandeja;
+  pestanas.forEach((t, i) => {
+    t.addEventListener('click', () => abrirBandeja(t.dataset.tab));
+    t.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const sig = pestanas[(i + (e.key === 'ArrowRight' ? 1 : pestanas.length - 1)) % pestanas.length];
+      abrirBandeja(sig.dataset.tab);
+      sig.focus();
+    });
+  });
+
   // ---------- estado de la sesión ----------
   onAuthStateChanged(auth, (user) => {
     if (user) {
       document.body.classList.add('logged-in');
-      accountEmail.textContent = user.displayName || user.email;
+      accountEmail.textContent = user.displayName || (identidadDe(user) || {}).usuario || user.email;
       loginForm.reset();
       registerForm.reset();
+      if (!registrando) cargarPerfil(user);
+      iniciarMensajes(user.uid);
+      iniciarChatsRevista(user.uid);
+      iniciarArchivos(user.uid);
+      iniciarGaleria();
+      iniciarInvitaciones(user.uid);
+      iniciarTurnos(user.uid);
+      sincronizarPerfilPublico();
     } else {
       document.body.classList.remove('logged-in');
+      limpiarPerfil();
+      limpiarPerfilPublico();
+      abrirBandeja('invitaciones');
+      detenerMensajes();
+      detenerChatsRevista();
+      detenerArchivos();
+      detenerGaleria();
+      ponerModoMensajes('directos');
+      detenerInvitaciones();
+      detenerTurnos();
     }
   });
+</script>
+
+<!-- ================= NAVEGACIÓN ENTRE VISTAS ================= -->
+<script>
+  (function(){
+    const VISTAS = ['inicio','crear','mis-revistas','subir','perfil','mensajes'];
+    const main = document.querySelector('.main');
+
+    function showView(name){
+      // #usuario/<uid> muestra el perfil público de otra persona
+      if (name.startsWith('usuario/')) name = 'perfil-publico';
+      else if (!VISTAS.includes(name)) name = 'inicio';
+      document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+      document.querySelectorAll('.nav-item[data-view]').forEach(n => n.classList.toggle('active', n.dataset.view === name));
+      if (main) main.scrollTop = 0;
+    }
+    window.showView = showView; // los próximos bloques lo reutilizan
+
+    function irA(name){
+      if (location.hash !== '#' + name) location.hash = name; // dispara hashchange
+      else showView(name);
+    }
+
+    document.querySelectorAll('[data-view]').forEach(el => {
+      el.addEventListener('click', () => irA(el.dataset.view));
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); irA(el.dataset.view); }
+      });
+    });
+
+    window.addEventListener('hashchange', () => showView(location.hash.slice(1)));
+    showView(location.hash.slice(1));
+
+    // al cerrar sesión, la próxima persona entra por Inicio
+    document.getElementById('btnLogout').addEventListener('click', () => {
+      history.replaceState(null, '', location.pathname + location.search);
+      showView('inicio');
+    });
+  })();
 </script>
 
 </body>
