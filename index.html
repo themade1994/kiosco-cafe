@@ -546,6 +546,12 @@
     .msg-hilo-head,.msg-burbujas,.msg-enviar{ padding-left:20px; padding-right:20px; }
   }
 
+  /* ---------- crear: rangos y validación en rojo ---------- */
+  .cf-field input.invalido,.cf-field select.invalido{ border-color:#9B1C2E; background:#FDF3F4; }
+  .cf-field select:disabled{ background:#F1EAE4; color:var(--ink-soft); }
+  .cf-total{ font-size:13.5px; font-weight:500; margin:0; color:var(--ink); }
+  .cf-total.ok{ color:#2E6B3A; }
+
   /* ---------- bloque 7: invitar colaboradores ---------- */
   .creada-acc{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .creada-inv{ font-size:12px; color:var(--ink-soft); }
@@ -1000,6 +1006,24 @@
           </select>
         </div>
         <div class="cf-field">
+          <label for="crTurnos">Participantes (contándote a ti)</label>
+          <select id="crTurnos"></select>
+          <span class="cf-hint">De 1 a 10. Tú eres uno; a los demás los invitas después. De este número salen las páginas de cada persona.</span>
+        </div>
+        <div class="cf-row">
+          <div class="cf-field">
+            <label for="crPaginas">Páginas por persona</label>
+            <select id="crPaginas" disabled></select>
+            <span class="cf-hint" id="crPaginasHint">Se habilita al elegir los participantes.</span>
+          </div>
+          <div class="cf-field">
+            <label for="crPlazo">Plazo por turno</label>
+            <select id="crPlazo"></select>
+            <span class="cf-hint">De 1 a 7 días desde que cada persona acepta su turno.</span>
+          </div>
+        </div>
+        <p class="cf-total" id="crTotal"></p>
+        <div class="cf-field">
           <label for="crCategoria">Categoría</label>
           <select id="crCategoria">
             <option>Literatura</option>
@@ -1014,23 +1038,6 @@
           <label for="crPrecio">Precio del cuadernillo (créditos)</label>
           <input type="text" id="crPrecio" value="50 créditos" readonly tabindex="-1" style="background:#F1EAE4; cursor:default;" />
           <span class="cf-hint" id="crPrecioHint">Precio fijo: 50 créditos la revista y 100 el libro. Se reparte entre la app y quienes hicieron la revista.</span>
-        </div>
-        <div class="cf-row">
-          <div class="cf-field">
-            <label for="crPaginas">Páginas por turno</label>
-            <input type="number" id="crPaginas" min="1" max="50" step="1" inputmode="numeric" />
-            <span class="cf-hint">Número entero, de 1 a 50.</span>
-          </div>
-          <div class="cf-field">
-            <label for="crPlazo">Plazo por turno (días)</label>
-            <input type="number" id="crPlazo" min="1" max="7" step="1" inputmode="numeric" />
-            <span class="cf-hint">Número entero, de 1 a 7.</span>
-          </div>
-        </div>
-        <div class="cf-field">
-          <label for="crTurnos">Cantidad de turnos</label>
-          <input type="number" id="crTurnos" min="2" max="20" step="1" inputmode="numeric" />
-          <span class="cf-hint">Número entero, de 2 a 20. Cada colaborador ocupa un turno.</span>
         </div>
         <p class="cf-error" id="crError" hidden></p>
         <p class="cf-ok" id="crOk" hidden></p>
@@ -1564,6 +1571,78 @@
   crForm.addEventListener('reset', () => setTimeout(sincronizarPrecio, 0));
   sincronizarPrecio();
 
+  // límites de páginas en total por formato; de ahí salen los rangos por persona
+  const LIMITE_PAGINAS = { revista: { min: 5, max: 20 }, libro: { min: 50, max: 100 } };
+  function rangoPaginas(formato, n){
+    const L = LIMITE_PAGINAS[formato] || LIMITE_PAGINAS.revista;
+    return { min: Math.ceil(L.min / n), max: Math.floor(L.max / n) };
+  }
+  const crSelPart = document.getElementById('crTurnos');
+  const crSelPag = document.getElementById('crPaginas');
+  const crSelPlazo = document.getElementById('crPlazo');
+  const crFormatoSel = document.getElementById('crFormato');
+
+  function opcion(valor, texto){
+    const o = document.createElement('option');
+    o.value = valor;
+    o.textContent = texto;
+    return o;
+  }
+  function iniciarSelectoresCrear(){
+    crSelPart.innerHTML = '';
+    crSelPart.append(opcion('', 'Elige cuántos…'));
+    for (let n = 1; n <= 10; n++) crSelPart.append(opcion(String(n), n + (n === 1 ? ' participante' : ' participantes')));
+    crSelPlazo.innerHTML = '';
+    crSelPlazo.append(opcion('', 'Elige…'));
+    for (let d = 1; d <= 7; d++) crSelPlazo.append(opcion(String(d), d + (d === 1 ? ' día' : ' días')));
+    actualizarPaginasCrear(true);
+  }
+
+  function actualizarTotalCrear(){
+    const tot = document.getElementById('crTotal');
+    const n = Number(crSelPart.value), pg = Number(crSelPag.value);
+    if (!n || !pg) { tot.textContent = ''; tot.classList.remove('ok'); return; }
+    const L = LIMITE_PAGINAS[crFormatoSel.value] || LIMITE_PAGINAS.revista;
+    tot.textContent = 'Total: ' + n + ' × ' + pg + ' = ' + (n * pg) + ' páginas (límite ' + L.min + ' a ' + L.max + ').';
+    tot.classList.add('ok');
+  }
+
+  function actualizarPaginasCrear(autollenar){
+    const f = crFormatoSel.value;
+    const n = Number(crSelPart.value);
+    const hint = document.getElementById('crPaginasHint');
+    if (!n) {
+      crSelPag.innerHTML = '';
+      crSelPag.append(opcion('', 'Elige primero los participantes'));
+      crSelPag.disabled = true;
+      hint.textContent = 'Se habilita al elegir los participantes.';
+      actualizarTotalCrear();
+      return;
+    }
+    const { min, max } = rangoPaginas(f, n);
+    const previo = Number(crSelPag.value);
+    crSelPag.disabled = false;
+    crSelPag.innerHTML = '';
+    for (let pg = min; pg <= max; pg++) crSelPag.append(opcion(String(pg), pg + (pg === 1 ? ' página' : ' páginas')));
+    crSelPag.value = String(!autollenar && previo >= min && previo <= max ? previo : max);
+    const L = LIMITE_PAGINAS[f] || LIMITE_PAGINAS.revista;
+    hint.textContent = 'De ' + min + ' a ' + max + ' por persona (' + (f === 'libro' ? 'libro' : 'revista') + ' de ' + L.min + ' a ' + L.max + ' en total).';
+    actualizarTotalCrear();
+  }
+
+  function marcarInvalidos(ids){
+    ['crNombre', 'crTurnos', 'crPaginas', 'crPlazo'].forEach(id =>
+      document.getElementById(id).classList.toggle('invalido', ids.includes(id)));
+  }
+
+  crSelPart.addEventListener('change', () => { marcarInvalidos([]); actualizarPaginasCrear(true); });
+  crSelPag.addEventListener('change', () => { marcarInvalidos([]); actualizarTotalCrear(); });
+  crSelPlazo.addEventListener('change', () => marcarInvalidos([]));
+  document.getElementById('crNombre').addEventListener('input', () => marcarInvalidos([]));
+  crFormatoSel.addEventListener('change', () => actualizarPaginasCrear(true));
+  crForm.addEventListener('reset', () => setTimeout(() => { marcarInvalidos([]); actualizarPaginasCrear(true); }, 0));
+  iniciarSelectoresCrear();
+
   crForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     crError.hidden = true;
@@ -1578,10 +1657,20 @@
     const turnos = Number(document.getElementById('crTurnos').value);
 
     let error = '';
-    if (nombre.length < 3) error = 'El nombre debe tener al menos 3 caracteres.';
-    else if (!Number.isInteger(paginas) || paginas < 1 || paginas > 50) error = 'Las páginas por turno deben ser un número entero entre 1 y 50.';
-    else if (!Number.isInteger(plazo) || plazo < 1 || plazo > 7) error = 'El plazo debe ser un número entero de 1 a 7 días.';
-    else if (!Number.isInteger(turnos) || turnos < 2 || turnos > 20) error = 'La cantidad de turnos debe ser un número entero entre 2 y 20.';
+    const rojos = [];
+    if (nombre.length < 3) { error = 'El nombre debe tener al menos 3 caracteres.'; rojos.push('crNombre'); }
+    else if (!Number.isInteger(turnos) || turnos < 1 || turnos > 10) { error = 'Elige cuántos participantes serán, de 1 a 10.'; rojos.push('crTurnos'); }
+    else {
+      const r = rangoPaginas(formato, turnos);
+      if (!Number.isInteger(paginas) || paginas < r.min || paginas > r.max) {
+        error = 'Con ' + turnos + ' participante(s), cada persona puede tener de ' + r.min + ' a ' + r.max + ' páginas.';
+        rojos.push('crPaginas');
+      } else if (!Number.isInteger(plazo) || plazo < 1 || plazo > 7) {
+        error = 'Elige el plazo por turno, de 1 a 7 días.';
+        rojos.push('crPlazo');
+      }
+    }
+    marcarInvalidos(rojos);
     if (error) { crError.textContent = error; crError.hidden = false; return; }
 
     crSubmit.disabled = true;
