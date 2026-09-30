@@ -1012,8 +1012,8 @@
         </div>
         <div class="cf-field">
           <label for="crPrecio">Precio del cuadernillo (créditos)</label>
-          <input type="number" id="crPrecio" min="1" max="100" step="1" value="5" inputmode="numeric" />
-          <span class="cf-hint">Número entero, de 1 a 100. Se reparte entre la app y quienes hicieron la revista.</span>
+          <input type="text" id="crPrecio" value="50 créditos" readonly tabindex="-1" style="background:#F1EAE4; cursor:default;" />
+          <span class="cf-hint" id="crPrecioHint">Precio fijo: 50 créditos la revista y 100 el libro. Se reparte entre la app y quienes hicieron la revista.</span>
         </div>
         <div class="cf-row">
           <div class="cf-field">
@@ -1554,6 +1554,16 @@
   const crOk = document.getElementById('crOk');
   const crSubmit = document.getElementById('crSubmit');
 
+  // precio fijo por formato (bloque 1 del ajuste de reglas)
+  const PRECIO_FORMATO = { revista: 50, libro: 100 };
+  function sincronizarPrecio(){
+    const f = document.getElementById('crFormato').value;
+    document.getElementById('crPrecio').value = (PRECIO_FORMATO[f] || PRECIO_FORMATO.revista) + ' créditos';
+  }
+  document.getElementById('crFormato').addEventListener('change', sincronizarPrecio);
+  crForm.addEventListener('reset', () => setTimeout(sincronizarPrecio, 0));
+  sincronizarPrecio();
+
   crForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     crError.hidden = true;
@@ -1572,7 +1582,6 @@
     else if (!Number.isInteger(paginas) || paginas < 1 || paginas > 50) error = 'Las páginas por turno deben ser un número entero entre 1 y 50.';
     else if (!Number.isInteger(plazo) || plazo < 1 || plazo > 7) error = 'El plazo debe ser un número entero de 1 a 7 días.';
     else if (!Number.isInteger(turnos) || turnos < 2 || turnos > 20) error = 'La cantidad de turnos debe ser un número entero entre 2 y 20.';
-    else if (!Number.isInteger(Number(document.getElementById('crPrecio').value)) || Number(document.getElementById('crPrecio').value) < 1 || Number(document.getElementById('crPrecio').value) > 100) error = 'El precio debe ser un número entero de 1 a 100 créditos.';
     if (error) { crError.textContent = error; crError.hidden = false; return; }
 
     crSubmit.disabled = true;
@@ -1586,7 +1595,7 @@
         paginasPorTurno: paginas,
         plazoDias: plazo,
         categoria: document.getElementById('crCategoria').value,
-        precio: Number(document.getElementById('crPrecio').value),
+        precio: PRECIO_FORMATO[formato] || PRECIO_FORMATO.revista,
         totalTurnos: turnos,
         estado: 'En formación',
         creadoEn: serverTimestamp()
@@ -3321,7 +3330,7 @@
 
   // ---------- compra y reparto de créditos (bloque 15) ----------
   const APP_PCT = 20;                                   // % del precio que se queda la app
-  const precioDe = r => (Number.isInteger(r.precio) && r.precio > 0 ? r.precio : 5);
+  const precioDe = r => (r.formato === 'libro' ? PRECIO_FORMATO.libro : PRECIO_FORMATO.revista);
 
   // la app se queda el APP_PCT %; el resto se divide en partes iguales (enteras) entre quienes hicieron la revista;
   // lo que sobra por redondeo también se queda la app, así no se pierde ningún crédito
