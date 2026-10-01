@@ -287,6 +287,15 @@
 
   /* ---------- perfil personal ---------- */
   .perfil-body{ padding: 28px 40px 56px; max-width: 980px; }
+  .perfil-cab{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+  .avatar{ width:92px; height:92px; border-radius:50%; background:var(--guinda); color:var(--cream); display:flex; align-items:center; justify-content:center; font-family:'Fraunces', serif; font-size:36px; overflow:hidden; flex:none; border:1px solid var(--line); }
+  .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .avatar-mini{ width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,.18); display:inline-flex; align-items:center; justify-content:center; font-size:12px; overflow:hidden; flex:none; }
+  .avatar-mini img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .perfil-acc{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .perfil-acc button[hidden]{ display:none; }
+  #nombreInput{ font-family:inherit; font-size:14px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); width:100%; }
+  #nombreInput:disabled{ opacity:.6; }
   .perfil-stats{ display:flex; flex-wrap:wrap; gap:20px 40px; margin-bottom:34px; }
   .stat{ display:flex; flex-direction:column; gap:2px; }
   .stat-n{ font-family:'Fraunces', serif; font-size:30px; font-weight:600; color:var(--ink); line-height:1.1; }
@@ -919,6 +928,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>
           Mis revistas suscritas
         </div>
+        <button class="pill perfil-btn" id="btnPerfilTop" type="button" data-view="perfil" aria-label="Mi perfil">
+          <span class="avatar-mini" id="topAvatar"></span>
+          <span>Mi perfil</span>
+        </button>
         <button class="pill campana" id="btnCampana" type="button" aria-label="Notificaciones">
           <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4l2-2z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
           <span class="campana-n" id="campanaN" hidden>0</span>
@@ -1213,10 +1226,20 @@
 
     <section class="view" id="view-perfil">
       <div class="main-header">
-        <div>
-          <h1 id="perfilNombre">Mi perfil</h1>
-          <p id="perfilCorreo"></p>
-          <p id="perfilDesde"></p>
+        <div class="perfil-cab">
+          <div class="avatar" id="perfilAvatar"></div>
+          <div>
+            <h1 id="perfilNombre">Mi perfil</h1>
+            <p id="perfilCorreo"></p>
+            <p id="perfilDesde"></p>
+            <div class="perfil-acc">
+              <button type="button" class="btn-sec" id="btnFotoSubir">Subir foto</button>
+              <button type="button" class="btn-sec" id="btnFotoQuitar" hidden>Quitar foto</button>
+              <button type="button" class="btn-sec" id="btnNombreEditar">Editar nombre</button>
+              <button type="button" class="btn-sec" id="btnLogoutPerfil">Cerrar sesión</button>
+            </div>
+            <input type="file" id="fotoInput" accept="image/*" hidden />
+          </div>
         </div>
       </div>
       <div class="perfil-body">
@@ -1257,10 +1280,13 @@
 
     <section class="view" id="view-perfil-publico">
       <div class="main-header">
-        <div>
-          <h1 id="ppNombre">Perfil</h1>
-          <p id="ppUsuario"></p>
-          <p id="ppDesde"></p>
+        <div class="perfil-cab">
+          <div class="avatar" id="ppAvatar"></div>
+          <div>
+            <h1 id="ppNombre">Perfil</h1>
+            <p id="ppUsuario"></p>
+            <p id="ppDesde"></p>
+          </div>
         </div>
       </div>
       <div class="perfil-body">
@@ -1363,6 +1389,23 @@
   </div>
   <div class="lector-autores" id="lectorAutores" hidden></div>
   <div class="lector-paginas" id="lectorPaginas"></div>
+</dialog>
+
+<dialog class="dlg ancho" id="dlgNombre">
+  <form id="nombreForm">
+    <h3>Editar nombre</h3>
+    <p id="nombreInfo">Es el nombre que ven los demás. Para entrar sigues usando tu usuario y tu número de siempre.</p>
+    <div class="cf-field">
+      <label for="nombreInput">Nombre de usuario</label>
+      <input type="text" id="nombreInput" maxlength="30" autocomplete="off" />
+      <span class="cf-hint">De 3 a 30 caracteres: letras, números, espacios y . - _ &middot; Solo puedes cambiarlo una vez cada 30 días.</span>
+    </div>
+    <p class="cf-error" id="nombreError" hidden></p>
+    <div class="dlg-acciones">
+      <button type="submit" class="btn-primary" id="nombreGuardar">Guardar</button>
+      <button type="button" class="dlg-cerrar" id="nombreCerrar">Cancelar</button>
+    </div>
+  </form>
 </dialog>
 
 <dialog class="dlg ancho dlg-ancho" id="dlgCampana">
@@ -1585,6 +1628,9 @@
     document.getElementById('perfilNCreaciones').textContent = '0';
     document.getElementById('perfilNColabs').textContent = '0';
     document.getElementById('perfilNReconoc').textContent = '0';
+    pintarAvatar(document.getElementById('perfilAvatar'), '', '');
+    pintarAvatar(document.getElementById('topAvatar'), '', '');
+    miPerfilDatos = {};
     document.getElementById('perfilGaleria').innerHTML = '';
     document.getElementById('perfilGaleriaVacio').style.display = '';
     creditosN.textContent = '0';
@@ -1618,6 +1664,7 @@
       }
       const d = snap.data() || {};
       perfilEls.nombre.textContent = d.nombre || user.displayName || 'Mi perfil';
+      pintarMiAvatar(d);
       perfilEls.resenas.textContent = textoResenas(d);
       perfilEls.ventas.textContent = d.ventas ?? 0;
       document.getElementById('perfilNReconoc').textContent = d.reconocimientos ?? 0;
@@ -2882,6 +2929,7 @@
     document.getElementById('ppNCreaciones').textContent = '0';
     document.getElementById('ppNColabs').textContent = '0';
     document.getElementById('ppNReconoc').textContent = '0';
+    pintarAvatar(document.getElementById('ppAvatar'), '', '');
     ppEls.error.hidden = true;
     ppEls.lista.innerHTML = '';
     ppEls.vacio.style.display = '';
@@ -2900,6 +2948,7 @@
       }
       const d = snap.data() || {};
       ppEls.nombre.textContent = d.nombre || d.usuario || 'Usuario';
+      pintarAvatar(document.getElementById('ppAvatar'), d.foto, d.nombre || d.usuario);
       ppEls.usuario.textContent = d.usuario && d.numero ? d.usuario + ' · ' + d.numero : '';
       ppEls.resenas.textContent = textoResenas(d);
       ppEls.ventas.textContent = d.ventas ?? 0;
@@ -3408,6 +3457,7 @@
     if (auth.currentUser) {
       cancelarCreditos = onSnapshot(doc(db, 'usuarios', auth.currentUser.uid), s => {
         const d = s.data() || {};
+        pintarMiAvatar(d);
         creditosN.textContent = d.creditos ?? 0;
         perfilEls.ventas.textContent = d.ventas ?? 0;
         document.getElementById('perfilNReconoc').textContent = d.reconocimientos ?? 0;
@@ -3798,6 +3848,133 @@
       recEnviar.textContent = 'Destacar';
     }
   });
+
+  // ---------- foto de perfil y nombre editable cada 30 días ----------
+  // La foto se recorta a un cuadrado de 256 px y se guarda dentro de tu perfil (unos 20 KB), sin Storage.
+  // El nombre es lo que ven los demás; el ingreso sigue siendo usuario + número, que no cambian.
+  const DIAS_NOMBRE = 30;
+  let miPerfilDatos = {};
+  const fotoInput = document.getElementById('fotoInput');
+  const btnFotoSubir = document.getElementById('btnFotoSubir');
+  const btnFotoQuitar = document.getElementById('btnFotoQuitar');
+
+  function pintarAvatar(el, foto, nombre){
+    if (!el) return;
+    el.textContent = '';
+    if (foto) {
+      const img = document.createElement('img');
+      img.alt = '';
+      img.src = foto;
+      el.append(img);
+    } else {
+      el.textContent = (nombre || '').trim().charAt(0).toUpperCase();
+    }
+  }
+
+  function pintarMiAvatar(d){
+    miPerfilDatos = d || {};
+    const nombre = miPerfilDatos.nombre || (auth.currentUser && auth.currentUser.displayName) || '';
+    pintarAvatar(document.getElementById('perfilAvatar'), miPerfilDatos.foto, nombre);
+    pintarAvatar(document.getElementById('topAvatar'), miPerfilDatos.foto, nombre);
+    btnFotoSubir.textContent = miPerfilDatos.foto ? 'Cambiar foto' : 'Subir foto';
+    btnFotoQuitar.hidden = !miPerfilDatos.foto;
+  }
+
+  function avisoPerfil(txt){
+    perfilEls.error.textContent = txt || '';
+    perfilEls.error.hidden = !txt;
+  }
+
+  btnFotoSubir.addEventListener('click', () => fotoInput.click());
+  fotoInput.addEventListener('change', async () => {
+    const f = fotoInput.files[0];
+    fotoInput.value = '';
+    const yo = auth.currentUser;
+    if (!f || !yo) return;
+    avisoPerfil('');
+    if (!/^image\//.test(f.type)) { avisoPerfil('Elige una imagen (JPG o PNG).'); return; }
+    if (f.size > 10 * 1024 * 1024) { avisoPerfil('La imagen pesa más de 10 MB. Elige una más ligera.'); return; }
+    btnFotoSubir.disabled = true;
+    try {
+      const bmp = await createImageBitmap(f);
+      const lado = Math.min(bmp.width, bmp.height);
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = 256;
+      cv.getContext('2d').drawImage(bmp, (bmp.width - lado) / 2, (bmp.height - lado) / 2, lado, lado, 0, 0, 256, 256);
+      const url = cv.toDataURL('image/jpeg', 0.85);
+      await setDoc(doc(db, 'usuarios', yo.uid), { foto: url }, { merge: true });
+    } catch (err) {
+      console.error('Foto de perfil:', err);
+      avisoPerfil('No se pudo guardar la foto. Prueba con otra imagen en JPG o PNG.');
+    } finally {
+      btnFotoSubir.disabled = false;
+    }
+  });
+
+  btnFotoQuitar.addEventListener('click', async () => {
+    const yo = auth.currentUser;
+    if (!yo || !confirm('¿Quitar tu foto de perfil?')) return;
+    avisoPerfil('');
+    try { await setDoc(doc(db, 'usuarios', yo.uid), { foto: '' }, { merge: true }); }
+    catch (err) { console.error('Quitar foto:', err); avisoPerfil('No se pudo quitar la foto. Inténtalo de nuevo.'); }
+  });
+
+  // nombre: una vez cada 30 días (la regla de Firestore lo vuelve a comprobar en el servidor)
+  const dlgNombre = document.getElementById('dlgNombre');
+  const nombreInput = document.getElementById('nombreInput');
+  const nombreError = document.getElementById('nombreError');
+  const nombreGuardar = document.getElementById('nombreGuardar');
+  const nombreInfo = document.getElementById('nombreInfo');
+  const INFO_NOMBRE = nombreInfo.textContent;
+
+  function proximoCambioNombre(){
+    const ms = miPerfilDatos.nombreCambiadoEn?.toMillis?.() || 0;
+    const sig = ms + DIAS_NOMBRE * 86400000;
+    return ms && sig > Date.now() ? sig : 0;
+  }
+
+  document.getElementById('btnNombreEditar').addEventListener('click', () => {
+    nombreError.hidden = true;
+    nombreInput.value = miPerfilDatos.nombre || (auth.currentUser && auth.currentUser.displayName) || '';
+    const sig = proximoCambioNombre();
+    nombreInfo.textContent = sig
+      ? 'Ya cambiaste tu nombre hace poco. Podrás volver a hacerlo el ' + new Date(sig).toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' }) + '.'
+      : INFO_NOMBRE;
+    nombreInput.disabled = nombreGuardar.disabled = !!sig;
+    dlgNombre.showModal();
+    if (!sig) nombreInput.select();
+  });
+  document.getElementById('nombreCerrar').addEventListener('click', () => dlgNombre.close());
+
+  document.getElementById('nombreForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    nombreError.hidden = true;
+    const yo = auth.currentUser;
+    if (!yo) return;
+    const nombre = nombreInput.value.trim().replace(/\s+/g, ' ');
+    const falla = txt => { nombreError.textContent = txt; nombreError.hidden = false; };
+    if (proximoCambioNombre()) { falla('Aún no han pasado 30 días desde tu último cambio.'); return; }
+    if (!/^[\p{L}\p{N}][\p{L}\p{N} ._-]{1,28}[\p{L}\p{N}]$/u.test(nombre)) { falla('Usa de 3 a 30 caracteres: letras, números, espacios y . - _ (sin empezar ni terminar con símbolos).'); return; }
+    if (nombre === (miPerfilDatos.nombre || '')) { falla('Ese ya es tu nombre actual.'); return; }
+    nombreGuardar.disabled = true;
+    nombreGuardar.textContent = 'Guardando…';
+    try {
+      await setDoc(doc(db, 'usuarios', yo.uid), { nombre, nombreCambiadoEn: serverTimestamp() }, { merge: true });
+      await updateProfile(yo, { displayName: nombre });
+      perfilEls.nombre.textContent = nombre;
+      accountEmail.textContent = nombre;
+      dlgNombre.close();
+    } catch (err) {
+      console.error('Cambiar nombre:', err);
+      falla('No se pudo cambiar el nombre. Si lo cambiaste hace menos de 30 días, aún no se puede.');
+    } finally {
+      nombreGuardar.disabled = !!proximoCambioNombre();
+      nombreGuardar.textContent = 'Guardar';
+    }
+  });
+
+  // cerrar sesión también desde Mi perfil (la barra lateral se oculta en pantallas angostas)
+  document.getElementById('btnLogoutPerfil').addEventListener('click', () => document.getElementById('btnLogout').click());
 
   // ---------- campana de notificaciones (bloque 11) ----------
   // Lista corta de 10. No hay servidor: cuando la persona abre la app y hay más de 10,
