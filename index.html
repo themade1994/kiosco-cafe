@@ -987,6 +987,13 @@
           <div class="sub">Explora todas las revistas</div>
         </div>
       </div>
+      <div class="nav-item" data-view="usuarios" role="button" tabindex="0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+        <div>
+          <div class="label">Usuarios</div>
+          <div class="sub">Guardados y grupos fijos</div>
+        </div>
+      </div>
       <div class="nav-item" data-view="crear" role="button" tabindex="0">
         <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3-6 7-6s7 2.7 7 6"/><circle cx="18" cy="9" r="2.4"/><path d="M15.5 14.2c2.7.4 4.5 2.4 4.5 5.8"/></svg>
         <div>
@@ -1012,7 +1019,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M4 5h16v11H9l-5 4V5z"/></svg>
         <div>
           <div class="label">Bandeja<span class="nav-n" id="navBandejaN" hidden>0</span></div>
-          <div class="sub">Invitaciones, turnos, mensajes y personas</div>
+          <div class="sub">Invitaciones, turnos y mensajes</div>
         </div>
       </div>
     </div>
@@ -1207,7 +1214,6 @@
         <button type="button" class="tab active" role="tab" id="tabInvitaciones" data-tab="invitaciones" aria-selected="true" aria-controls="panelInvitaciones">Invitaciones<span class="tab-n" id="tabInvN" hidden>0</span></button>
         <button type="button" class="tab" role="tab" id="tabTurnos" data-tab="turnos" aria-selected="false" aria-controls="panelTurnos" tabindex="-1">Turnos</button>
         <button type="button" class="tab" role="tab" id="tabMensajes" data-tab="mensajes" aria-selected="false" aria-controls="panelMensajes" tabindex="-1">Mensajes</button>
-        <button type="button" class="tab" role="tab" id="tabPersonas" data-tab="personas" aria-selected="false" aria-controls="panelPersonas" tabindex="-1">Personas</button>
       </div>
 
       <div class="tab-panel" id="panelInvitaciones" role="tabpanel" aria-labelledby="tabInvitaciones">
@@ -1271,8 +1277,15 @@
         </div>
       </div>
       </div>
+    </section>
 
-      <div class="tab-panel" id="panelPersonas" role="tabpanel" aria-labelledby="tabPersonas" hidden>
+    <section class="view" id="view-usuarios">
+      <div class="main-header">
+        <div>
+          <h1>Usuarios</h1>
+          <p>Tu carpeta de personas guardadas y tus grupos fijos.</p>
+        </div>
+      </div>
         <div class="perfil-body">
           <h2 class="perfil-h">Buscar personas</h2>
           <form class="msg-nuevo" id="formBuscarPersonas">
@@ -1305,7 +1318,6 @@
           <div class="lista-creadas" id="gruposFijosLista"></div>
           <p class="inv-vacio" id="gruposFijosVacio">Aún no tienes grupos fijos. Entra en Guardados, pulsa Invitar, marca a tu gente y elige "Crear grupo fijo".</p>
         </div>
-      </div>
     </section>
 
     <section class="view" id="view-subir">
@@ -3369,7 +3381,7 @@
   $id('btnInvitarGuardados').addEventListener('click', () => {
     if (modoInvitar) { salirModoInvitar(); return; }
     if (!guardados.length) {
-      $id('guardError').textContent = 'Aún no tienes personas guardadas. Búscalas en la pestaña Personas o desde su perfil y pulsa Guardar.';
+      $id('guardError').textContent = 'Aún no tienes personas guardadas. Búscalas aquí arriba con «Buscar personas» o desde su perfil y pulsa Guardar.';
       $id('guardError').hidden = false;
       return;
     }
@@ -5342,7 +5354,7 @@
 <!-- ================= NAVEGACIÓN ENTRE VISTAS ================= -->
 <script>
   (function(){
-    const VISTAS = ['inicio','crear','mis-revistas','subir','perfil','mensajes'];
+    const VISTAS = ['inicio','crear','mis-revistas','subir','perfil','mensajes','usuarios'];
     const main = document.querySelector('.main');
 
     function showView(name){
