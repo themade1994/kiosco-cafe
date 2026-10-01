@@ -136,6 +136,15 @@
     letter-spacing:0.02em;
   }
   .pill.credits b{ color:var(--cream); font-weight:500; }
+  .pill.campana{ position:relative; padding:8px 10px; cursor:pointer; }
+  .pill.campana svg{ width:17px; height:17px; opacity:1; }
+  .campana-n{ position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; padding:0 4px; border-radius:999px; background:var(--brass); color:var(--ink); font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center; }
+  .campana-n[hidden]{ display:none; }
+  .camp-item{ display:flex; gap:10px; align-items:flex-start; padding:11px 0; border-bottom:1px solid var(--line); font-size:13.5px; color:var(--ink); }
+  .camp-item:last-child{ border-bottom:none; }
+  .camp-punto{ width:8px; height:8px; border-radius:50%; background:transparent; flex:none; margin-top:6px; }
+  .camp-item.nueva .camp-punto{ background:var(--guinda); }
+  .camp-item.nueva{ font-weight:500; }
   .pill.reload{
     background:var(--brass);
     border-color:var(--brass);
@@ -278,7 +287,7 @@
 
   /* ---------- perfil personal ---------- */
   .perfil-body{ padding: 28px 40px 56px; max-width: 980px; }
-  .perfil-stats{ display:flex; gap:40px; margin-bottom:34px; }
+  .perfil-stats{ display:flex; flex-wrap:wrap; gap:20px 40px; margin-bottom:34px; }
   .stat{ display:flex; flex-direction:column; gap:2px; }
   .stat-n{ font-family:'Fraunces', serif; font-size:30px; font-weight:600; color:var(--ink); line-height:1.1; }
   .stat-l{ font-size:13px; color:var(--ink-soft); }
@@ -500,6 +509,7 @@
   .btn-primary{ background:var(--guinda); color:var(--cream); border:none; border-radius:8px; padding:12px 20px; font-size:14px; font-weight:500; align-self:flex-start; }
   .btn-primary:hover{ background:var(--guinda-deep); }
   .btn-primary:disabled{ opacity:.6; cursor:default; }
+  .perfil-galeria{ display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:22px; margin-bottom:34px; }
   .lista-creadas{ display:flex; flex-direction:column; gap:10px; margin-bottom:34px; }
   .creada{ border:1px solid var(--line); border-radius:8px; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
   .creada-t{ font-family:'Fraunces', serif; font-size:16.5px; font-weight:600; }
@@ -551,6 +561,8 @@
   .cf-field select:disabled{ background:#F1EAE4; color:var(--ink-soft); }
   .cf-total{ font-size:13.5px; font-weight:500; margin:0; color:var(--ink); }
   .cf-total.ok{ color:#2E6B3A; }
+  .btn-sec:disabled{ opacity:.55; cursor:default; }
+  .btn-sec:disabled:hover{ background:transparent; color:var(--guinda); }
 
   /* ---------- bloque 7: invitar colaboradores ---------- */
   .creada-acc{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
@@ -601,6 +613,26 @@
 
   /* ---------- bloque 11: aprobación y versiones ---------- */
   dialog.dlg-ancho{ max-width:560px; max-height:88dvh; overflow-y:auto; }
+  /* ---------- lector dentro de la app (bloque 9) ---------- */
+  dialog.lector{ border:none; padding:0; margin:0; width:100vw; height:100dvh; max-width:none; max-height:none; background:#2B2420; color:var(--cream); }
+  dialog.lector[open]{ display:flex; flex-direction:column; }
+  dialog.lector::backdrop{ background:#2B2420; }
+  .lector-cab{ display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.14); }
+  .lector-tit{ flex:1; min-width:0; font-family:'Fraunces', serif; font-size:16px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lector-pag{ font-size:12.5px; color:var(--cream-dim); white-space:nowrap; }
+  .lector-cerrar{ background:transparent; border:1px solid rgba(255,255,255,.28); color:var(--cream); border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; }
+  .lector-autores{ display:flex; gap:8px; padding:8px 16px; overflow-x:auto; border-bottom:1px solid rgba(255,255,255,.14); flex:none; }
+  .lector-autor{ flex:none; background:transparent; border:1px solid rgba(255,255,255,.28); color:var(--cream-dim); border-radius:999px; padding:5px 12px; font-size:12px; cursor:pointer; white-space:nowrap; }
+  .lector-autor.activo{ background:var(--cream); color:var(--ink); border-color:var(--cream); }
+  .lector-autor small{ opacity:.7; margin-left:6px; }
+  .lector-autor-g{ display:flex; flex:none; align-items:center; gap:4px; }
+  .lector-estrella{ background:transparent; border:1px solid rgba(255,255,255,.28); color:var(--cream-dim); border-radius:999px; padding:4px 9px; font-size:14px; line-height:1; cursor:pointer; }
+  .lector-estrella:hover:not(:disabled){ border-color:#E8C46A; color:#E8C46A; }
+  .lector-estrella.dada{ color:#E8C46A; border-color:#E8C46A; cursor:default; }
+  .lector-paginas{ flex:1; overflow-y:auto; padding:18px 12px 40px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .lector-hoja{ width:100%; max-width:760px; background:#fff; box-shadow:0 2px 14px rgba(0,0,0,.35); }
+  .lector-hoja canvas{ width:100%; height:auto; display:block; }
+  .lector-msg{ margin:auto; color:var(--cream-dim); font-size:14px; text-align:center; }
   .rev-cab{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
   .rev-h{ font-family:'Fraunces', serif; font-size:15px; margin:16px 0 4px; }
   .rev-fila{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; padding:9px 0; border-bottom:1px solid var(--line); }
@@ -887,6 +919,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>
           Mis revistas suscritas
         </div>
+        <button class="pill campana" id="btnCampana" type="button" aria-label="Notificaciones">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4l2-2z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+          <span class="campana-n" id="campanaN" hidden>0</span>
+        </button>
         <div class="pill credits"><b>Créditos: <span id="creditosN">0</span></b></div>
         <button class="pill reload" id="btnRecargar" type="button">+ Recargar créditos</button>
       </div>
@@ -1009,6 +1045,11 @@
           <label for="crTurnos">Participantes (contándote a ti)</label>
           <select id="crTurnos"></select>
           <span class="cf-hint">De 1 a 10. Tú eres uno; a los demás los invitas después. De este número salen las páginas de cada persona.</span>
+        </div>
+        <div class="cf-field">
+          <label for="crMiTurno">Tu turno</label>
+          <select id="crMiTurno" disabled></select>
+          <span class="cf-hint">Los turnos marcan el orden de las páginas en el cuadernillo. Los demás elegirán entre los que queden.</span>
         </div>
         <div class="cf-row">
           <div class="cf-field">
@@ -1180,10 +1221,21 @@
       </div>
       <div class="perfil-body">
         <div class="perfil-stats">
+          <div class="stat"><span class="stat-n" id="perfilNCreaciones">0</span><span class="stat-l">creaciones publicadas</span></div>
+          <div class="stat"><span class="stat-n" id="perfilNColabs">0</span><span class="stat-l">colaboraciones publicadas</span></div>
+          <div class="stat"><span class="stat-n" id="perfilNReconoc">0</span><span class="stat-l">reconocimientos</span></div>
           <div class="stat"><span class="stat-n" id="perfilResenas">0</span><span class="stat-l">reseñas recibidas</span></div>
           <div class="stat"><span class="stat-n" id="perfilVentas">0</span><span class="stat-l">ventas</span></div>
         </div>
         <p class="perfil-error" id="perfilError" hidden></p>
+
+        <h2 class="perfil-h">Publicaciones donde participé</h2>
+        <div class="perfil-galeria" id="perfilGaleria"></div>
+        <div class="empty-state" id="perfilGaleriaVacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+          <p class="empty-title">Aún no hay publicaciones</p>
+          <p class="empty-sub">Las obras publicadas donde participes, como creador o colaborador, aparecerán aquí.</p>
+        </div>
 
         <h2 class="perfil-h">Creado y publicado</h2>
         <div class="lista-creadas" id="perfilCreadas"></div>
@@ -1213,17 +1265,20 @@
       </div>
       <div class="perfil-body">
         <div class="perfil-stats">
+          <div class="stat"><span class="stat-n" id="ppNCreaciones">0</span><span class="stat-l">creaciones publicadas</span></div>
+          <div class="stat"><span class="stat-n" id="ppNColabs">0</span><span class="stat-l">colaboraciones publicadas</span></div>
+          <div class="stat"><span class="stat-n" id="ppNReconoc">0</span><span class="stat-l">reconocimientos</span></div>
           <div class="stat"><span class="stat-n" id="ppResenas">0</span><span class="stat-l">reseñas recibidas</span></div>
           <div class="stat"><span class="stat-n" id="ppVentas">0</span><span class="stat-l">ventas</span></div>
         </div>
         <p class="perfil-error" id="ppError" hidden></p>
 
-        <h2 class="perfil-h">Publicado</h2>
-        <div class="lista-creadas" id="ppCreadas"></div>
+        <h2 class="perfil-h">Publicaciones donde participó</h2>
+        <div class="perfil-galeria" id="ppCreadas"></div>
         <div class="empty-state" id="ppVacio">
           <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
           <p class="empty-title">Aún no tiene publicaciones</p>
-          <p class="empty-sub">Sus revistas publicadas aparecerán aquí.</p>
+          <p class="empty-sub">Las obras publicadas donde participe aparecerán aquí.</p>
         </div>
       </div>
     </section>
@@ -1298,6 +1353,40 @@
   <h3 id="revTitulo">Revisión</h3>
   <div id="revCuerpo"></div>
   <button type="button" class="dlg-cerrar" id="revCerrar">Cerrar</button>
+</dialog>
+
+<dialog class="lector" id="dlgLector">
+  <div class="lector-cab">
+    <div class="lector-tit" id="lectorTitulo"></div>
+    <div class="lector-pag" id="lectorPag"></div>
+    <button type="button" class="lector-cerrar" id="lectorCerrar">Cerrar</button>
+  </div>
+  <div class="lector-autores" id="lectorAutores" hidden></div>
+  <div class="lector-paginas" id="lectorPaginas"></div>
+</dialog>
+
+<dialog class="dlg ancho dlg-ancho" id="dlgCampana">
+  <h3>Notificaciones</h3>
+  <p>Son privadas: solo tú las ves. Guardamos las últimas 10; al llegar una nueva, la más antigua se borra.</p>
+  <div id="campLista"></div>
+  <div class="dlg-acciones"><button type="button" class="dlg-cerrar" id="campCerrar">Cerrar</button></div>
+</dialog>
+
+<dialog class="dlg ancho" id="dlgReconocer">
+  <form id="recForm">
+    <h3 id="recTitulo">Destacar</h3>
+    <p>Tu comentario es privado: solo lo ve el equipo de la app. Ni la persona destacada ni nadie más lo lee.</p>
+    <div class="cf-field">
+      <label for="recTexto">¿Por qué la destacas?</label>
+      <textarea id="recTexto" maxlength="500" placeholder="Cuenta qué te gustó de su parte de la obra"></textarea>
+      <span class="cf-hint">Obligatorio, mínimo 10 caracteres. Puedes destacar a cada persona una sola vez por obra.</span>
+    </div>
+    <p class="cf-error" id="recError" hidden></p>
+    <div class="dlg-acciones">
+      <button type="submit" class="btn-primary" id="recEnviar">Destacar</button>
+      <button type="button" class="dlg-cerrar" id="recCerrar">Cancelar</button>
+    </div>
+  </form>
 </dialog>
 
 <script type="module">
@@ -1493,6 +1582,11 @@
     perfilEls.desde.textContent = '';
     perfilEls.resenas.textContent = '0';
     perfilEls.ventas.textContent = '0';
+    document.getElementById('perfilNCreaciones').textContent = '0';
+    document.getElementById('perfilNColabs').textContent = '0';
+    document.getElementById('perfilNReconoc').textContent = '0';
+    document.getElementById('perfilGaleria').innerHTML = '';
+    document.getElementById('perfilGaleriaVacio').style.display = '';
     creditosN.textContent = '0';
     document.getElementById('perfilCreadas').innerHTML = '';
     document.getElementById('perfilCreadasVacio').style.display = '';
@@ -1526,8 +1620,14 @@
       perfilEls.nombre.textContent = d.nombre || user.displayName || 'Mi perfil';
       perfilEls.resenas.textContent = textoResenas(d);
       perfilEls.ventas.textContent = d.ventas ?? 0;
+      document.getElementById('perfilNReconoc').textContent = d.reconocimientos ?? 0;
       creditosN.textContent = d.creditos ?? 0;
       cargarCreadas(user.uid);
+      cargarParticipaciones(user.uid).then(p => {
+        if (!auth.currentUser || auth.currentUser.uid !== user.uid) return;
+        document.getElementById('perfilNColabs').textContent = p.colOk ? p.colaboraciones.length : '—';
+        pintarGaleriaPerfil(document.getElementById('perfilGaleria'), document.getElementById('perfilGaleriaVacio'), p);
+      });
       const fecha = d.creadoEn && d.creadoEn.toDate ? d.creadoEn.toDate()
                   : (user.metadata && user.metadata.creationTime ? new Date(user.metadata.creationTime) : null);
       perfilEls.desde.textContent = fecha
@@ -1540,6 +1640,35 @@
     }
   }
   window.cargarPerfil = () => auth.currentUser && cargarPerfil(auth.currentUser);
+
+  // Obras publicadas donde participó una persona: las que creó y las ajenas donde ocupó un turno.
+  // Su propia obra cuenta como creación, no como colaboración. Cada parte falla por separado.
+  const porPublicacion = (a, b) => (b.publicadaEn?.toMillis?.() || 0) - (a.publicadaEn?.toMillis?.() || 0);
+  async function cargarParticipaciones(uid){
+    const out = { creaciones: [], colaboraciones: [], creOk: true, colOk: true };
+    try {
+      const rs = await getDocs(query(collection(db, 'revistas'), where('creadorId', '==', uid), where('estado', '==', 'Publicada')));
+      out.creaciones = rs.docs.map(d => ({ id: d.id, ...d.data() })).sort(porPublicacion);
+    } catch (err) { out.creOk = false; console.warn('Creaciones:', err); }
+    try {
+      const ts = await getDocs(query(collection(db, 'turnos'), where('usuarioId', '==', uid)));
+      const ids = [...new Set(ts.docs.map(d => d.data()).filter(t => t.creadorId !== uid && t.esCreador !== true).map(t => t.revistaId))];
+      // las obras sin publicar pueden no ser legibles para otros: se ignoran sin romper el conteo
+      const rs = await Promise.allSettled(ids.map(id => getDoc(doc(db, 'revistas', id))));
+      out.colaboraciones = rs.filter(r => r.status === 'fulfilled' && r.value.exists() && r.value.data().estado === 'Publicada')
+        .map(r => ({ id: r.value.id, ...r.value.data() })).sort(porPublicacion);
+    } catch (err) { out.colOk = false; console.warn('Colaboraciones:', err); }
+    return out;
+  }
+
+  // galería de un perfil: tarjetas que abren la ficha, donde se lee o se compra
+  function pintarGaleriaPerfil(cont, vacio, p){
+    cont.innerHTML = '';
+    const items = [...p.creaciones.map(r => [r, 'Creó esta obra']), ...p.colaboraciones.map(r => [r, 'Colaboró en esta obra'])]
+      .sort((x, y) => porPublicacion(x[0], y[0]));
+    items.forEach(([r, rol]) => cont.append(tarjetaRevista(r, rol)));
+    vacio.style.display = items.length ? 'none' : '';
+  }
 
   // ---------- créditos simulados (bloque 3) ----------
   const creditosN = document.getElementById('creditosN');
@@ -1620,7 +1749,23 @@
     tot.classList.add('ok');
   }
 
+  function actualizarMiTurnoCrear(){
+    const sel = document.getElementById('crMiTurno');
+    const n = Number(crSelPart.value);
+    const previo = Number(sel.value);
+    sel.innerHTML = '';
+    if (!n) {
+      sel.append(opcion('', 'Elige primero los participantes'));
+      sel.disabled = true;
+      return;
+    }
+    for (let k = 1; k <= n; k++) sel.append(opcion(String(k), 'Turno ' + k));
+    sel.disabled = false;
+    sel.value = String(previo >= 1 && previo <= n ? previo : 1);
+  }
+
   function actualizarPaginasCrear(autollenar){
+    actualizarMiTurnoCrear();
     const f = crFormatoSel.value;
     const n = Number(crSelPart.value);
     const hint = document.getElementById('crPaginasHint');
@@ -1665,13 +1810,14 @@
   alternarOtro();
 
   function marcarInvalidos(ids){
-    ['crNombre', 'crTurnos', 'crPaginas', 'crPlazo', 'crCatOtro', 'crSubcat'].forEach(id =>
+    ['crNombre', 'crTurnos', 'crMiTurno', 'crPaginas', 'crPlazo', 'crCatOtro', 'crSubcat'].forEach(id =>
       document.getElementById(id).classList.toggle('invalido', ids.includes(id)));
   }
 
   crSelPart.addEventListener('change', () => { marcarInvalidos([]); actualizarPaginasCrear(true); });
   crSelPag.addEventListener('change', () => { marcarInvalidos([]); actualizarTotalCrear(); });
   crSelPlazo.addEventListener('change', () => marcarInvalidos([]));
+  document.getElementById('crMiTurno').addEventListener('change', () => marcarInvalidos([]));
   document.getElementById('crNombre').addEventListener('input', () => marcarInvalidos([]));
   document.getElementById('crCatOtro').addEventListener('input', () => marcarInvalidos([]));
   document.getElementById('crSubcat').addEventListener('input', () => marcarInvalidos([]));
@@ -1691,6 +1837,7 @@
     const paginas = Number(document.getElementById('crPaginas').value);
     const plazo = Number(document.getElementById('crPlazo').value);
     const turnos = Number(document.getElementById('crTurnos').value);
+    const miTurno = Number(document.getElementById('crMiTurno').value);
     const cat = crCategoriaSel.value;
     const catOtro = cat === 'Otro' ? limpiarTxt(document.getElementById('crCatOtro').value) : '';
     const subcat = limpiarTxt(document.getElementById('crSubcat').value);
@@ -1699,6 +1846,7 @@
     const rojos = [];
     if (nombre.length < 3) { error = 'El nombre debe tener al menos 3 caracteres.'; rojos.push('crNombre'); }
     else if (!Number.isInteger(turnos) || turnos < 1 || turnos > 10) { error = 'Elige cuántos participantes serán, de 1 a 10.'; rojos.push('crTurnos'); }
+    else if (!Number.isInteger(miTurno) || miTurno < 1 || miTurno > turnos) { error = 'Elige tu turno entre los participantes.'; rojos.push('crMiTurno'); }
     else {
       const r = rangoPaginas(formato, turnos);
       if (!Number.isInteger(paginas) || paginas < r.min || paginas > r.max) {
@@ -1723,7 +1871,10 @@
     crSubmit.disabled = true;
     crSubmit.textContent = 'Creando…';
     try {
-      await addDoc(collection(db, 'revistas'), {
+      const refRev = doc(collection(db, 'revistas'));
+      const ahora = Date.now();
+      const lote = writeBatch(db);
+      lote.set(refRev, {
         creadorId: u.uid,
         creadorNombre: u.displayName || '',
         nombre,
@@ -1736,10 +1887,27 @@
         precio: PRECIO_FORMATO[formato] || PRECIO_FORMATO.revista,
         totalTurnos: turnos,
         estado: 'En formación',
+        creadorParticipa: true,
         creadoEn: serverTimestamp()
       });
+      // el creador también participa: ocupa su turno desde el primer momento
+      lote.set(doc(db, 'turnos', refRev.id + '_' + miTurno), {
+        revistaId: refRev.id,
+        revistaNombre: nombre,
+        creadorId: u.uid,
+        creadorNombre: u.displayName || '',
+        n: miTurno,
+        usuarioId: u.uid,
+        usuarioNombre: u.displayName || '',
+        esCreador: true,
+        paginasPorTurno: paginas,
+        plazoDias: plazo,
+        inicio: Timestamp.fromMillis(ahora),
+        vence: Timestamp.fromMillis(ahora + plazo * 86400000)
+      });
+      await lote.commit();
       crForm.reset();
-      crOk.textContent = 'Grupo creado. Lo verás en Mis revistas y en tu perfil.';
+      crOk.textContent = 'Grupo creado: ocupas el turno ' + miTurno + '. Lo verás en Mis revistas y en tu perfil.';
       crOk.hidden = false;
       cargarCreadas(u.uid);
     } catch (err) {
@@ -1770,6 +1938,17 @@
     } catch (err) {
       console.error('Revistas creadas:', err);
     }
+  }
+
+  const ABIERTAS = ['pendiente', 'propuesta', 'acordada', 'contrapropuesta'];
+  // cupo de invitaciones de una revista: turnos libres y cuántas personas más se pueden invitar
+  function cupoDe(r){
+    const yo = auth.currentUser;
+    const total = r.totalTurnos || 5;
+    const ocupados = turnosCreador.filter(x => x.revistaId === r.id).length;
+    const abiertas = yo ? invitaciones.filter(i => i.deId === yo.uid && i.revistaId === r.id && ABIERTAS.includes(i.estado)).length : 0;
+    const libres = Math.max(0, total - ocupados);
+    return { total, ocupados, abiertas, libres, disponibles: Math.max(0, libres - abiertas) };
   }
 
   function pintarCreadas(){
@@ -1819,7 +1998,9 @@
           const b = document.createElement('button');
           b.type = 'button';
           b.className = 'btn-sec';
-          b.textContent = 'Invitar';
+          const cupo = cupoDe(r);
+          b.textContent = cupo.libres <= 0 ? 'Turnos completos' : cupo.disponibles <= 0 ? 'Invitaciones al tope' : 'Invitar';
+          if (cupo.disponibles <= 0) b.disabled = true;
           b.addEventListener('click', () => abrirInvitar(r));
           acc.append(b);
           const rv = document.createElement('button');
@@ -1838,6 +2019,7 @@
       });
       vacio.style.display = creadas.length ? 'none' : '';
     });
+    document.getElementById('perfilNCreaciones').textContent = creadas.filter(r => r.estado === 'Publicada').length;
     pintarChatsRevista();
     pintarSubir();
     const sub = document.getElementById('misRevistasSub');
@@ -1859,7 +2041,9 @@
     invForm.reset();
     invFormError.hidden = true;
     invFormOk.hidden = true;
-    document.getElementById('invRevistaNombre').textContent = 'Para: ' + revista.nombre;
+    const cupo = cupoDe(revista);
+    document.getElementById('invRevistaNombre').textContent = 'Para: ' + revista.nombre
+      + ' · turnos libres: ' + cupo.libres + ' de ' + cupo.total + ' · invitaciones abiertas: ' + cupo.abiertas;
     dlgInvitar.showModal();
   }
   document.getElementById('invCerrar').addEventListener('click', () => dlgInvitar.close());
@@ -1879,6 +2063,7 @@
     let error = '';
     if (resumen.length < 10) error = 'El resumen es obligatorio (mínimo 10 caracteres).';
     else if (objetivo.length < 10) error = 'El objetivo es obligatorio (mínimo 10 caracteres).';
+    else if (cupoDe(revistaInvitando).disponibles <= 0) error = 'No quedan turnos libres para nuevas invitaciones: tienes tantas invitaciones abiertas como turnos disponibles.';
     if (error) { invFormError.textContent = error; invFormError.hidden = false; return; }
 
     invEnviar.disabled = true;
@@ -2694,6 +2879,9 @@
     ppEls.desde.textContent = '';
     ppEls.resenas.textContent = '0';
     ppEls.ventas.textContent = '0';
+    document.getElementById('ppNCreaciones').textContent = '0';
+    document.getElementById('ppNColabs').textContent = '0';
+    document.getElementById('ppNReconoc').textContent = '0';
     ppEls.error.hidden = true;
     ppEls.lista.innerHTML = '';
     ppEls.vacio.style.display = '';
@@ -2715,6 +2903,7 @@
       ppEls.usuario.textContent = d.usuario && d.numero ? d.usuario + ' · ' + d.numero : '';
       ppEls.resenas.textContent = textoResenas(d);
       ppEls.ventas.textContent = d.ventas ?? 0;
+      document.getElementById('ppNReconoc').textContent = d.reconocimientos ?? 0;
       const f = d.creadoEn && d.creadoEn.toDate ? d.creadoEn.toDate() : null;
       ppEls.desde.textContent = f
         ? 'Miembro desde ' + f.toLocaleDateString('es', { month: 'long', year: 'numeric' }) : '';
@@ -2727,30 +2916,11 @@
       return;
     }
     // solo lo publicado es público; lo que está en formación nunca se muestra aquí
-    try {
-      const rs = await getDocs(query(collection(db, 'revistas'),
-        where('creadorId', '==', uid), where('estado', '==', 'Publicada')));
-      if (token !== ppToken) return;
-      const lista = rs.docs.map(x => ({ id: x.id, ...x.data() }))
-        .sort((a, b) => (b.creadoEn?.toMillis?.() || 0) - (a.creadoEn?.toMillis?.() || 0));
-      lista.forEach(r => {
-        const fila = document.createElement('div');
-        fila.className = 'creada';
-        const info = document.createElement('div');
-        const t = document.createElement('div');
-        t.className = 'creada-t';
-        t.textContent = r.nombre;
-        const m = document.createElement('div');
-        m.className = 'creada-m';
-        m.textContent = (r.formato === 'libro' ? 'Libro' : 'Revista') + ' · ' + r.paginasPorTurno + ' pág. por turno';
-        info.append(t, m);
-        fila.append(info);
-        ppEls.lista.append(fila);
-      });
-      ppEls.vacio.style.display = lista.length ? 'none' : '';
-    } catch (err) {
-      console.warn('Publicaciones del perfil público:', err);
-    }
+    const p = await cargarParticipaciones(uid);
+    if (token !== ppToken) return;
+    document.getElementById('ppNCreaciones').textContent = p.creOk ? p.creaciones.length : '—';
+    document.getElementById('ppNColabs').textContent = p.colOk ? p.colaboraciones.length : '—';
+    pintarGaleriaPerfil(ppEls.lista, ppEls.vacio, p);
   }
 
   // #usuario/<uid> abre el perfil de esa persona (el de uno mismo redirige a "Mi perfil")
@@ -3009,7 +3179,7 @@
         acc.append(botonRev('Ver PDF', 'btn-sec', () => { if (!archivosMeta.has(m.clave)) archivosMeta.set(m.clave, m); verArchivo(m.clave); }));
       } else {
         if (!publicada && t.usuarioId === yo.uid) acc.append(botonRev('Prórroga +3 días', 'btn-sec', () => prorrogar(t)));
-        if (!publicada && soyCreador && vence < ahora) acc.append(botonRev('Eliminar', 'btn-sec', () => eliminarTurno(t)));
+        if (!publicada && soyCreador && t.usuarioId !== yo.uid && vence < ahora) acc.append(botonRev('Eliminar', 'btn-sec', () => eliminarTurno(t)));
       }
       fila.append(info, acc);
       revCuerpo.append(fila);
@@ -3028,7 +3198,7 @@
     if (publicada) {
       revCuerpo.append(nodo('p', 'cf-ok', 'Revista publicada' + (r.paginasTotales ? ' · ' + r.paginasTotales + ' páginas' : '') + '.'));
       const f = rev.final;
-      if (f) revCuerpo.append(botonRev('Ver cuadernillo completo', 'btn-primary', () => { if (!archivosMeta.has(f.clave)) archivosMeta.set(f.clave, f); verArchivo(f.clave); }));
+      if (f) revCuerpo.append(botonRev('Leer cuadernillo completo', 'btn-primary', () => abrirLector(r, rev.turnos)));
     } else if (c.estado === 'Aprobada') {
       revCuerpo.append(nodo('p', 'cf-ok', 'Todos en verde: la revista está lista para publicarse.'));
       if (soyCreador) {
@@ -3189,6 +3359,32 @@
     return url;
   }
 
+  function tarjetaRevista(r, rol){
+    const card = nodo('article', 'rev-card');
+    const pt = nodo('div', 'rev-portada', r.nombre);
+    portadaUrl(r.id).then(url => {
+      if (!url) return;
+      const img = document.createElement('img');
+      img.alt = 'Portada de ' + r.nombre;
+      img.src = url;
+      pt.textContent = '';
+      pt.append(img);
+    });
+    const f = r.publicadaEn?.toDate?.();
+    card.append(pt,
+      nodo('div', 'rev-card-t', r.nombre),
+      nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
+      nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
+      nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
+      nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
+    if (rol) card.append(nodo('div', 'rev-card-m', rol));
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.addEventListener('click', () => abrirFicha(r));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter') abrirFicha(r); });
+    return card;
+  }
+
   function pintarGaleria(){
     catItems.forEach(el => {
       const nombre = catDe(el);
@@ -3203,28 +3399,7 @@
     vacioGal.querySelector('.empty-title').textContent = publicadas.length ? 'No hay revistas con ese filtro' : vacioGalTxt[0];
     vacioGal.querySelector('.empty-sub').textContent = publicadas.length ? 'Prueba con otra categoría o con otra búsqueda.' : vacioGalTxt[1];
     lista.forEach(r => {
-      const card = nodo('article', 'rev-card');
-      const pt = nodo('div', 'rev-portada', r.nombre);
-      portadaUrl(r.id).then(url => {
-        if (!url) return;
-        const img = document.createElement('img');
-        img.alt = 'Portada de ' + r.nombre;
-        img.src = url;
-        pt.textContent = '';
-        pt.append(img);
-      });
-      const f = r.publicadaEn?.toDate?.();
-      card.append(pt,
-        nodo('div', 'rev-card-t', r.nombre),
-        nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
-        nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
-        nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
-        nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
-      card.tabIndex = 0;
-      card.setAttribute('role', 'button');
-      card.addEventListener('click', () => abrirFicha(r));
-      card.addEventListener('keydown', e => { if (e.key === 'Enter') abrirFicha(r); });
-      galeria.append(card);
+      galeria.append(tarjetaRevista(r));
     });
   }
 
@@ -3235,6 +3410,7 @@
         const d = s.data() || {};
         creditosN.textContent = d.creditos ?? 0;
         perfilEls.ventas.textContent = d.ventas ?? 0;
+        document.getElementById('perfilNReconoc').textContent = d.reconocimientos ?? 0;
         perfilEls.resenas.textContent = textoResenas(d);
       }, e => console.error('Créditos:', e));
     }
@@ -3298,16 +3474,7 @@
     proceso.textContent = 'Cargando…';
     const hist = nodo('div');
     const muestra = nodo('div', 'ficha-paginas', 'Cargando páginas…');
-    const botonLeer = () => botonRev('Leer cuadernillo completo', 'btn-primary', async () => {
-      const clave = r.id + '_final';
-      try {
-        if (!archivosMeta.has(clave)) {
-          const m = await getDoc(doc(db, 'archivos', clave));
-          if (m.exists()) archivosMeta.set(clave, m.data());
-        }
-        verArchivo(clave);
-      } catch (e) { console.error('Leer cuadernillo:', e); alert('No se pudo abrir el cuadernillo.'); }
-    });
+    const botonLeer = (turnos) => botonRev('Leer cuadernillo completo', 'btn-primary', () => abrirLector(r, turnos));
     fichaCuerpo.append(cab,
       nodo('h4', 'rev-h', 'Sobre este proceso'), proceso,
       nodo('h4', 'rev-h', 'Páginas de muestra'), muestra,
@@ -3388,6 +3555,325 @@
       cont.textContent = 'No se pudo mostrar la vista previa. Puedes abrir el cuadernillo completo.';
     }
   }
+
+  // ---------- lector dentro de la app (bloque 9) ----------
+  // Dibuja las páginas del cuadernillo con pdf.js y muestra una barra con los autores de cada turno.
+  // El PDF final es: portada (si hay) + los turnos en orden, y cada turno tiene un número exacto de páginas.
+  const dlgLector = document.getElementById('dlgLector');
+  const lectorPaginas = document.getElementById('lectorPaginas');
+  const lectorAutores = document.getElementById('lectorAutores');
+  const lectorPag = document.getElementById('lectorPag');
+  let lector = null;   // { pdf, observador, onScroll }
+  let lectorToken = 0;
+
+  function cerrarLector(){
+    lectorToken++;
+    if (lector) {
+      if (lector.observador) lector.observador.disconnect();
+      lectorPaginas.removeEventListener('scroll', lector.onScroll);
+      try { lector.pdf && lector.pdf.destroy(); } catch (e) { /* ya liberado */ }
+    }
+    lector = null;
+    lectorPaginas.innerHTML = '';
+    lectorAutores.innerHTML = '';
+    lectorAutores.hidden = true;
+    lectorPag.textContent = '';
+  }
+  document.getElementById('lectorCerrar').addEventListener('click', () => dlgLector.close());
+  dlgLector.addEventListener('close', cerrarLector);
+
+  // rangos de páginas por autor; null si las cuentas no cuadran (por ejemplo, si el PDF se armó distinto)
+  function rangosLector(r, turnos, total){
+    const ppt = r.paginasPorTurno;
+    if (!ppt || !turnos.length) return null;
+    const portada = total - turnos.length * ppt;
+    if (portada < 0 || portada > 1) return null;
+    return { portada, filas: turnos.map((t, i) => ({ t, ini: portada + i * ppt + 1, fin: portada + (i + 1) * ppt })) };
+  }
+
+  async function abrirLector(r, turnos){
+    cerrarLector();
+    const token = ++lectorToken;
+    turnos = (turnos || []).slice().sort((a, b) => a.n - b.n);
+    document.getElementById('lectorTitulo').textContent = r.nombre;
+    lectorPaginas.append(nodo('div', 'lector-msg', 'Cargando el cuadernillo…'));
+    dlgLector.showModal();
+    try {
+      const v = '4.0.379';
+      const pdfjs = await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@' + v + '/build/pdf.min.mjs');
+      pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + v + '/build/pdf.worker.min.mjs';
+      const pdf = await pdfjs.getDocument({ data: await leerArchivo(r.id + '_final') }).promise;
+      if (token !== lectorToken) { pdf.destroy(); return; }
+      const total = pdf.numPages;
+      const base = (await pdf.getPage(1)).getViewport({ scale: 1 });
+      lectorPaginas.innerHTML = '';
+
+      const hojas = [];
+      for (let n = 1; n <= total; n++) {
+        const h = nodo('div', 'lector-hoja');
+        h.style.aspectRatio = base.width + ' / ' + base.height;
+        h.dataset.n = n;
+        lectorPaginas.append(h);
+        hojas.push(h);
+      }
+
+      // barra de autores: cada botón lleva a sus páginas y se ilumina mientras las lees
+      // a quién ya destacó esta persona en esta obra (solo ella puede leer sus propios reconocimientos)
+      const yo = auth.currentUser;
+      const dadas = new Set();
+      if (yo) {
+        try {
+          const rs = await getDocs(query(collection(db, 'reconocimientos'), where('deId', '==', yo.uid), where('revistaId', '==', r.id)));
+          rs.docs.forEach(d => dadas.add(d.data().paraId));
+        } catch (e) { console.warn('Reconocimientos dados:', e); }
+        if (token !== lectorToken) { pdf.destroy(); return; }
+      }
+
+      const rangos = rangosLector(r, turnos, total);
+      const botones = [];
+      const irA = n => hojas[n - 1].scrollIntoView({ block: 'start' });
+      // si las páginas no cuadran con los turnos, la barra sigue mostrando autores y estrellas, sin saltos
+      const filas = rangos ? rangos.filas : turnos.map(t => ({ t, ini: null, fin: null }));
+      if (rangos && rangos.portada) {
+        const b = nodo('button', 'lector-autor', 'Portada');
+        b.type = 'button';
+        b.addEventListener('click', () => irA(1));
+        lectorAutores.append(b);
+        botones.push({ b, ini: 1, fin: 1 });
+      }
+      const conEstrella = new Set();
+      filas.forEach(({ t, ini, fin }) => {
+        const g = nodo('div', 'lector-autor-g');
+        const b = nodo('button', 'lector-autor', 'T' + t.n + ' ' + (t.usuarioNombre || 'Colaborador'));
+        b.type = 'button';
+        if (ini) {
+          b.append(nodo('small', null, ini === fin ? 'p. ' + ini : 'p. ' + ini + '–' + fin));
+          b.addEventListener('click', () => irA(ini));
+          botones.push({ b, ini, fin });
+        }
+        g.append(b);
+        // una estrella por persona, y nunca para uno mismo
+        if (yo && t.usuarioId && t.usuarioId !== yo.uid && !conEstrella.has(t.usuarioId)) {
+          conEstrella.add(t.usuarioId);
+          g.append(botonEstrella(r, t, dadas));
+        }
+        lectorAutores.append(g);
+      });
+      lectorAutores.hidden = !lectorAutores.children.length;
+
+      // dibuja solo las páginas cercanas a la pantalla, una a la vez
+      const hechas = new Set();
+      let cola = Promise.resolve();
+      const dibujar = (n) => {
+        if (hechas.has(n)) return;
+        hechas.add(n);
+        cola = cola.then(async () => {
+          if (token !== lectorToken) return;
+          const pg = await pdf.getPage(n);
+          const b0 = pg.getViewport({ scale: 1 });
+          const css = hojas[n - 1].clientWidth || 600;
+          const vp = pg.getViewport({ scale: Math.min(2.5, css / b0.width * (window.devicePixelRatio || 1)) });
+          const cv = document.createElement('canvas');
+          cv.width = vp.width; cv.height = vp.height;
+          await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+          if (token !== lectorToken) return;
+          hojas[n - 1].style.aspectRatio = '';
+          hojas[n - 1].append(cv);
+        }).catch(e => console.warn('Página ' + n + ':', e));
+      };
+      const observador = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) dibujar(Number(e.target.dataset.n)); }),
+        { root: lectorPaginas, rootMargin: '900px 0px' });
+      hojas.forEach(h => observador.observe(h));
+
+      // página actual e iluminado del autor
+      let marco = 0;
+      const onScroll = () => {
+        if (marco) return;
+        marco = requestAnimationFrame(() => {
+          marco = 0;
+          const caja = lectorPaginas.getBoundingClientRect();
+          const linea = caja.top + caja.height * 0.35;
+          let actual = 1;
+          hojas.forEach((h, i) => { if (h.getBoundingClientRect().top <= linea) actual = i + 1; });
+          lectorPag.textContent = 'Página ' + actual + ' de ' + total;
+          botones.forEach(({ b, ini, fin }) => {
+            const act = actual >= ini && actual <= fin;
+            b.classList.toggle('activo', act);
+            if (act) b.scrollIntoView({ block: 'nearest', inline: 'center' });
+          });
+        });
+      };
+      lectorPaginas.addEventListener('scroll', onScroll);
+      lector = { pdf, observador, onScroll };
+      onScroll();
+    } catch (err) {
+      console.error('Lector:', err);
+      if (token !== lectorToken) return;
+      lectorPaginas.innerHTML = '';
+      lectorPaginas.append(nodo('div', 'lector-msg', 'No se pudo abrir el cuadernillo. Cierra e inténtalo de nuevo.'));
+    }
+  }
+
+  // ---------- reconocimientos: estrella con comentario privado (bloque 10) ----------
+  // Una estrella = 1 punto, por lector, por autor y por obra. El comentario lo lee solo el equipo de la app
+  // (desde la consola de Firebase): ni la app lo muestra, ni lo ve la persona destacada.
+  const dlgReconocer = document.getElementById('dlgReconocer');
+  const recForm = document.getElementById('recForm');
+  const recTexto = document.getElementById('recTexto');
+  const recError = document.getElementById('recError');
+  const recEnviar = document.getElementById('recEnviar');
+  let recPend = null;   // { r, t, alListo }
+
+  function botonEstrella(r, t, dadas){
+    const nombre = t.usuarioNombre || 'este autor';
+    const b = nodo('button', 'lector-estrella');
+    b.type = 'button';
+    const pintar = () => {
+      const ya = dadas.has(t.usuarioId);
+      b.textContent = ya ? '★' : '☆';
+      b.classList.toggle('dada', ya);
+      b.disabled = ya;
+      b.title = ya ? 'Ya destacaste a ' + nombre : 'Destacar a ' + nombre;
+      b.setAttribute('aria-label', b.title);
+    };
+    b.addEventListener('click', () => abrirReconocer(r, t, () => { dadas.add(t.usuarioId); pintar(); }));
+    pintar();
+    return b;
+  }
+
+  function abrirReconocer(r, t, alListo){
+    recPend = { r, t, alListo };
+    document.getElementById('recTitulo').textContent = 'Destacar a ' + (t.usuarioNombre || 'este autor');
+    recTexto.value = '';
+    recError.hidden = true;
+    dlgReconocer.showModal();
+    recTexto.focus();
+  }
+  document.getElementById('recCerrar').addEventListener('click', () => dlgReconocer.close());
+  dlgReconocer.addEventListener('close', () => { recPend = null; });
+
+  recForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    recError.hidden = true;
+    const yo = auth.currentUser;
+    if (!yo || !recPend) return;
+    const { r, t, alListo } = recPend;
+    const txt = recTexto.value.trim();
+    if (txt.length < 10) {
+      recError.textContent = 'Escribe al menos 10 caracteres explicando por qué la destacas.';
+      recError.hidden = false;
+      return;
+    }
+    if (!t.usuarioId || t.usuarioId === yo.uid) {
+      recError.textContent = 'No puedes destacarte a ti mismo.';
+      recError.hidden = false;
+      return;
+    }
+    recEnviar.disabled = true;
+    recEnviar.textContent = 'Enviando…';
+    try {
+      // el documento lleva el id revista_lector_autor: si ya existe, la regla lo rechaza y no se suma el punto
+      const batch = writeBatch(db);
+      batch.set(doc(db, 'reconocimientos', r.id + '_' + yo.uid + '_' + t.usuarioId), {
+        revistaId: r.id, revistaNombre: r.nombre,
+        deId: yo.uid, deNombre: yo.displayName || '',
+        paraId: t.usuarioId, paraNombre: t.usuarioNombre || '', turno: t.n,
+        comentario: txt, creadoEn: serverTimestamp()
+      });
+      batch.update(doc(db, 'usuarios', t.usuarioId), { reconocimientos: increment(1) });
+      // la notificación no guarda quién destacó: la persona solo se entera de la obra y el punto
+      batch.set(doc(collection(db, 'notificaciones')), {
+        paraId: t.usuarioId, tipo: 'reconocimiento', revistaId: r.id, revistaNombre: r.nombre,
+        puntos: 1, leida: false, creadoEn: serverTimestamp()
+      });
+      await batch.commit();
+      dlgReconocer.close();
+      alListo();
+    } catch (err) {
+      console.error('Reconocimiento:', err);
+      recError.textContent = 'No se pudo enviar. Si ya la destacaste en esta obra no se puede repetir; si no, revisa las reglas de Firestore.';
+      recError.hidden = false;
+    } finally {
+      recEnviar.disabled = false;
+      recEnviar.textContent = 'Destacar';
+    }
+  });
+
+  // ---------- campana de notificaciones (bloque 11) ----------
+  // Lista corta de 10. No hay servidor: cuando la persona abre la app y hay más de 10,
+  // ella misma borra las más antiguas, así la lista siempre queda en 10 y se corre un lugar.
+  const MAX_NOTIF = 10;
+  const btnCampana = document.getElementById('btnCampana');
+  const campanaN = document.getElementById('campanaN');
+  const dlgCampana = document.getElementById('dlgCampana');
+  const campLista = document.getElementById('campLista');
+  let notifs = [];
+  let cancelarNotifs = null;
+  const podando = new Set();
+
+  function textoNotif(n){
+    const pts = n.puntos || 1;
+    return 'Ganaste ' + pts + (pts === 1 ? ' punto' : ' puntos') + ' de reconocimiento por la obra «' + (n.revistaNombre || 'una obra') + '».';
+  }
+
+  function pintarCampana(){
+    const nuevas = notifs.filter(n => !n.leida).length;
+    campanaN.textContent = nuevas > 9 ? '9+' : String(nuevas);
+    campanaN.hidden = !nuevas;
+    btnCampana.setAttribute('aria-label', nuevas ? 'Notificaciones: ' + nuevas + ' sin leer' : 'Notificaciones');
+    campLista.innerHTML = '';
+    if (!notifs.length) { campLista.append(nodo('p', 'msg-vacio', 'Aún no tienes notificaciones.')); return; }
+    notifs.forEach(n => {
+      const fila = nodo('div', 'camp-item' + (n.leida ? '' : ' nueva'));
+      fila.append(nodo('span', 'camp-punto'));
+      const cuerpo = nodo('div');
+      cuerpo.append(nodo('div', null, textoNotif(n)));
+      const f = n.creadoEn?.toDate?.();
+      if (f) cuerpo.append(nodo('div', 'creada-m', f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' })));
+      fila.append(cuerpo);
+      campLista.append(fila);
+    });
+  }
+
+  function iniciarNotificaciones(uid){
+    detenerNotificaciones();
+    cancelarNotifs = onSnapshot(
+      query(collection(db, 'notificaciones'), where('paraId', '==', uid)),
+      (snap) => {
+        const todas = snap.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: 'estimate' }) }))
+          .sort((a, b) => (b.creadoEn?.toMillis?.() || 0) - (a.creadoEn?.toMillis?.() || 0));
+        notifs = todas.slice(0, MAX_NOTIF);
+        pintarCampana();
+        const sobran = todas.slice(MAX_NOTIF).filter(n => !podando.has(n.id));
+        if (sobran.length) {
+          sobran.forEach(n => podando.add(n.id));
+          const lote = writeBatch(db);
+          sobran.forEach(n => lote.delete(doc(db, 'notificaciones', n.id)));
+          lote.commit().catch(e => console.warn('Podar notificaciones:', e));
+        }
+      },
+      (err) => console.error('Notificaciones:', err)
+    );
+  }
+
+  function detenerNotificaciones(){
+    if (cancelarNotifs) cancelarNotifs();
+    cancelarNotifs = null;
+    notifs = [];
+    podando.clear();
+    pintarCampana();
+  }
+
+  btnCampana.addEventListener('click', () => { pintarCampana(); dlgCampana.showModal(); });
+  document.getElementById('campCerrar').addEventListener('click', () => dlgCampana.close());
+  // al cerrar la campana, lo que estaba nuevo pasa a leído
+  dlgCampana.addEventListener('close', () => {
+    const sin = notifs.filter(n => !n.leida);
+    if (!sin.length) return;
+    const lote = writeBatch(db);
+    sin.forEach(n => lote.update(doc(db, 'notificaciones', n.id), { leida: true }));
+    lote.commit().catch(e => console.warn('Marcar leídas:', e));
+  });
 
   // ---------- reseñas y reputación (bloque 16) ----------
   const estrellasTxt = n => '★'.repeat(n) + '☆'.repeat(5 - n);
@@ -3490,7 +3976,7 @@
     cargarResenas(r, uids, comprada && !esParte);
     accion.textContent = '';
     if (esParte || comprada) {
-      accion.append(botonLeer(), nodo('span', 'creada-m', esParte ? 'Eres parte de esta revista: la lees gratis.' : 'Ya la compraste.'));
+      accion.append(botonLeer(turnos), nodo('span', 'creada-m', esParte ? 'Eres parte de esta revista: la lees gratis.' : 'Ya la compraste.'));
       return;
     }
     const precio = precioDe(r), { cuota, app } = repartoDe(precio, uids.length);
@@ -3952,6 +4438,7 @@
       iniciarGaleria();
       iniciarInvitaciones(user.uid);
       iniciarTurnos(user.uid);
+      iniciarNotificaciones(user.uid);
       sincronizarPerfilPublico();
     } else {
       document.body.classList.remove('logged-in');
@@ -3965,6 +4452,7 @@
       ponerModoMensajes('directos');
       detenerInvitaciones();
       detenerTurnos();
+      detenerNotificaciones();
     }
   });
 </script>
