@@ -937,7 +937,7 @@
     <div class="topbar-right">
       <div class="search">
         <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input type="text" placeholder="Buscar revistas, temas, autores o grupos…" />
+        <input type="text" placeholder="Buscar revistas, autores o personas…" />
       </div>
       <div class="topbar-actions">
         <div class="pill">
@@ -993,7 +993,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="#F3E7DF" stroke-width="1.6"><path d="M4 5h16v11H9l-5 4V5z"/></svg>
         <div>
           <div class="label">Bandeja<span class="nav-n" id="navBandejaN" hidden>0</span></div>
-          <div class="sub">Invitaciones, turnos y mensajes</div>
+          <div class="sub">Invitaciones, turnos, mensajes y personas</div>
         </div>
       </div>
     </div>
@@ -1038,6 +1038,11 @@
         Más recientes
         <svg viewBox="0 0 24 24" fill="none" stroke="#4A423C" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
+    </div>
+
+    <div class="perfil-body" id="galPersonas" hidden>
+      <h2 class="perfil-h">Personas</h2>
+      <div class="lista-creadas" id="galPersonasLista"></div>
     </div>
 
     <div class="gallery">
@@ -3620,7 +3625,36 @@
     }
   }
   catItems.forEach(el => el.addEventListener('click', () => { filtroCat = catDe(el); pintarGaleria(); irAInicio(); }));
-  document.querySelector('.search input').addEventListener('input', e => { filtroTxt = plano(e.target.value.trim()); pintarGaleria(); irAInicio(); });
+  document.querySelector('.search input').addEventListener('input', e => {
+    filtroTxt = plano(e.target.value.trim());
+    pintarGaleria();
+    irAInicio();
+    buscarPersonasTop(e.target.value);
+  });
+
+  // personas que coinciden con lo que se escribe arriba (primeras letras del usuario)
+  let temporizadorPersonas = null, tokenPersonas = 0;
+  function buscarPersonasTop(crudo){
+    const cont = document.getElementById('galPersonas');
+    const lista = document.getElementById('galPersonasLista');
+    const prefijo = (crudo || '').trim().toLowerCase();
+    clearTimeout(temporizadorPersonas);
+    const mi = ++tokenPersonas;
+    if (!/^[a-z0-9._-]{2,20}$/.test(prefijo) || !auth.currentUser) { cont.hidden = true; lista.innerHTML = ''; return; }
+    temporizadorPersonas = setTimeout(async () => {
+      try {
+        const fin = prefijo.slice(0, -1) + String.fromCharCode(prefijo.charCodeAt(prefijo.length - 1) + 1);
+        const snap = await getDocs(query(collection(db, 'usuarios'), orderBy('usuario'),
+          where('usuario', '>=', prefijo), where('usuario', '<', fin), limit(6)));
+        if (mi !== tokenPersonas) return;
+        const yo = auth.currentUser;
+        const res = snap.docs.filter(d => !yo || d.id !== yo.uid).map(d => ({ uid: d.id, ...d.data() }));
+        lista.innerHTML = '';
+        res.forEach(r => lista.append(filaPersona(r.uid, { nombre: r.nombre, usuario: r.usuario, numero: r.numero, foto: r.foto })));
+        cont.hidden = !res.length;
+      } catch (err) { console.error('Personas (buscador):', err); }
+    }, 300);
+  }
 
   async function portadaUrl(id){
     if (portadaCache.has(id)) return portadaCache.get(id);
@@ -3709,6 +3743,7 @@
     portadaCache.forEach(u => { if (u) URL.revokeObjectURL(u); });
     portadaCache.clear();
     pintarGaleria();
+    buscarPersonasTop('');
   }
 
   // ---------- ficha: vista previa e historial (bloque 14) ----------
