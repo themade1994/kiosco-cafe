@@ -604,6 +604,25 @@
   .inv-txt b{ font-weight:600; }
   .inv-vacio{ font-size:13px; color:var(--ink-soft); margin:0 0 20px; }
 
+  /* ---------- invitar desde guardados y grupos fijos ---------- */
+  .btn-invitar{ background:var(--brass); color:var(--ink); border:none; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:600; }
+  .btn-invitar:hover{ filter:brightness(1.06); }
+  .btn-invitar.activo{ background:transparent; color:var(--ink); border:1px solid var(--brass); }
+  .guard-cab{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .guard-barra{ display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:12px; margin:10px 0 0; border:1px solid var(--brass); border-radius:8px; background:#FBF6EC; }
+  .guard-barra .guard-cuenta{ font-size:13px; font-weight:600; margin-right:auto; }
+  .sel-fila{ justify-content:flex-start !important; gap:12px; cursor:pointer; }
+  .sel-fila.sel{ border-color:var(--brass); background:#FBF6EC; }
+  .chk{ width:22px; height:22px; flex:none; border:2px solid var(--ink-soft); border-radius:4px; background:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:15px; line-height:1; color:var(--guinda); font-weight:700; }
+  .chk.on{ border-color:var(--guinda); }
+  .chk.on::after{ content:'✓'; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{ border:1px solid var(--brass); background:#fff; color:var(--ink); border-radius:999px; padding:5px 12px; font-size:13px; }
+  .chip:hover{ background:#FBF6EC; }
+  .ctx-crear{ border:1px dashed var(--brass); border-radius:8px; padding:10px 12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .ctx-crear[hidden]{ display:none; }
+  .cf-field[hidden],.guard-barra[hidden],.cf-hint[hidden]{ display:none; }
+
   /* ---------- bloque 16: reseñas ---------- */
   .estrellas{ color:#B8862B; letter-spacing:1px; }
   .res-fila{ padding:8px 0; border-bottom:1px solid var(--line); font-size:14px; }
@@ -1129,6 +1148,7 @@
         </div>
         <p class="cf-error" id="crError" hidden></p>
         <p class="cf-ok" id="crOk" hidden></p>
+        <div class="ctx-crear" id="crContexto" hidden><span></span><button type="button" class="btn-sec" id="crContextoQuitar">Quitar</button></div>
         <button type="submit" class="btn-primary" id="crSubmit">Crear grupo</button>
       </form>
     </section>
@@ -1264,9 +1284,26 @@
           <div class="lista-creadas" id="buscarPersonasResultados"></div>
           <p class="inv-vacio" id="buscarPersonasVacio" hidden>No encontramos a nadie con ese usuario.</p>
 
-          <h2 class="perfil-h">Guardados</h2>
+          <div class="guard-cab">
+            <h2 class="perfil-h">Guardados</h2>
+            <button type="button" class="btn-invitar" id="btnInvitarGuardados">Invitar</button>
+          </div>
+          <p class="cf-hint" id="guardAyuda" hidden>Marca con el cuadrito a las personas que quieras y elige qué crear.</p>
+          <p class="cf-error" id="guardError" hidden></p>
           <div class="lista-creadas" id="guardadosLista"></div>
+          <div class="guard-barra" id="guardBarra" hidden>
+            <span class="guard-cuenta" id="guardCuenta"></span>
+            <button type="button" class="btn-primary" id="gbRevista">Crear revista</button>
+            <button type="button" class="btn-primary" id="gbLibro">Crear libro</button>
+            <button type="button" class="btn-primary" id="gbGrupo">Crear grupo fijo</button>
+            <button type="button" class="btn-sec" id="gbCancelar">Cancelar</button>
+          </div>
           <p class="inv-vacio" id="guardadosVacio">Aún no has guardado a nadie. Guarda un perfil desde su página para tenerlo a mano cuando crees un proyecto.</p>
+
+          <h2 class="perfil-h">Grupos fijos</h2>
+          <p class="cf-hint">Un grupo fijo es un equipo estable para una revista o periódico que sale cada cierto tiempo (diario, semanal…). Cada edición va bajo el mismo nombre y se invita a las mismas personas.</p>
+          <div class="lista-creadas" id="gruposFijosLista"></div>
+          <p class="inv-vacio" id="gruposFijosVacio">Aún no tienes grupos fijos. Entra en Guardados, pulsa Invitar, marca a tu gente y elige "Crear grupo fijo".</p>
         </div>
       </div>
     </section>
@@ -1390,10 +1427,44 @@
   <button type="button" class="dlg-cerrar" id="dlgCerrar">Cancelar</button>
 </dialog>
 
+<dialog class="dlg ancho" id="dlgGrupoFijo">
+  <h3>Crear grupo fijo</h3>
+  <form id="formGrupoFijo" novalidate>
+    <div class="cf-field">
+      <label for="gfNombre">Nombre de tu revista o periódico</label>
+      <input type="text" id="gfNombre" maxlength="40" autocomplete="off" placeholder="ej. El Diario del Café" />
+    </div>
+    <div class="cf-field">
+      <label for="gfFrecuencia">¿Cada cuánto sale?</label>
+      <select id="gfFrecuencia">
+        <option value="diaria">Todos los días</option>
+        <option value="semanal" selected>Cada semana</option>
+        <option value="quincenal">Cada quince días</option>
+        <option value="mensual">Cada mes</option>
+        <option value="libre">A mi ritmo</option>
+      </select>
+    </div>
+    <div class="cf-field">
+      <label>Integrantes fijos</label>
+      <div class="chips" id="gfMiembros"></div>
+    </div>
+    <p class="cf-error" id="gfError" hidden></p>
+    <div class="rev-acciones">
+      <button type="submit" class="btn-primary" id="gfCrear">Crear grupo fijo</button>
+      <button type="button" class="btn-sec" id="gfCerrar">Cancelar</button>
+    </div>
+  </form>
+</dialog>
+
 <dialog class="dlg ancho" id="dlgInvitar">
   <h3>Invitar colaborador</h3>
   <p id="invRevistaNombre"></p>
   <form id="formInvitar" novalidate>
+    <div class="cf-field" id="invSugerencias" hidden>
+      <label>Tus guardados (toca uno para rellenar)</label>
+      <div class="chips" id="invSugerenciasLista"></div>
+    </div>
+    <p class="cf-hint" id="invCola" hidden></p>
     <div class="cf-row">
       <div class="cf-field">
         <label for="invBuscarUsuario">Usuario</label>
@@ -2001,6 +2072,7 @@
         totalTurnos: turnos,
         estado: 'En formación',
         creadorParticipa: true,
+        ...(contextoCrear && contextoCrear.serieId ? { serieId: contextoCrear.serieId, serieNombre: contextoCrear.serieNombre } : {}),
         creadoEn: serverTimestamp()
       });
       // el creador también participa: ocupa su turno desde el primer momento
@@ -2023,6 +2095,12 @@
       crOk.textContent = 'Grupo creado: ocupas el turno ' + miTurno + '. Lo verás en Mis revistas y en tu perfil.';
       crOk.hidden = false;
       cargarCreadas(u.uid);
+      const ctx = contextoCrear;
+      contextoCrear = null;
+      pintarContextoCrear();
+      if (ctx && ctx.cola.length) {
+        abrirInvitar({ id: refRev.id, creadorId: u.uid, nombre, formato, paginasPorTurno: paginas, plazoDias: plazo, totalTurnos: turnos }, ctx.cola);
+      }
     } catch (err) {
       console.error('Crear revista:', err);
       crError.textContent = 'No se pudo crear el grupo. Revisa las reglas de Firestore e inténtalo de nuevo.';
@@ -2149,9 +2227,14 @@
   const invEnviar = document.getElementById('invEnviar');
   let revistaInvitando = null;
 
-  function abrirInvitar(revista){
+  function abrirInvitar(revista, cola){
     revistaInvitando = revista;
     invForm.reset();
+    colaInvitar = (cola || []).slice();
+    colaTotal = colaInvitar.length;
+    colaVa = 0;
+    pintarSugerenciasInv();
+    prellenarDeCola();
     invFormError.hidden = true;
     invFormOk.hidden = true;
     const cupo = cupoDe(revista);
@@ -2222,8 +2305,16 @@
         estado: 'pendiente',
         creadoEn: serverTimestamp()
       });
-      invForm.reset();
-      invFormOk.textContent = 'Invitación enviada a ' + (d.nombre || (d.usuario + ' · ' + d.numero)) + '.';
+      const hayMas = colaInvitar.length > 0;
+      if (hayMas) {
+        document.getElementById('invBuscarUsuario').value = '';
+        document.getElementById('invBuscarNumero').value = '';
+        prellenarDeCola();
+      } else {
+        invForm.reset();
+        document.getElementById('invCola').hidden = true;
+      }
+      invFormOk.textContent = 'Invitación enviada a ' + (d.nombre || (d.usuario + ' · ' + d.numero)) + '.' + (hayMas ? ' Sigue la siguiente persona.' : '');
       invFormOk.hidden = false;
     } catch (err) {
       console.error('Invitar:', err);
@@ -3088,6 +3179,7 @@
       }
     } catch (err) {
       console.error('Guardar usuario:', err);
+      alert('No se pudo guardar a esta persona. Revisa la regla de la colección guardados en Firestore.');
     } finally {
       if (boton) boton.disabled = false;
     }
@@ -3146,9 +3238,11 @@
     if (!cont) return;
     cont.innerHTML = '';
     guardados.forEach(g => {
+      if (modoInvitar) { cont.append(filaSeleccion(g)); return; }
       cont.append(filaPersona(g.paraId, { nombre: g.paraNombre, usuario: g.paraUsuario, numero: g.paraNumero, foto: g.paraFoto }, { conQuitar: true }));
     });
     vacio.hidden = guardados.length > 0;
+    actualizarBarraGuardados();
     actualizarBotonGuardarPerfil();
   }
 
@@ -3160,7 +3254,12 @@
         guardados = snap.docs.map(d => d.data());
         pintarGuardados(uid);
       },
-      (err) => console.error('Guardados:', err)
+      (err) => {
+        console.error('Guardados:', err);
+        const v = document.getElementById('guardadosVacio');
+        v.textContent = 'No se pudieron cargar tus guardados. Revisa en Firebase que exista la regla de la colección guardados.';
+        v.hidden = false;
+      }
     );
   }
 
@@ -3213,6 +3312,245 @@
     e.preventDefault();
     buscarPersonas(document.getElementById('buscarPersonasUsuario').value);
   });
+
+  // ---------- invitar desde guardados, grupos fijos y sugerencias ----------
+  let modoInvitar = false;
+  const seleccion = new Set();              // paraId de los guardados marcados
+  let contextoCrear = null;                 // { cola, serieId, serieNombre } mientras se prepara una revista
+  let colaInvitar = [], colaTotal = 0, colaVa = 0;
+  let gruposFijos = [], cancelarGruposFijos = null;
+  const MAX_INVITADOS = 9;                  // 10 participantes en total y uno es quien crea
+  const $id = id => document.getElementById(id);
+  const datosGuardado = g => ({ uid: g.paraId, nombre: g.paraNombre || '', usuario: g.paraUsuario || '', numero: g.paraNumero || '', foto: g.paraFoto || '' });
+  const etiquetaPersona = p => p.nombre || (p.usuario ? p.usuario + ' · ' + p.numero : 'Usuario');
+
+  function filaSeleccion(g){
+    const marcado = seleccion.has(g.paraId), p = datosGuardado(g);
+    const fila = document.createElement('div');
+    fila.className = 'creada sel-fila' + (marcado ? ' sel' : '');
+    fila.tabIndex = 0;
+    fila.setAttribute('role', 'checkbox');
+    fila.setAttribute('aria-checked', marcado ? 'true' : 'false');
+    const caja = document.createElement('span');
+    caja.className = 'chk' + (marcado ? ' on' : '');
+    const info = document.createElement('div');
+    const t = document.createElement('div'); t.className = 'creada-t'; t.textContent = etiquetaPersona(p);
+    const m = document.createElement('div'); m.className = 'creada-m'; m.textContent = p.usuario && p.numero ? p.usuario + ' · ' + p.numero : '';
+    info.append(t, m);
+    fila.append(caja, info);
+    const alternar = () => {
+      if (seleccion.has(g.paraId)) seleccion.delete(g.paraId); else seleccion.add(g.paraId);
+      const yo = auth.currentUser;
+      if (yo) pintarGuardados(yo.uid);
+    };
+    fila.addEventListener('click', alternar);
+    fila.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alternar(); } });
+    return fila;
+  }
+
+  function actualizarBarraGuardados(){
+    const n = seleccion.size;
+    $id('guardBarra').hidden = !(modoInvitar && n > 0);
+    $id('guardCuenta').textContent = n + (n === 1 ? ' seleccionado' : ' seleccionados');
+    $id('guardAyuda').hidden = !modoInvitar;
+    const b = $id('btnInvitarGuardados');
+    b.textContent = modoInvitar ? 'Cancelar' : 'Invitar';
+    b.classList.toggle('activo', modoInvitar);
+  }
+
+  function salirModoInvitar(){
+    modoInvitar = false;
+    seleccion.clear();
+    $id('guardError').hidden = true;
+    const yo = auth.currentUser;
+    if (yo) pintarGuardados(yo.uid); else actualizarBarraGuardados();
+  }
+
+  $id('btnInvitarGuardados').addEventListener('click', () => {
+    if (modoInvitar) { salirModoInvitar(); return; }
+    if (!guardados.length) {
+      $id('guardError').textContent = 'Aún no tienes personas guardadas. Búscalas en la pestaña Personas o desde su perfil y pulsa Guardar.';
+      $id('guardError').hidden = false;
+      return;
+    }
+    $id('guardError').hidden = true;
+    modoInvitar = true;
+    pintarGuardados(auth.currentUser.uid);
+  });
+  $id('gbCancelar').addEventListener('click', salirModoInvitar);
+  $id('gbRevista').addEventListener('click', () => iniciarDesdeGuardados('revista'));
+  $id('gbLibro').addEventListener('click', () => iniciarDesdeGuardados('libro'));
+  $id('gbGrupo').addEventListener('click', () => iniciarDesdeGuardados('grupo'));
+
+  function iniciarDesdeGuardados(tipo){
+    const sel = guardados.filter(g => seleccion.has(g.paraId)).map(datosGuardado);
+    if (!sel.length) return;
+    if (sel.length > MAX_INVITADOS) {
+      $id('guardError').textContent = 'Puedes elegir hasta ' + MAX_INVITADOS + ' personas (con quien crea son 10 participantes).';
+      $id('guardError').hidden = false;
+      return;
+    }
+    $id('guardError').hidden = true;
+    if (tipo === 'grupo') { abrirGrupoFijo(sel); return; }
+    prepararCrear({ formato: tipo, cola: sel });
+    salirModoInvitar();
+  }
+
+  // lleva al formulario de crear con el formato, el nombre y las personas a invitar ya preparados
+  function prepararCrear({ formato, nombre, cola, serieId, serieNombre }){
+    contextoCrear = { cola: cola || [], serieId: serieId || null, serieNombre: serieNombre || null };
+    document.querySelector('.nav-item[data-view="crear"]').click();
+    crFormatoSel.value = formato || 'revista';
+    crFormatoSel.dispatchEvent(new Event('change'));
+    if (nombre) $id('crNombre').value = nombre;
+    if (cola && cola.length) {
+      crSelPart.value = String(Math.min(10, cola.length + 1));
+      crSelPart.dispatchEvent(new Event('change'));
+    }
+    pintarContextoCrear();
+  }
+
+  function pintarContextoCrear(){
+    const c = $id('crContexto');
+    if (!contextoCrear || (!contextoCrear.cola.length && !contextoCrear.serieNombre)) { c.hidden = true; return; }
+    c.querySelector('span').textContent =
+      (contextoCrear.serieNombre ? 'Nueva edición de «' + contextoCrear.serieNombre + '». ' : '') +
+      (contextoCrear.cola.length ? 'Al crearla te pediremos invitar a: ' + contextoCrear.cola.map(etiquetaPersona).join(', ') + '.' : '');
+    c.hidden = false;
+  }
+  $id('crContextoQuitar').addEventListener('click', () => { contextoCrear = null; pintarContextoCrear(); });
+
+  // sugerencias en el diálogo de invitar: tus guardados
+  function pintarSugerenciasInv(){
+    const lista = $id('invSugerenciasLista');
+    lista.innerHTML = '';
+    guardados.forEach(g => {
+      const p = datosGuardado(g);
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.textContent = etiquetaPersona(p);
+      b.addEventListener('click', () => {
+        $id('invBuscarUsuario').value = p.usuario;
+        $id('invBuscarNumero').value = p.numero;
+      });
+      lista.append(b);
+    });
+    $id('invSugerencias').hidden = !guardados.length;
+  }
+
+  function prellenarDeCola(){
+    const info = $id('invCola');
+    const p = colaInvitar.shift();
+    if (!p) { info.hidden = true; return; }
+    colaVa++;
+    $id('invBuscarUsuario').value = p.usuario;
+    $id('invBuscarNumero').value = p.numero;
+    info.textContent = 'Invitando a ' + etiquetaPersona(p) + ' (' + colaVa + ' de ' + colaTotal + '). Escribe el resumen y el objetivo una vez: se reutilizan para las demás personas.';
+    info.hidden = false;
+  }
+
+  // grupos fijos
+  let gfMiembros = [];
+  function abrirGrupoFijo(miembros){
+    gfMiembros = miembros;
+    $id('gfNombre').value = '';
+    $id('gfFrecuencia').value = 'semanal';
+    $id('gfError').hidden = true;
+    const lista = $id('gfMiembros');
+    lista.innerHTML = '';
+    miembros.forEach(m => { const c = document.createElement('span'); c.className = 'chip'; c.textContent = etiquetaPersona(m); lista.append(c); });
+    $id('dlgGrupoFijo').showModal();
+  }
+  $id('gfCerrar').addEventListener('click', () => $id('dlgGrupoFijo').close());
+  $id('formGrupoFijo').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const yo = auth.currentUser;
+    const nombre = $id('gfNombre').value.replace(/\s+/g, ' ').trim();
+    const err = $id('gfError');
+    err.hidden = true;
+    if (!yo) return;
+    if (nombre.length < 3) { err.textContent = 'El nombre debe tener al menos 3 caracteres.'; err.hidden = false; return; }
+    $id('gfCrear').disabled = true;
+    try {
+      await addDoc(collection(db, 'gruposFijos'), {
+        creadorId: yo.uid, creadorNombre: yo.displayName || '',
+        nombre, frecuencia: $id('gfFrecuencia').value,
+        miembros: gfMiembros, miembrosIds: gfMiembros.map(m => m.uid),
+        creadoEn: serverTimestamp()
+      });
+      $id('dlgGrupoFijo').close();
+      salirModoInvitar();
+    } catch (e2) {
+      console.error('Grupo fijo:', e2);
+      err.textContent = 'No se pudo crear el grupo fijo. Revisa la regla de la colección gruposFijos en Firestore.';
+      err.hidden = false;
+    } finally {
+      $id('gfCrear').disabled = false;
+    }
+  });
+
+  const FRECUENCIAS = { diaria: 'Todos los días', semanal: 'Cada semana', quincenal: 'Cada quince días', mensual: 'Cada mes', libre: 'A su ritmo' };
+  function pintarGruposFijos(){
+    const cont = $id('gruposFijosLista');
+    cont.innerHTML = '';
+    gruposFijos.forEach(g => {
+      const fila = document.createElement('div');
+      fila.className = 'creada';
+      const info = document.createElement('div');
+      const t = document.createElement('div'); t.className = 'creada-t'; t.textContent = g.nombre;
+      const m = document.createElement('div'); m.className = 'creada-m';
+      m.textContent = (FRECUENCIAS[g.frecuencia] || '') + ' · ' + (g.miembros || []).map(etiquetaPersona).join(', ');
+      info.append(t, m);
+      const acc = document.createElement('div'); acc.className = 'creada-acc';
+      const nueva = document.createElement('button'); nueva.type = 'button'; nueva.className = 'btn-invitar'; nueva.textContent = 'Nueva edición';
+      nueva.addEventListener('click', () => nuevaEdicion(g, nueva));
+      const quitar = document.createElement('button'); quitar.type = 'button'; quitar.className = 'btn-sec'; quitar.textContent = 'Eliminar';
+      quitar.addEventListener('click', async () => {
+        if (!confirm('¿Eliminar el grupo fijo «' + g.nombre + '»? Las ediciones ya creadas no se borran.')) return;
+        try { await deleteDoc(doc(db, 'gruposFijos', g.id)); } catch (e) { console.error('Eliminar grupo fijo:', e); alert('No se pudo eliminar.'); }
+      });
+      acc.append(nueva, quitar);
+      fila.append(info, acc);
+      cont.append(fila);
+    });
+    $id('gruposFijosVacio').hidden = gruposFijos.length > 0;
+  }
+
+  async function nuevaEdicion(g, boton){
+    boton.disabled = true;
+    let n = 1;
+    try { n = (await getDocs(query(collection(db, 'revistas'), where('serieId', '==', g.id)))).size + 1; }
+    catch (e) { console.error('Ediciones:', e); }
+    boton.disabled = false;
+    prepararCrear({ formato: 'revista', nombre: g.nombre + ' · Edición ' + n, serieId: g.id, serieNombre: g.nombre, cola: g.miembros || [] });
+  }
+
+  function iniciarGruposFijos(uid){
+    if (cancelarGruposFijos) cancelarGruposFijos();
+    cancelarGruposFijos = onSnapshot(
+      query(collection(db, 'gruposFijos'), where('creadorId', '==', uid)),
+      snap => {
+        gruposFijos = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (b.creadoEn?.toMillis?.() || 0) - (a.creadoEn?.toMillis?.() || 0));
+        pintarGruposFijos();
+      },
+      err => {
+        console.error('Grupos fijos:', err);
+        const v = $id('gruposFijosVacio');
+        v.textContent = 'No se pudieron cargar los grupos fijos. Revisa la regla de la colección gruposFijos en Firestore.';
+        v.hidden = false;
+      });
+  }
+  function detenerGruposFijos(){
+    if (cancelarGruposFijos) cancelarGruposFijos();
+    cancelarGruposFijos = null;
+    gruposFijos = [];
+    modoInvitar = false;
+    seleccion.clear();
+    contextoCrear = null;
+    $id('gruposFijosLista').innerHTML = '';
+  }
 
   // ---------- chat por revista (ítem 4) ----------
   function revistasConChat(){
@@ -3682,6 +4020,7 @@
     card.append(pt,
       nodo('div', 'rev-card-t', r.nombre),
       nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
+      ...(r.serieNombre ? [nodo('div', 'rev-card-m', 'Serie: ' + r.serieNombre)] : []),
       nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
       nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
       nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
@@ -3774,6 +4113,7 @@
     const datos = nodo('div');
     datos.append(nodo('h3', null, r.nombre),
       nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
+      ...(r.serieNombre ? [nodo('div', 'rev-card-m', 'Serie: ' + r.serieNombre)] : []),
       nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
       nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
       nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
@@ -4976,6 +5316,7 @@
       iniciarTurnos(user.uid);
       iniciarNotificaciones(user.uid);
       iniciarGuardados(user.uid);
+      iniciarGruposFijos(user.uid);
       iniciarCompras(user.uid);
       sincronizarPerfilPublico();
     } else {
@@ -4993,6 +5334,7 @@
       detenerTurnos();
       detenerNotificaciones();
       detenerGuardados();
+      detenerGruposFijos();
     }
   });
 </script>
