@@ -344,6 +344,19 @@
   .subir-info{ flex:1; min-width:0; }
   .subir-info .cf-error{ margin-top:6px; }
 
+  /* ---------- Mis revistas: Creadas / Mis compras ---------- */
+  .mis-tabs{ display:flex; gap:4px; padding:0 40px; border-bottom:1px solid var(--line); overflow-x:auto; }
+  .mtab{ background:none; border:0; padding:12px 16px; margin-bottom:-1px; font:inherit; font-weight:500; color:var(--ink-soft);
+    border-bottom:2px solid transparent; cursor:pointer; display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
+  .mtab:hover{ color:var(--ink); }
+  .mtab.active{ color:var(--ink); border-bottom-color:var(--guinda); }
+  .mtab:focus-visible{ outline:2px solid var(--brass); outline-offset:-2px; }
+  .mtab svg{ width:16px; height:16px; }
+  .mis-panel[hidden]{ display:none; }
+  .perfil-body .gallery{ padding:0 0 34px; }
+  .perfil-h .cuenta{ font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:400; color:var(--ink-soft); margin-left:8px; }
+  @media (max-width: 899px){ .mis-tabs{ padding:0 12px; } }
+
   .gallery{
     display:grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -1122,13 +1135,38 @@
           <p id="misRevistasSub">Tus proyectos y ediciones.</p>
         </div>
       </div>
-      <div class="perfil-body">
+      <div class="mis-tabs" role="tablist" aria-label="Mis revistas">
+        <button type="button" class="mtab active" role="tab" id="mtabCreadas" data-mtab="creadas" aria-selected="true" aria-controls="misPanelCreadas">Creadas por ti</button>
+        <button type="button" class="mtab" role="tab" id="mtabCompras" data-mtab="compras" aria-selected="false" aria-controls="misPanelCompras" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>Mis compras<span class="tab-n" id="comprasN" hidden>0</span></button>
+      </div>
+
+      <div class="perfil-body mis-panel" id="misPanelCreadas" role="tabpanel" aria-labelledby="mtabCreadas">
         <h2 class="perfil-h">Creadas por ti</h2>
         <div class="lista-creadas" id="misRevistasLista"></div>
         <div class="empty-state" id="misRevistasVacio">
           <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
           <p class="empty-title">Aún no tienes revistas</p>
           <p class="empty-sub">Las revistas que crees o en las que colabores aparecerán aquí.</p>
+        </div>
+      </div>
+
+      <div class="perfil-body mis-panel" id="misPanelCompras" role="tabpanel" aria-labelledby="mtabCompras" hidden>
+        <p class="cf-error" id="comprasError" hidden></p>
+
+        <h2 class="perfil-h">Revistas<span class="cuenta" id="comprasRevN">0</span></h2>
+        <div class="gallery" id="comprasRevistas"></div>
+        <div class="empty-state" id="comprasRevVacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+          <p class="empty-title">Aún no has comprado revistas</p>
+          <p class="empty-sub">Las revistas que compres en la galería aparecerán aquí para leerlas cuando quieras.</p>
+        </div>
+
+        <h2 class="perfil-h">Libros<span class="cuenta" id="comprasLibN">0</span></h2>
+        <div class="gallery" id="comprasLibros"></div>
+        <div class="empty-state" id="comprasLibVacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1B1613" stroke-width="1.4"><path d="M4 6l8-3 8 3v13l-8-3-8 3V6z"/><path d="M12 3v16"/></svg>
+          <p class="empty-title">Aún no has comprado libros</p>
+          <p class="empty-sub">Los libros que compres en la galería aparecerán aquí.</p>
         </div>
       </div>
     </section>
@@ -1144,6 +1182,7 @@
         <button type="button" class="tab active" role="tab" id="tabInvitaciones" data-tab="invitaciones" aria-selected="true" aria-controls="panelInvitaciones">Invitaciones<span class="tab-n" id="tabInvN" hidden>0</span></button>
         <button type="button" class="tab" role="tab" id="tabTurnos" data-tab="turnos" aria-selected="false" aria-controls="panelTurnos" tabindex="-1">Turnos</button>
         <button type="button" class="tab" role="tab" id="tabMensajes" data-tab="mensajes" aria-selected="false" aria-controls="panelMensajes" tabindex="-1">Mensajes</button>
+        <button type="button" class="tab" role="tab" id="tabPersonas" data-tab="personas" aria-selected="false" aria-controls="panelPersonas" tabindex="-1">Personas</button>
       </div>
 
       <div class="tab-panel" id="panelInvitaciones" role="tabpanel" aria-labelledby="tabInvitaciones">
@@ -1206,6 +1245,24 @@
           </form>
         </div>
       </div>
+      </div>
+
+      <div class="tab-panel" id="panelPersonas" role="tabpanel" aria-labelledby="tabPersonas" hidden>
+        <div class="perfil-body">
+          <h2 class="perfil-h">Buscar personas</h2>
+          <form class="msg-nuevo" id="formBuscarPersonas">
+            <input type="text" id="buscarPersonasUsuario" placeholder="usuario (primeras letras)" autocomplete="off" autocapitalize="none" spellcheck="false" />
+            <button type="submit" class="btn-primary">Buscar</button>
+          </form>
+          <p class="cf-hint">Busca por las primeras letras del nombre de usuario. Puede haber varias personas con el mismo usuario y distinto número.</p>
+          <p class="cf-error" id="buscarPersonasError" hidden></p>
+          <div class="lista-creadas" id="buscarPersonasResultados"></div>
+          <p class="inv-vacio" id="buscarPersonasVacio" hidden>No encontramos a nadie con ese usuario.</p>
+
+          <h2 class="perfil-h">Guardados</h2>
+          <div class="lista-creadas" id="guardadosLista"></div>
+          <p class="inv-vacio" id="guardadosVacio">Aún no has guardado a nadie. Guarda un perfil desde su página para tenerlo a mano cuando crees un proyecto.</p>
+        </div>
       </div>
     </section>
 
@@ -1289,6 +1346,7 @@
             <h1 id="ppNombre">Perfil</h1>
             <p id="ppUsuario"></p>
             <p id="ppDesde"></p>
+            <button type="button" class="btn-sec" id="ppGuardar" hidden>Guardar usuario</button>
           </div>
         </div>
       </div>
@@ -1443,8 +1501,8 @@
     updateProfile, signOut
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
   import {
-    getFirestore, doc, getDoc, setDoc, serverTimestamp,
-    increment, collection, addDoc, query, where, getDocs, onSnapshot,
+    getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp,
+    increment, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot,
     writeBatch, Timestamp, Bytes, runTransaction
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
@@ -2921,9 +2979,13 @@
     vacio: document.getElementById('ppVacio')
   };
   let ppToken = 0; // descarta respuestas de un perfil que ya no se está mirando
+  let perfilPublicoUid = null;
+  let perfilPublicoDatos = null;
 
   function limpiarPerfilPublico(){
     ppToken++;
+    perfilPublicoUid = null;
+    perfilPublicoDatos = null;
     ppEls.nombre.textContent = 'Perfil';
     ppEls.usuario.textContent = '';
     ppEls.desde.textContent = '';
@@ -2940,6 +3002,7 @@
 
   async function cargarPerfilPublico(uid){
     limpiarPerfilPublico();
+    perfilPublicoUid = uid;
     const token = ppToken;
     ppEls.nombre.textContent = 'Cargando…';
     try {
@@ -2950,6 +3013,8 @@
         return;
       }
       const d = snap.data() || {};
+      perfilPublicoDatos = d;
+      actualizarBotonGuardarPerfil();
       ppEls.nombre.textContent = d.nombre || d.usuario || 'Usuario';
       pintarAvatar(document.getElementById('ppAvatar'), d.foto, d.nombre || d.usuario);
       ppEls.usuario.textContent = d.usuario && d.numero ? d.usuario + ' · ' + d.numero : '';
@@ -2986,6 +3051,163 @@
     cargarPerfilPublico(uid);
   }
   window.addEventListener('hashchange', sincronizarPerfilPublico);
+
+  // ---------- personas: buscar por usuario y guardar para después ----------
+  let guardados = [];
+  let cancelarGuardados = null;
+
+  function idGuardado(miUid, targetUid){ return miUid + '_' + targetUid; }
+
+  function estaGuardado(targetUid){
+    return guardados.some(g => g.paraId === targetUid);
+  }
+
+  async function alternarGuardado(targetUid, datos, boton){
+    const yo = auth.currentUser;
+    if (!yo || !targetUid || targetUid === yo.uid) return;
+    if (boton) boton.disabled = true;
+    try {
+      const ref = doc(db, 'guardados', idGuardado(yo.uid, targetUid));
+      if (estaGuardado(targetUid)) {
+        await deleteDoc(ref);
+      } else {
+        await setDoc(ref, {
+          deId: yo.uid,
+          paraId: targetUid,
+          paraNombre: (datos && datos.nombre) || '',
+          paraUsuario: (datos && datos.usuario) || '',
+          paraNumero: (datos && datos.numero) || '',
+          paraFoto: (datos && datos.foto) || '',
+          creadoEn: serverTimestamp()
+        });
+      }
+    } catch (err) {
+      console.error('Guardar usuario:', err);
+    } finally {
+      if (boton) boton.disabled = false;
+    }
+  }
+
+  const ppGuardar = document.getElementById('ppGuardar');
+  function actualizarBotonGuardarPerfil(){
+    const yo = auth.currentUser;
+    if (!ppGuardar) return;
+    if (!yo || !perfilPublicoUid || perfilPublicoUid === yo.uid) {
+      ppGuardar.hidden = true;
+      return;
+    }
+    ppGuardar.hidden = false;
+    ppGuardar.textContent = estaGuardado(perfilPublicoUid) ? 'Quitar de guardados' : 'Guardar usuario';
+  }
+  ppGuardar.addEventListener('click', async () => {
+    if (!perfilPublicoUid) return;
+    await alternarGuardado(perfilPublicoUid, perfilPublicoDatos || {}, ppGuardar);
+    actualizarBotonGuardarPerfil();
+  });
+
+  // fila reutilizable para una persona, en resultados de búsqueda o en guardados
+  function filaPersona(uid, datos, opts){
+    const conQuitar = opts && opts.conQuitar;
+    const fila = document.createElement('div');
+    fila.className = 'creada';
+    const info = document.createElement('div');
+    const t = document.createElement('div');
+    t.className = 'creada-t';
+    t.append(enlacePerfil(uid, datos.nombre || datos.usuario || 'Usuario'));
+    const m = document.createElement('div');
+    m.className = 'creada-m';
+    m.textContent = datos.usuario && datos.numero ? datos.usuario + ' · ' + datos.numero : '';
+    info.append(t, m);
+    const acc = document.createElement('div');
+    acc.className = 'creada-acc';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-sec';
+    const refrescarBtn = () => { btn.textContent = conQuitar ? 'Quitar' : (estaGuardado(uid) ? 'Guardado ✓' : 'Guardar'); };
+    refrescarBtn();
+    btn.addEventListener('click', async () => {
+      await alternarGuardado(uid, datos, btn);
+      const yo = auth.currentUser;
+      if (conQuitar && yo) pintarGuardados(yo.uid); else refrescarBtn();
+    });
+    acc.append(btn);
+    fila.append(info, acc);
+    return fila;
+  }
+
+  function pintarGuardados(uid){
+    const cont = document.getElementById('guardadosLista');
+    const vacio = document.getElementById('guardadosVacio');
+    if (!cont) return;
+    cont.innerHTML = '';
+    guardados.forEach(g => {
+      cont.append(filaPersona(g.paraId, { nombre: g.paraNombre, usuario: g.paraUsuario, numero: g.paraNumero, foto: g.paraFoto }, { conQuitar: true }));
+    });
+    vacio.hidden = guardados.length > 0;
+    actualizarBotonGuardarPerfil();
+  }
+
+  function iniciarGuardados(uid){
+    if (cancelarGuardados) cancelarGuardados();
+    cancelarGuardados = onSnapshot(
+      query(collection(db, 'guardados'), where('deId', '==', uid)),
+      (snap) => {
+        guardados = snap.docs.map(d => d.data());
+        pintarGuardados(uid);
+      },
+      (err) => console.error('Guardados:', err)
+    );
+  }
+
+  function detenerGuardados(){
+    if (cancelarGuardados) cancelarGuardados();
+    cancelarGuardados = null;
+    guardados = [];
+    const cont = document.getElementById('guardadosLista');
+    if (cont) cont.innerHTML = '';
+  }
+
+  async function buscarPersonas(prefijoCrudo){
+    const prefijo = (prefijoCrudo || '').trim().toLowerCase();
+    const errEl = document.getElementById('buscarPersonasError');
+    const vacioEl = document.getElementById('buscarPersonasVacio');
+    const cont = document.getElementById('buscarPersonasResultados');
+    errEl.hidden = true;
+    vacioEl.hidden = true;
+    cont.innerHTML = '';
+    if (!/^[a-z0-9._-]{2,20}$/.test(prefijo)) {
+      errEl.textContent = 'Escribe al menos 2 caracteres válidos (letras, números, . - _).';
+      errEl.hidden = false;
+      return;
+    }
+    const yo = auth.currentUser;
+    try {
+      const fin = prefijo.slice(0, -1) + String.fromCharCode(prefijo.charCodeAt(prefijo.length - 1) + 1);
+      const snap = await getDocs(query(
+        collection(db, 'usuarios'),
+        orderBy('usuario'),
+        where('usuario', '>=', prefijo),
+        where('usuario', '<', fin),
+        limit(20)
+      ));
+      const resultados = snap.docs
+        .filter(d => !yo || d.id !== yo.uid)
+        .map(d => ({ uid: d.id, ...d.data() }));
+      if (!resultados.length) { vacioEl.hidden = false; return; }
+      resultados.forEach(r => {
+        cont.append(filaPersona(r.uid, { nombre: r.nombre, usuario: r.usuario, numero: r.numero, foto: r.foto }));
+      });
+    } catch (err) {
+      console.error('Buscar personas:', err);
+      errEl.textContent = 'No se pudo buscar. Revisa las reglas de Firestore e inténtalo de nuevo.';
+      errEl.hidden = false;
+    }
+  }
+
+  document.getElementById('formBuscarPersonas').addEventListener('submit', (e) => {
+    e.preventDefault();
+    buscarPersonas(document.getElementById('buscarPersonasUsuario').value);
+  });
 
   // ---------- chat por revista (ítem 4) ----------
   function revistasConChat(){
@@ -4581,6 +4803,105 @@
     if (document.getElementById('subirEntregas')) pintarSubir();
   }
 
+  // ---------- Mis compras: carpeta dentro de Mis revistas ----------
+  let compras = [];                       // compras del usuario
+  let cancelarCompras = null;
+  const revistasCompradas = new Map();    // revistaId -> datos de la revista (null si ya no se puede leer)
+
+  function abrirMisTab(nombre){
+    document.querySelectorAll('.mis-tabs .mtab').forEach(t => {
+      const on = t.dataset.mtab === nombre;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    document.getElementById('misPanelCreadas').hidden = nombre !== 'creadas';
+    document.getElementById('misPanelCompras').hidden = nombre !== 'compras';
+  }
+  window.abrirMisTab = abrirMisTab;
+  document.querySelectorAll('.mis-tabs .mtab').forEach((t, i, todas) => {
+    t.addEventListener('click', () => abrirMisTab(t.dataset.mtab));
+    t.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const sig = todas[(i + (e.key === 'ArrowRight' ? 1 : todas.length - 1)) % todas.length];
+      abrirMisTab(sig.dataset.mtab);
+      sig.focus();
+    });
+  });
+
+  // tarjeta de una compra cuya revista ya no se puede leer: se muestra con lo que guarda la propia compra
+  function tarjetaCompraSinRevista(c){
+    const card = nodo('article', 'rev-card');
+    card.append(nodo('div', 'rev-portada', c.revistaNombre || 'Obra'),
+      nodo('div', 'rev-card-t', c.revistaNombre || 'Obra'),
+      nodo('div', 'rev-card-m', 'Esta obra ya no está disponible.'));
+    return card;
+  }
+
+  function pintarCompras(){
+    const contR = document.getElementById('comprasRevistas');
+    const contL = document.getElementById('comprasLibros');
+    if (!contR || !contL) return;
+    contR.innerHTML = '';
+    contL.innerHTML = '';
+    const ms = c => c.creadoEn?.toMillis?.() || 0;
+    let nR = 0, nL = 0;
+    [...compras].sort((a, b) => ms(b) - ms(a)).forEach(c => {
+      const r = revistasCompradas.get(c.revistaId);
+      const cuando = ms(c) ? 'Comprada el ' + new Date(ms(c)).toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Comprada';
+      // si la revista no se pudo leer, el precio pagado dice de qué formato era
+      const esLibro = r ? r.formato === 'libro' : (c.precio || 0) >= PRECIO_FORMATO.libro;
+      const tarjeta = r ? tarjetaRevista(r, cuando) : tarjetaCompraSinRevista(c);
+      if (esLibro) { contL.append(tarjeta); nL++; } else { contR.append(tarjeta); nR++; }
+    });
+    document.getElementById('comprasRevN').textContent = nR;
+    document.getElementById('comprasLibN').textContent = nL;
+    document.getElementById('comprasRevVacio').style.display = nR ? 'none' : '';
+    document.getElementById('comprasLibVacio').style.display = nL ? 'none' : '';
+    const total = document.getElementById('comprasN');
+    total.textContent = nR + nL;
+    total.hidden = nR + nL === 0;
+  }
+
+  function iniciarCompras(uid){
+    detenerCompras();
+    cancelarCompras = onSnapshot(
+      query(collection(db, 'compras'), where('compradorId', '==', uid)),
+      async (snap) => {
+        document.getElementById('comprasError').hidden = true;
+        compras = snap.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: 'estimate' }) }));
+        pintarCompras();
+        const faltan = [...new Set(compras.map(c => c.revistaId))].filter(id => !revistasCompradas.has(id));
+        if (!faltan.length) return;
+        await Promise.all(faltan.map(async id => {
+          try {
+            const sn = await getDoc(doc(db, 'revistas', id));
+            revistasCompradas.set(id, sn.exists() ? { id, ...sn.data() } : null);
+          } catch (e) {
+            console.warn('Revista comprada no legible:', id, e);
+            revistasCompradas.set(id, null);
+          }
+        }));
+        pintarCompras();
+      },
+      (err) => {
+        console.error('Compras:', err);
+        const e = document.getElementById('comprasError');
+        e.textContent = 'No se pudieron cargar tus compras. Revisa las reglas de Firestore e inténtalo de nuevo.';
+        e.hidden = false;
+      }
+    );
+  }
+
+  function detenerCompras(){
+    if (cancelarCompras) cancelarCompras();
+    cancelarCompras = null;
+    compras = [];
+    revistasCompradas.clear();
+    if (document.getElementById('comprasRevistas')) pintarCompras();
+    abrirMisTab('creadas');
+  }
+
   // ---------- bandeja: pestañas ----------
   const pestanas = [...document.querySelectorAll('.tabs .tab')];
   function abrirBandeja(nombre){
@@ -4619,11 +4940,14 @@
       iniciarInvitaciones(user.uid);
       iniciarTurnos(user.uid);
       iniciarNotificaciones(user.uid);
+      iniciarGuardados(user.uid);
+      iniciarCompras(user.uid);
       sincronizarPerfilPublico();
     } else {
       document.body.classList.remove('logged-in');
       limpiarPerfil();
       limpiarPerfilPublico();
+      detenerCompras();
       abrirBandeja('invitaciones');
       detenerMensajes();
       detenerChatsRevista();
@@ -4633,6 +4957,7 @@
       detenerInvitaciones();
       detenerTurnos();
       detenerNotificaciones();
+      detenerGuardados();
     }
   });
 </script>
