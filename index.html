@@ -292,6 +292,15 @@
   .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
   .avatar-mini{ width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,.18); display:inline-flex; align-items:center; justify-content:center; font-size:12px; overflow:hidden; flex:none; }
   .avatar-mini img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .roles-edit{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:12px; }
+  .roles-t{ font-size:13px; color:var(--muted, #6b5f58); }
+  .rol-chip{ border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:999px; padding:6px 13px; font:inherit; font-size:13px; cursor:pointer; }
+  .rol-chip[aria-pressed="true"]{ background:var(--guinda); color:var(--cream); border-color:var(--guinda); }
+  .rol-chip:disabled{ opacity:.6; cursor:default; }
+  .roles-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .roles-tags:empty{ display:none; }
+  .rol-tag{ font-size:11.5px; padding:2px 9px; border-radius:999px; background:rgba(0,0,0,.06); color:var(--ink); }
+  #buscarPersonasRol{ flex:none; }
   .perfil-acc{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
   .perfil-acc button[hidden]{ display:none; }
   #nombreInput{ font-family:inherit; font-size:14px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); width:100%; }
@@ -723,14 +732,23 @@
     .brand{ border-right:none; border-bottom:1px solid rgba(255,255,255,0.08); }
     .topbar-right{ flex-wrap:wrap; gap:12px; padding:14px 20px; }
     .search{ max-width:none; order:3; flex-basis:100%; }
-    .sidebar{ flex-direction:row; flex-wrap:wrap; padding:14px; overflow-x:auto; }
-    .nav-group, .cat-list{ display:flex; flex-wrap:wrap; padding:0 8px; flex:none; }
-    .nav-item{ flex-direction:row; align-items:center; }
+    /* menú del celular: todos los ítems a la vista en una cuadrícula; solo las categorías se deslizan */
+    .sidebar{ flex-direction:row; flex-wrap:wrap; padding:12px 12px 4px; overflow-x:hidden; }
+    .nav-group{ display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; flex:1 0 100%; padding:0; }
+    .nav-item{ flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:5px; padding:10px 4px; margin-bottom:0; }
+    .nav-item svg{ margin-top:0; }
+    .nav-item .label{ font-size:12px; }
+    .cat-list{ display:flex; flex-wrap:nowrap; gap:6px; overflow-x:auto; flex:1 0 100%; padding:8px 0 4px; }
+    .cat-item{ flex:none; gap:8px; }
     .divider{ display:none; }
     .sidebar-footer{ flex:1 0 100%; padding:10px 8px 4px; border-top:none; }
     .account{ margin-bottom:0; }
     .main-header{ padding:24px 20px 18px; flex-direction:column; align-items:flex-start; gap:12px; }
     .gallery{ padding:22px 20px 40px; gap:22px; }
+  }
+
+  @media (min-width: 700px) and (max-width: 899px){
+    .nav-group{ grid-template-columns:repeat(6, 1fr); }
   }
 
   @media (max-width: 699px){
@@ -747,7 +765,7 @@
     .brand-text .tagline{ display:none; }
     .topbar-right{ padding:12px 14px; }
     .pill.credits, .pill.reload{ flex:1; justify-content:center; text-align:center; }
-    .pill:not(.credits):not(.reload):not(.perfil-btn){ display:none; }
+    .pill:not(.credits):not(.reload):not(.perfil-btn):not(.campana){ display:none; }
     .gallery{ grid-template-columns: 1fr 1fr; gap:14px; padding:18px 14px 32px; }
     .main-header{ padding:20px 14px 16px; }
     .main-header h1{ font-size:22px; }
@@ -1290,12 +1308,17 @@
           <h2 class="perfil-h">Buscar personas</h2>
           <form class="msg-nuevo" id="formBuscarPersonas">
             <input type="text" id="buscarPersonasUsuario" placeholder="usuario (primeras letras)" autocomplete="off" autocapitalize="none" spellcheck="false" />
+            <select class="sort" id="buscarPersonasRol" aria-label="Filtrar por oficio">
+              <option value="">Todos</option>
+              <option value="escritor">Escritores</option>
+              <option value="ilustrador">Ilustradores</option>
+            </select>
             <button type="submit" class="btn-primary">Buscar</button>
           </form>
-          <p class="cf-hint">Busca por las primeras letras del nombre de usuario. Puede haber varias personas con el mismo usuario y distinto número.</p>
+          <p class="cf-hint">Busca por las primeras letras del usuario, o elige un oficio y deja el nombre vacío para ver quién lo ejerce. Puede haber varias personas con el mismo usuario y distinto número.</p>
           <p class="cf-error" id="buscarPersonasError" hidden></p>
           <div class="lista-creadas" id="buscarPersonasResultados"></div>
-          <p class="inv-vacio" id="buscarPersonasVacio" hidden>No encontramos a nadie con ese usuario.</p>
+          <p class="inv-vacio" id="buscarPersonasVacio" hidden>No encontramos a nadie con ese usuario u oficio.</p>
 
           <div class="guard-cab">
             <h2 class="perfil-h">Guardados</h2>
@@ -1352,6 +1375,11 @@
               <button type="button" class="btn-sec" id="btnNombreEditar">Editar nombre</button>
               <button type="button" class="btn-sec" id="btnLogoutPerfil">Cerrar sesión</button>
             </div>
+            <div class="roles-edit" id="rolesEdit">
+              <span class="roles-t">Mi oficio:</span>
+              <button type="button" class="rol-chip" data-rol="escritor" aria-pressed="false">Escritor</button>
+              <button type="button" class="rol-chip" data-rol="ilustrador" aria-pressed="false">Ilustrador</button>
+            </div>
             <input type="file" id="fotoInput" accept="image/*" hidden />
           </div>
         </div>
@@ -1399,6 +1427,7 @@
           <div>
             <h1 id="ppNombre">Perfil</h1>
             <p id="ppUsuario"></p>
+            <div class="roles-tags" id="ppRoles"></div>
             <p id="ppDesde"></p>
             <button type="button" class="btn-sec" id="ppGuardar" hidden>Guardar usuario</button>
           </div>
@@ -3096,6 +3125,7 @@
     perfilPublicoDatos = null;
     ppEls.nombre.textContent = 'Perfil';
     ppEls.usuario.textContent = '';
+    pintarRolesTags(document.getElementById('ppRoles'), []);
     ppEls.desde.textContent = '';
     ppEls.resenas.textContent = '0';
     ppEls.ventas.textContent = '0';
@@ -3126,6 +3156,7 @@
       ppEls.nombre.textContent = d.nombre || d.usuario || 'Usuario';
       pintarAvatar(document.getElementById('ppAvatar'), d.foto, d.nombre || d.usuario);
       ppEls.usuario.textContent = d.usuario && d.numero ? d.usuario + ' · ' + d.numero : '';
+      pintarRolesTags(document.getElementById('ppRoles'), d.roles);
       ppEls.resenas.textContent = textoResenas(d);
       ppEls.ventas.textContent = d.ventas ?? 0;
       document.getElementById('ppNReconoc').textContent = d.reconocimientos ?? 0;
@@ -3215,6 +3246,19 @@
   });
 
   // fila reutilizable para una persona, en resultados de búsqueda o en guardados
+  // oficios: escritor / ilustrador (se guardan en tu perfil; no hace falta ninguna regla nueva)
+  const ROLES = { escritor: 'Escritor', ilustrador: 'Ilustrador' };
+  function pintarRolesTags(cont, roles){
+    if (!cont) return;
+    cont.innerHTML = '';
+    (Array.isArray(roles) ? roles : []).filter(r => ROLES[r]).forEach(r => {
+      const t = document.createElement('span');
+      t.className = 'rol-tag';
+      t.textContent = ROLES[r];
+      cont.append(t);
+    });
+  }
+
   function filaPersona(uid, datos, opts){
     const conQuitar = opts && opts.conQuitar;
     const fila = document.createElement('div');
@@ -3227,6 +3271,12 @@
     m.className = 'creada-m';
     m.textContent = datos.usuario && datos.numero ? datos.usuario + ' · ' + datos.numero : '';
     info.append(t, m);
+    if (Array.isArray(datos.roles) && datos.roles.length) {
+      const rt = document.createElement('div');
+      rt.className = 'roles-tags';
+      pintarRolesTags(rt, datos.roles);
+      info.append(rt);
+    }
     const acc = document.createElement('div');
     acc.className = 'creada-acc';
     const btn = document.createElement('button');
@@ -3291,27 +3341,41 @@
     errEl.hidden = true;
     vacioEl.hidden = true;
     cont.innerHTML = '';
-    if (!/^[a-z0-9._-]{2,20}$/.test(prefijo)) {
+    const rol = document.getElementById('buscarPersonasRol').value;
+    if (!prefijo && !rol) {
+      errEl.textContent = 'Escribe al menos 2 caracteres válidos (letras, números, . - _) o elige un oficio.';
+      errEl.hidden = false;
+      return;
+    }
+    if (prefijo && !/^[a-z0-9._-]{2,20}$/.test(prefijo)) {
       errEl.textContent = 'Escribe al menos 2 caracteres válidos (letras, números, . - _).';
       errEl.hidden = false;
       return;
     }
     const yo = auth.currentUser;
     try {
-      const fin = prefijo.slice(0, -1) + String.fromCharCode(prefijo.charCodeAt(prefijo.length - 1) + 1);
-      const snap = await getDocs(query(
-        collection(db, 'usuarios'),
-        orderBy('usuario'),
-        where('usuario', '>=', prefijo),
-        where('usuario', '<', fin),
-        limit(20)
-      ));
-      const resultados = snap.docs
+      let docs;
+      if (!prefijo) {
+        // solo oficio: lista de quienes lo ejercen
+        docs = (await getDocs(query(collection(db, 'usuarios'), where('roles', 'array-contains', rol), limit(30)))).docs;
+      } else {
+        const fin = prefijo.slice(0, -1) + String.fromCharCode(prefijo.charCodeAt(prefijo.length - 1) + 1);
+        docs = (await getDocs(query(
+          collection(db, 'usuarios'),
+          orderBy('usuario'),
+          where('usuario', '>=', prefijo),
+          where('usuario', '<', fin),
+          limit(rol ? 60 : 20)
+        ))).docs;
+      }
+      const resultados = docs
         .filter(d => !yo || d.id !== yo.uid)
-        .map(d => ({ uid: d.id, ...d.data() }));
+        .map(d => ({ uid: d.id, ...d.data() }))
+        .filter(r => !rol || (Array.isArray(r.roles) && r.roles.includes(rol)))
+        .slice(0, 20);
       if (!resultados.length) { vacioEl.hidden = false; return; }
       resultados.forEach(r => {
-        cont.append(filaPersona(r.uid, { nombre: r.nombre, usuario: r.usuario, numero: r.numero, foto: r.foto }));
+        cont.append(filaPersona(r.uid, { nombre: r.nombre, usuario: r.usuario, numero: r.numero, foto: r.foto, roles: r.roles }));
       });
     } catch (err) {
       console.error('Buscar personas:', err);
@@ -4488,6 +4552,8 @@
     const nombre = miPerfilDatos.nombre || (auth.currentUser && auth.currentUser.displayName) || '';
     pintarAvatar(document.getElementById('perfilAvatar'), miPerfilDatos.foto, nombre);
     pintarAvatar(document.getElementById('topAvatar'), miPerfilDatos.foto, nombre);
+    const misRoles = Array.isArray(miPerfilDatos.roles) ? miPerfilDatos.roles : [];
+    document.querySelectorAll('#rolesEdit .rol-chip').forEach(b => b.setAttribute('aria-pressed', misRoles.includes(b.dataset.rol) ? 'true' : 'false'));
     btnFotoSubir.textContent = miPerfilDatos.foto ? 'Cambiar foto' : 'Subir foto';
     btnFotoQuitar.hidden = !miPerfilDatos.foto;
   }
@@ -4496,6 +4562,18 @@
     perfilEls.error.textContent = txt || '';
     perfilEls.error.hidden = !txt;
   }
+
+  document.querySelectorAll('#rolesEdit .rol-chip').forEach(b => b.addEventListener('click', async () => {
+    const yo = auth.currentUser;
+    if (!yo) return;
+    const actuales = Array.isArray(miPerfilDatos.roles) ? miPerfilDatos.roles : [];
+    const nuevos = actuales.includes(b.dataset.rol) ? actuales.filter(r => r !== b.dataset.rol) : [...actuales, b.dataset.rol];
+    avisoPerfil('');
+    document.querySelectorAll('#rolesEdit .rol-chip').forEach(x => x.disabled = true);
+    try { await setDoc(doc(db, 'usuarios', yo.uid), { roles: nuevos }, { merge: true }); }
+    catch (err) { console.error('Oficio:', err); avisoPerfil('No se pudo guardar tu oficio. Inténtalo de nuevo.'); }
+    finally { document.querySelectorAll('#rolesEdit .rol-chip').forEach(x => x.disabled = false); }
+  }));
 
   btnFotoSubir.addEventListener('click', () => fotoInput.click());
   fotoInput.addEventListener('change', async () => {
@@ -4983,6 +5061,89 @@
     });
   }
 
+  // Entrega por imágenes: una imagen por página. Se comprimen y se arman en un PDF A4 (como la portada),
+  // y de ahí sigue el mismo camino que un PDF: misma validación de páginas, versiones y semáforo.
+  async function comprimirParaPagina(file, presupuesto){
+    const bmp = await createImageBitmap(file);
+    for (const lado of [1600, 1300, 1000, 800, 600]) {
+      const esc = Math.min(1, lado / Math.max(bmp.width, bmp.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(bmp.width * esc));
+      canvas.height = Math.max(1, Math.round(bmp.height * esc));
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+      for (const calidad of [0.85, 0.75, 0.65, 0.55, 0.45]) {
+        const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', calidad));
+        if (blob && blob.size <= presupuesto) return new Uint8Array(await blob.arrayBuffer());
+      }
+    }
+    throw new Error('Imagen demasiado pesada');
+  }
+
+  async function subirImagenes(t, archivos){
+    const yo = auth.currentUser;
+    if (!yo) return;
+    const clave = t.revistaId + '_t' + t.n;
+    await ejecutarSubida(clave, async () => {
+      // se ordenan por nombre de archivo (01, 02, 03…): la primera imagen es la primera página
+      const lista = Array.from(archivos).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+      if (lista.some(f => !f.type.startsWith('image/'))) throw errorUsuario('Todos los archivos deben ser imágenes (JPG, PNG o WebP).');
+      if (lista.length !== t.paginasPorTurno) {
+        throw errorUsuario('Elegiste ' + lista.length + ' imagen(es) y este turno pide exactamente ' + t.paginasPorTurno + ' (una por página).');
+      }
+      if (lista.some(f => f.size > 12 * 1024 * 1024)) throw errorUsuario('Una imagen es demasiado grande (máximo 12 MB cada una).');
+      if (!window.PDFLib) throw errorUsuario('No se pudo cargar el lector de PDF. Recarga la página e inténtalo de nuevo.');
+      const presupuesto = Math.floor((MAX_PDF - 200 * 1024) / lista.length);
+      const pdf = await window.PDFLib.PDFDocument.create();
+      for (const f of lista) {
+        let jpg;
+        try { jpg = await comprimirParaPagina(f, presupuesto); }
+        catch (e) { throw errorUsuario('No se pudo leer o reducir la imagen «' + f.name + '». Prueba con otra en JPG o PNG.'); }
+        const img = await pdf.embedJpg(jpg);
+        const W = 595, H = 842, k = Math.min(W / img.width, H / img.height);
+        pdf.addPage([W, H]).drawImage(img, { x: (W - img.width * k) / 2, y: (H - img.height * k) / 2, width: img.width * k, height: img.height * k });
+      }
+      const bytes = await pdf.save();
+      if (bytes.length > MAX_PDF) throw errorUsuario('Las imágenes juntas pesan ' + tamanoLegible(bytes.length) + ' y el máximo es 3 MB.');
+      await guardarArchivo(clave, bytes, {
+        tipo: 'pdf',
+        revistaId: t.revistaId,
+        revistaNombre: t.revistaNombre || '',
+        turno: t.n,
+        usuarioId: yo.uid,
+        usuarioNombre: yo.displayName || '',
+        creadorId: t.creadorId,
+        nombreArchivo: 'imagenes-turno-' + t.n + '.pdf',
+        mime: 'application/pdf',
+        paginas: lista.length
+      });
+    });
+  }
+
+  function selectorImagenes(texto, clase, bloqueado, alElegir){
+    const caja = document.createElement('span');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.multiple = true;
+    input.className = 'subir-input';
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = clase;
+    b.textContent = texto;
+    b.disabled = bloqueado;
+    b.addEventListener('click', () => input.click());
+    input.addEventListener('change', () => {
+      const fs = Array.from(input.files || []);
+      input.value = '';
+      if (fs.length) alElegir(fs);
+    });
+    caja.append(input, b);
+    return caja;
+  }
+
   function tamanoLegible(b){
     return b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
   }
@@ -5033,6 +5194,10 @@
       m.className = 'creada-m';
       m.textContent = 'Turno ' + t.n + ' · exactamente ' + t.paginasPorTurno + ' pág. · ' + restante(vence - ahora);
       info.append(ti, m);
+      const ayuda = document.createElement('div');
+      ayuda.className = 'creada-m';
+      ayuda.textContent = 'Puedes subir un PDF o, si ilustras, ' + t.paginasPorTurno + ' imágenes (una por página, ordenadas por nombre: 01, 02…).';
+      info.append(ayuda);
       if (meta) {
         const d = document.createElement('div');
         d.className = 'creada-m';
@@ -5061,6 +5226,7 @@
       acc.append(selectorArchivo(
         ocupado ? 'Subiendo…' : (meta ? 'Reemplazar PDF' : 'Subir PDF'),
         meta ? 'btn-sec' : 'btn-primary', 'application/pdf,.pdf', ocupado, f => subirPDF(t, f)));
+      acc.append(selectorImagenes(ocupado ? 'Subiendo…' : 'Subir imágenes', 'btn-sec', ocupado, fs => subirImagenes(t, fs)));
       const est = document.createElement('span');
       est.className = 'estado';
       est.textContent = meta ? 'Entregado' : 'Por entregar';
