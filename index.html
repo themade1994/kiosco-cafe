@@ -301,6 +301,8 @@
   .roles-tags:empty{ display:none; }
   .rol-tag{ font-size:11.5px; padding:2px 9px; border-radius:999px; background:rgba(0,0,0,.06); color:var(--ink); }
   #buscarPersonasRol{ flex:none; }
+  .cf-check{ display:flex; gap:9px; align-items:center; font-size:14px; cursor:pointer; }
+  .cf-check input{ width:18px; height:18px; flex:none; }
   .perfil-acc{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
   .perfil-acc button[hidden]{ display:none; }
   #nombreInput{ font-family:inherit; font-size:14px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); width:100%; }
@@ -1117,6 +1119,7 @@
           <select id="crFormato">
             <option value="revista">Revista</option>
             <option value="libro">Libro</option>
+            <option value="ilustrada">Obra ilustrada (un solo creador)</option>
           </select>
         </div>
         <div class="cf-field">
@@ -1128,6 +1131,10 @@
           <label for="crMiTurno">Tu turno</label>
           <select id="crMiTurno" disabled></select>
           <span class="cf-hint">Los turnos marcan el orden de las páginas en el cuadernillo. Los demás elegirán entre los que queden.</span>
+        </div>
+        <div class="cf-field">
+          <label class="cf-check" for="crIlustrador"><input type="checkbox" id="crIlustrador" /> Esta revista lleva un ilustrador</label>
+          <span class="cf-hint">Se reserva el último turno para ilustración: solo lo pueden tomar personas con el oficio Ilustrador. Cuenta como uno de los participantes y entrega una imagen por página.</span>
         </div>
         <div class="cf-row">
           <div class="cf-field">
@@ -1167,9 +1174,13 @@
           </div>
         </div>
         <div class="cf-field">
-          <label for="crPrecio">Precio del cuadernillo (créditos)</label>
+          <label>Precio</label>
+          <div class="cf-row" style="gap:18px;">
+            <label class="cf-check" for="crModoPago"><input type="radio" name="crModoPrecio" id="crModoPago" value="pago" checked /> De pago</label>
+            <label class="cf-check" for="crModoGratis"><input type="radio" name="crModoPrecio" id="crModoGratis" value="gratis" /> Gratis</label>
+          </div>
           <input type="text" id="crPrecio" value="50 créditos" readonly tabindex="-1" style="background:#F1EAE4; cursor:default;" />
-          <span class="cf-hint" id="crPrecioHint">Precio fijo: 50 créditos la revista y 100 el libro. Se reparte entre la app y quienes hicieron la revista.</span>
+          <span class="cf-hint" id="crPrecioHint"></span>
         </div>
         <p class="cf-error" id="crError" hidden></p>
         <p class="cf-ok" id="crOk" hidden></p>
@@ -1230,7 +1241,7 @@
       </div>
       <div class="tabs" role="tablist" aria-label="Bandeja">
         <button type="button" class="tab active" role="tab" id="tabInvitaciones" data-tab="invitaciones" aria-selected="true" aria-controls="panelInvitaciones">Invitaciones<span class="tab-n" id="tabInvN" hidden>0</span></button>
-        <button type="button" class="tab" role="tab" id="tabTurnos" data-tab="turnos" aria-selected="false" aria-controls="panelTurnos" tabindex="-1">Turnos</button>
+        <button type="button" class="tab" role="tab" id="tabTurnos" data-tab="turnos" aria-selected="false" aria-controls="panelTurnos" tabindex="-1">Turnos<span class="tab-n" id="tabTurN" hidden>0</span></button>
         <button type="button" class="tab" role="tab" id="tabMensajes" data-tab="mensajes" aria-selected="false" aria-controls="panelMensajes" tabindex="-1">Mensajes</button>
       </div>
 
@@ -1249,6 +1260,10 @@
 
       <div class="tab-panel" id="panelTurnos" role="tabpanel" aria-labelledby="tabTurnos" hidden>
         <div class="perfil-body">
+          <h2 class="perfil-h">Votaciones de precio</h2>
+          <div class="lista-creadas" id="bandejaVotos"></div>
+          <p class="inv-vacio" id="bandejaVotosVacio">No hay votaciones abiertas. Cuando el creador de una obra en la que participas proponga cambiar su precio, podrás votar aquí.</p>
+
           <h2 class="perfil-h">Mis turnos</h2>
           <div class="lista-creadas" id="bandejaTurnosPropios"></div>
           <p class="inv-vacio" id="bandejaTurnosPropiosVacio">No tienes turnos aceptados. Cuando aceptes una invitación, aparecerá aquí con su plazo.</p>
@@ -1929,17 +1944,29 @@
   const crSubmit = document.getElementById('crSubmit');
 
   // precio fijo por formato (bloque 1 del ajuste de reglas)
-  const PRECIO_FORMATO = { revista: 50, libro: 100 };
+  const PRECIO_FORMATO = { revista: 50, libro: 100, ilustrada: 30 };
+  const NOMBRE_FORMATO = { revista: 'Revista', libro: 'Libro', ilustrada: 'Obra ilustrada' };
+  const nombreFormato = f => NOMBRE_FORMATO[f] || 'Revista';
+  function precioFormatoDe(f){ return PRECIO_FORMATO[f] || PRECIO_FORMATO.revista; }
   function sincronizarPrecio(){
     const f = document.getElementById('crFormato').value;
-    document.getElementById('crPrecio').value = (PRECIO_FORMATO[f] || PRECIO_FORMATO.revista) + ' créditos';
+    const gratis = document.getElementById('crModoGratis').checked;
+    document.getElementById('crPrecio').value = gratis ? 'Gratis' : precioFormatoDe(f) + ' créditos';
+    const lista = Object.keys(PRECIO_FORMATO)
+      .map(k => PRECIO_FORMATO[k] + ' el ' + NOMBRE_FORMATO[k].toLowerCase())
+      .join(', ');
+    document.getElementById('crPrecioHint').textContent = gratis
+      ? 'Esta obra será gratuita: cualquiera puede leerla completa sin gastar créditos, y también puede dejar reseña. Puedes ponerle precio más adelante desde "Mis revistas".'
+      : 'Precio fijo según formato: ' + lista + '. Se reparte entre la app y quienes hicieron la obra. Puedes hacerla gratuita más adelante desde "Mis revistas".';
   }
   document.getElementById('crFormato').addEventListener('change', sincronizarPrecio);
-  crForm.addEventListener('reset', () => setTimeout(sincronizarPrecio, 0));
+  document.getElementById('crModoPago').addEventListener('change', sincronizarPrecio);
+  document.getElementById('crModoGratis').addEventListener('change', sincronizarPrecio);
+  crForm.addEventListener('reset', () => setTimeout(() => { document.getElementById('crModoPago').checked = true; sincronizarPrecio(); }, 0));
   sincronizarPrecio();
 
   // límites de páginas en total por formato; de ahí salen los rangos por persona
-  const LIMITE_PAGINAS = { revista: { min: 5, max: 20 }, libro: { min: 50, max: 100 } };
+  const LIMITE_PAGINAS = { revista: { min: 5, max: 20 }, libro: { min: 50, max: 100 }, ilustrada: { min: 3, max: 20 } };
   function rangoPaginas(formato, n){
     const L = LIMITE_PAGINAS[formato] || LIMITE_PAGINAS.revista;
     return { min: Math.ceil(L.min / n), max: Math.floor(L.max / n) };
@@ -1984,9 +2011,16 @@
       sel.disabled = true;
       return;
     }
-    for (let k = 1; k <= n; k++) sel.append(opcion(String(k), 'Turno ' + k));
+    const conIl = document.getElementById('crIlustrador').checked;
+    if (conIl && n < 2) {
+      sel.append(opcion('', 'Con ilustrador, elige al menos 2 participantes'));
+      sel.disabled = true;
+      return;
+    }
+    const max = conIl ? n - 1 : n;     // con ilustrador, el último turno queda reservado para él
+    for (let k = 1; k <= max; k++) sel.append(opcion(String(k), 'Turno ' + k));
     sel.disabled = false;
-    sel.value = String(previo >= 1 && previo <= n ? previo : 1);
+    sel.value = String(previo >= 1 && previo <= max ? previo : 1);
   }
 
   function actualizarPaginasCrear(autollenar){
@@ -2009,7 +2043,7 @@
     for (let pg = min; pg <= max; pg++) crSelPag.append(opcion(String(pg), pg + (pg === 1 ? ' página' : ' páginas')));
     crSelPag.value = String(!autollenar && previo >= min && previo <= max ? previo : max);
     const L = LIMITE_PAGINAS[f] || LIMITE_PAGINAS.revista;
-    hint.textContent = 'De ' + min + ' a ' + max + ' por persona (' + (f === 'libro' ? 'libro' : 'revista') + ' de ' + L.min + ' a ' + L.max + ' en total).';
+    hint.textContent = 'De ' + min + ' a ' + max + ' por persona (' + nombreFormato(f).toLowerCase() + ' de ' + L.min + ' a ' + L.max + ' en total).';
     actualizarTotalCrear();
   }
 
@@ -2040,14 +2074,28 @@
   }
 
   crSelPart.addEventListener('change', () => { marcarInvalidos([]); actualizarPaginasCrear(true); });
+  document.getElementById('crIlustrador').addEventListener('change', () => { marcarInvalidos([]); actualizarMiTurnoCrear(); });
   crSelPag.addEventListener('change', () => { marcarInvalidos([]); actualizarTotalCrear(); });
   crSelPlazo.addEventListener('change', () => marcarInvalidos([]));
   document.getElementById('crMiTurno').addEventListener('change', () => marcarInvalidos([]));
   document.getElementById('crNombre').addEventListener('input', () => marcarInvalidos([]));
   document.getElementById('crCatOtro').addEventListener('input', () => marcarInvalidos([]));
   document.getElementById('crSubcat').addEventListener('input', () => marcarInvalidos([]));
-  crFormatoSel.addEventListener('change', () => actualizarPaginasCrear(true));
-  crForm.addEventListener('reset', () => setTimeout(() => { marcarInvalidos([]); actualizarPaginasCrear(true); }, 0));
+  // una obra ilustrada es de un solo creador: un participante y sin invitaciones ni ilustrador aparte
+  const HINT_PARTICIPANTES = crSelPart.nextElementSibling ? crSelPart.nextElementSibling.textContent : '';
+  function aplicarFormatoSolo(){
+    const solo = crFormatoSel.value === 'ilustrada';
+    const ch = document.getElementById('crIlustrador');
+    if (solo) { crSelPart.value = '1'; ch.checked = false; }
+    crSelPart.disabled = solo;
+    ch.disabled = solo;
+    if (crSelPart.nextElementSibling) {
+      crSelPart.nextElementSibling.textContent = solo ? 'Una obra ilustrada es de un solo creador: tú eres el único participante.' : HINT_PARTICIPANTES;
+    }
+    actualizarPaginasCrear(true);
+  }
+  crFormatoSel.addEventListener('change', aplicarFormatoSolo);
+  crForm.addEventListener('reset', () => setTimeout(() => { marcarInvalidos([]); aplicarFormatoSolo(); }, 0));
   iniciarSelectoresCrear();
 
   crForm.addEventListener('submit', async (e) => {
@@ -2063,6 +2111,8 @@
     const plazo = Number(document.getElementById('crPlazo').value);
     const turnos = Number(document.getElementById('crTurnos').value);
     const miTurno = Number(document.getElementById('crMiTurno').value);
+    const conIlustrador = document.getElementById('crIlustrador').checked;
+    const gratis = document.getElementById('crModoGratis').checked;
     const cat = crCategoriaSel.value;
     const catOtro = cat === 'Otro' ? limpiarTxt(document.getElementById('crCatOtro').value) : '';
     const subcat = limpiarTxt(document.getElementById('crSubcat').value);
@@ -2071,7 +2121,9 @@
     const rojos = [];
     if (nombre.length < 3) { error = 'El nombre debe tener al menos 3 caracteres.'; rojos.push('crNombre'); }
     else if (!Number.isInteger(turnos) || turnos < 1 || turnos > 10) { error = 'Elige cuántos participantes serán, de 1 a 10.'; rojos.push('crTurnos'); }
-    else if (!Number.isInteger(miTurno) || miTurno < 1 || miTurno > turnos) { error = 'Elige tu turno entre los participantes.'; rojos.push('crMiTurno'); }
+    else if (formato === 'ilustrada' && turnos !== 1) { error = 'Una obra ilustrada es de un solo creador.'; rojos.push('crTurnos'); }
+    else if (conIlustrador && turnos < 2) { error = 'Con ilustrador necesitas al menos 2 participantes.'; rojos.push('crTurnos'); }
+    else if (!Number.isInteger(miTurno) || miTurno < 1 || miTurno > (conIlustrador ? turnos - 1 : turnos)) { error = 'Elige tu turno entre los participantes.'; rojos.push('crMiTurno'); }
     else {
       const r = rangoPaginas(formato, turnos);
       if (!Number.isInteger(paginas) || paginas < r.min || paginas > r.max) {
@@ -2109,10 +2161,12 @@
         categoria: cat,
         categoriaOtro: catOtro,
         subcategoria: subcat,
-        precio: PRECIO_FORMATO[formato] || PRECIO_FORMATO.revista,
+        precio: gratis ? 0 : precioFormatoDe(formato),
+        gratis,
         totalTurnos: turnos,
         estado: 'En formación',
         creadorParticipa: true,
+        ...(conIlustrador ? { turnoIlustrador: turnos } : {}),
         ...(contextoCrear && contextoCrear.serieId ? { serieId: contextoCrear.serieId, serieNombre: contextoCrear.serieNombre } : {}),
         creadoEn: serverTimestamp()
       });
@@ -2133,7 +2187,7 @@
       });
       await lote.commit();
       crForm.reset();
-      crOk.textContent = 'Grupo creado: ocupas el turno ' + miTurno + '. Lo verás en Mis revistas y en tu perfil.';
+      crOk.textContent = 'Grupo creado: ocupas el turno ' + miTurno + (conIlustrador ? ' y el turno ' + turnos + ' queda reservado para un ilustrador' : '') + '. Lo verás en Mis revistas y en tu perfil.';
       crOk.hidden = false;
       cargarCreadas(u.uid);
       const ctx = contextoCrear;
@@ -2201,14 +2255,18 @@
         const m = document.createElement('div');
         m.className = 'creada-m';
         const f = r.creadoEn?.toDate?.();
-        m.textContent = (r.formato === 'libro' ? 'Libro' : 'Revista') + ' · ' + etiquetaCategoria(r) + ' · ' + r.paginasPorTurno + ' pág. por turno · ' + r.plazoDias + ' día(s)'
+        m.textContent = nombreFormato(r.formato) + ' · ' + etiquetaCategoria(r) + ' · ' + r.paginasPorTurno + ' pág. por turno · ' + r.plazoDias + ' día(s)'
           + (f ? ' · creada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
-        info.append(t, m);
+        const pr = document.createElement('div');
+        pr.className = 'creada-m';
+        pr.textContent = 'Precio actual: ' + etiquetaPrecio(r);
+        info.append(t, m, pr);
         if (conInvitar) {
           const ocup = turnosCreador.filter(x => x.revistaId === r.id).sort((a, b) => a.n - b.n);
           const tl = document.createElement('div');
           tl.className = 'creada-m';
-          tl.append('Turnos ocupados: ' + ocup.length + ' de ' + (r.totalTurnos || 5) + (ocup.length ? ' · ' : ''));
+          tl.append('Turnos ocupados: ' + ocup.length + ' de ' + (r.totalTurnos || 5)
+            + (r.turnoIlustrador ? ' (turno ' + r.turnoIlustrador + ' reservado a un ilustrador)' : '') + (ocup.length ? ' · ' : ''));
           ocup.forEach((x, k) => {
             if (k) tl.append(', ');
             tl.append('T' + x.n + ' ');
@@ -2241,6 +2299,7 @@
           rv.textContent = 'Revisión';
           rv.addEventListener('click', () => abrirRevision(r.id, r.nombre));
           acc.append(rv);
+          botonesPrecio(r, acc);
         }
         const est = document.createElement('span');
         est.className = 'estado';
@@ -2258,6 +2317,244 @@
     if (sub) sub.textContent = creadas.length
       ? creadas.length + (creadas.length === 1 ? ' proyecto creado por ti.' : ' proyectos creados por ti.')
       : 'Tus proyectos y ediciones.';
+  }
+
+  // cambia una revista entre gratis y de pago (bloque 2: precio editable)
+  async function alternarPrecioRevista(r, boton){
+    const aGratis = !r.gratis;
+    const nuevoPrecio = aGratis ? 0 : precioFormatoDe(r.formato);
+    const pregunta = aGratis
+      ? '¿Hacer "' + r.nombre + '" gratuita? Cualquiera podrá leerla sin gastar créditos.'
+      : '¿Ponerle precio a "' + r.nombre + '"? Costará ' + nuevoPrecio + ' créditos.';
+    if (!confirm(pregunta)) return;
+    boton.disabled = true;
+    try {
+      await setDoc(doc(db, 'revistas', r.id), { gratis: aGratis, precio: nuevoPrecio }, { merge: true });
+      r.gratis = aGratis;
+      r.precio = nuevoPrecio;
+      pintarCreadas();
+    } catch (err) {
+      console.error('Cambiar precio:', err);
+      alert('No se pudo cambiar el precio. Revisa las reglas de Firestore e inténtalo de nuevo.');
+    } finally {
+      boton.disabled = false;
+    }
+  }
+
+  // ---------- cambio de precio por votación (obras compartidas) ----------
+  // En una obra de un solo participante el cambio es inmediato. Si hay colaboradores, el creador propone
+  // y ellos votan a favor o en contra; cuando se cumple VOTO_PRECIO, el creador puede aplicar el cambio.
+  const VOTO_PRECIO = 'todos';   // 'todos': unanimidad de los colaboradores · 'mayoria': más de la mitad
+  let cambiosCreador = new Map();
+  let cambiosVotante = new Map();
+  let cancelarCambios = [];
+
+  function votantesDe(r){
+    return [...new Set(turnosCreador.filter(x => x.revistaId === r.id).map(x => x.usuarioId))]
+      .filter(u => u && u !== r.creadorId);
+  }
+
+  function resultadoVoto(c){
+    const n = (c.votantes || []).length;
+    const vals = Object.values(c.votos || {});
+    const favor = vals.filter(v => v === 'favor').length;
+    const contra = vals.filter(v => v === 'contra').length;
+    const necesarios = VOTO_PRECIO === 'todos' ? n : Math.floor(n / 2) + 1;
+    const estado = favor >= necesarios ? 'aprobada' : (contra > n - necesarios ? 'rechazada' : 'abierta');
+    return { n, favor, contra, necesarios, estado };
+  }
+
+  const textoCambio = c => c.aGratis ? 'hacerla gratuita' : 'ponerle precio de ' + c.precioNuevo + ' créditos';
+
+  function eventoPrecio(batch, revistaId, tipo){
+    const yo = auth.currentUser;
+    batch.set(doc(collection(db, 'eventos')), {
+      revistaId, tipo, turno: null, usuarioId: yo.uid, usuarioNombre: yo.displayName || '', creadoEn: serverTimestamp()
+    });
+  }
+
+  function mensajeGrupo(batch, r, texto, votantes){
+    const yo = auth.currentUser;
+    batch.set(doc(collection(db, 'chatsRevista')), {
+      revistaId: r.id, revistaNombre: r.nombre, de: yo.uid, deNombre: yo.displayName || '',
+      texto, participantes: [yo.uid, ...votantes], creadoEn: serverTimestamp()
+    });
+  }
+
+  async function proponerCambioPrecio(r, aGratis){
+    const yo = auth.currentUser;
+    if (!yo) return;
+    const votantes = votantesDe(r);
+    const precioNuevo = aGratis ? 0 : precioFormatoDe(r.formato);
+    const quiere = aGratis ? 'hacerla gratuita' : 'ponerle precio de ' + precioNuevo + ' créditos';
+    const regla = VOTO_PRECIO === 'todos'
+      ? 'Se podrá aplicar solo si las ' + votantes.length + ' persona(s) votan a favor.'
+      : 'Se podrá aplicar si vota a favor más de la mitad de las ' + votantes.length + ' persona(s).';
+    if (!confirm('¿Proponer ' + quiere + ' "' + r.nombre + '"? Les llegará la propuesta a quienes colaboran en la obra para que voten. ' + regla)) return;
+    try {
+      const batch = writeBatch(db);
+      batch.set(doc(db, 'cambiosPrecio', r.id), {
+        revistaId: r.id, revistaNombre: r.nombre, creadorId: yo.uid, creadorNombre: yo.displayName || '',
+        aGratis, precioNuevo, votantes, votos: {}, estado: 'abierta', creadoEn: serverTimestamp()
+      });
+      eventoPrecio(batch, r.id, 'precio_propuesto');
+      mensajeGrupo(batch, r, 'Propongo ' + quiere + ' "' + r.nombre + '". Voten a favor o en contra en Bandeja > Turnos.', votantes);
+      await batch.commit();
+    } catch (err) {
+      console.error('Proponer precio:', err);
+      alert('No se pudo enviar la propuesta. Revisa las reglas de Firestore e inténtalo de nuevo.');
+    }
+  }
+
+  async function votarCambioPrecio(c, voto){
+    const yo = auth.currentUser;
+    if (!yo) return;
+    try {
+      await setDoc(doc(db, 'cambiosPrecio', c.id), { votos: { [yo.uid]: voto } }, { merge: true });
+    } catch (err) {
+      console.error('Votar precio:', err);
+      alert('No se pudo registrar tu voto. Revisa las reglas de Firestore e inténtalo de nuevo.');
+    }
+  }
+
+  async function cerrarCambioPrecio(c, estadoFinal){
+    try {
+      await setDoc(doc(db, 'cambiosPrecio', c.id), { estado: estadoFinal, cerradoEn: serverTimestamp() }, { merge: true });
+    } catch (err) {
+      console.error('Cerrar votación:', err);
+      alert('No se pudo cerrar la votación. Revisa las reglas de Firestore e inténtalo de nuevo.');
+    }
+  }
+
+  async function aplicarCambioPrecio(r, c){
+    if (resultadoVoto(c).estado !== 'aprobada') { alert('La votación todavía no está aprobada.'); return; }
+    if (!confirm('¿Aplicar el cambio? "' + r.nombre + '" pasará a ser ' + (c.aGratis ? 'gratuita' : 'de pago (' + c.precioNuevo + ' créditos)') + '.')) return;
+    try {
+      const batch = writeBatch(db);
+      batch.set(doc(db, 'revistas', r.id), { gratis: c.aGratis, precio: c.precioNuevo }, { merge: true });
+      batch.set(doc(db, 'cambiosPrecio', r.id), { estado: 'aplicada', cerradoEn: serverTimestamp() }, { merge: true });
+      eventoPrecio(batch, r.id, 'precio_aplicado');
+      mensajeGrupo(batch, r, 'Se aplicó el cambio: "' + r.nombre + '" ahora es ' + (c.aGratis ? 'gratuita.' : 'de pago (' + c.precioNuevo + ' créditos).'), c.votantes || []);
+      await batch.commit();
+    } catch (err) {
+      console.error('Aplicar precio:', err);
+      alert('No se pudo aplicar el cambio. Revisa las reglas de Firestore e inténtalo de nuevo.');
+    }
+  }
+
+  // botones de precio de una obra en Mis revistas
+  function botonesPrecio(r, acc){
+    const mk = (texto, clase, fn) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = clase;
+      b.textContent = texto;
+      b.addEventListener('click', async () => { b.disabled = true; try { await fn(b); } finally { b.disabled = false; } });
+      acc.append(b);
+      return b;
+    };
+    const c = cambiosCreador.get(r.id);
+    const abierta = !!c && c.estado === 'abierta';
+    const textoPrecio = r.gratis ? 'poner precio (' + precioFormatoDe(r.formato) + ' cr)' : 'hacer gratis';
+    if (!abierta && !votantesDe(r).length) {          // obra de un solo participante: cambio inmediato
+      mk(textoPrecio.charAt(0).toUpperCase() + textoPrecio.slice(1), 'btn-sec', b => alternarPrecioRevista(r, b));
+      return;
+    }
+    if (!abierta) {                                   // obra compartida: se propone y se vota
+      mk('Proponer ' + textoPrecio, 'btn-sec', () => proponerCambioPrecio(r, !r.gratis));
+      return;
+    }
+    const res = resultadoVoto(c);
+    const chip = document.createElement('span');
+    chip.className = 'creada-inv';
+    if (res.estado === 'aprobada') {
+      chip.textContent = 'Votación aprobada (' + res.favor + ' a favor)';
+      acc.append(chip);
+      mk('Aplicar: hacerla ' + (c.aGratis ? 'gratuita' : 'de pago'), 'btn-primary', () => aplicarCambioPrecio(r, c));
+      mk('Cancelar', 'btn-sec', () => cerrarCambioPrecio(c, 'cancelada'));
+    } else if (res.estado === 'rechazada') {
+      chip.textContent = 'Votación rechazada (' + res.contra + ' en contra)';
+      acc.append(chip);
+      mk('Cerrar votación', 'btn-sec', () => cerrarCambioPrecio(c, 'rechazada'));
+    } else {
+      chip.textContent = 'Votación de precio: ' + res.favor + ' de ' + res.n + ' a favor';
+      acc.append(chip);
+      mk('Cancelar votación', 'btn-sec', () => cerrarCambioPrecio(c, 'cancelada'));
+    }
+  }
+
+  // votaciones abiertas en las que puedo votar (Bandeja > Turnos)
+  function pintarVotaciones(){
+    const cont = document.getElementById('bandejaVotos');
+    if (!cont) return;
+    const yo = auth.currentUser;
+    cont.innerHTML = '';
+    let abiertas = 0, sinVotar = 0;
+    cambiosVotante.forEach(c => {
+      if (c.estado !== 'abierta') return;
+      abiertas++;
+      const res = resultadoVoto(c);
+      const mio = yo ? (c.votos || {})[yo.uid] : null;
+      if (!mio) sinVotar++;
+      const fila = document.createElement('div');
+      fila.className = 'creada';
+      const info = document.createElement('div');
+      const t = document.createElement('div');
+      t.className = 'creada-t';
+      t.textContent = c.revistaNombre;
+      const m = document.createElement('div');
+      m.className = 'creada-m';
+      m.append((c.creadorNombre || 'El creador') + ' propone ' + textoCambio(c) + '. Tu parte de cada venta se reparte igual, así que esto afecta lo que ganas.');
+      const cuenta = document.createElement('div');
+      cuenta.className = 'creada-m';
+      cuenta.textContent = 'A favor: ' + res.favor + ' · En contra: ' + res.contra + ' · Sin votar: ' + (res.n - res.favor - res.contra)
+        + (res.estado === 'aprobada' ? ' · Aprobada: el creador decide cuándo aplicarla' : res.estado === 'rechazada' ? ' · Rechazada' : '');
+      info.append(t, m, cuenta);
+      const acc = document.createElement('div');
+      acc.className = 'creada-acc';
+      [['favor', 'A favor'], ['contra', 'En contra']].forEach(([v, texto]) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = mio === v ? 'btn-primary' : 'btn-sec';
+        b.textContent = texto;
+        b.addEventListener('click', () => { b.disabled = true; votarCambioPrecio(c, v); });
+        acc.append(b);
+      });
+      fila.append(info, acc);
+      cont.append(fila);
+    });
+    document.getElementById('bandejaVotosVacio').hidden = abiertas > 0;
+    const ins = document.getElementById('tabTurN');
+    ins.textContent = sinVotar;
+    ins.hidden = sinVotar === 0;
+  }
+
+  function refrescarCambios(){
+    pintarVotaciones();
+    pintarCreadas();
+  }
+
+  function iniciarCambiosPrecio(uid){
+    detenerCambiosPrecio();
+    const mapa = snap => new Map(snap.docs.map(d => [d.id, { id: d.id, ...d.data() }]));
+    cancelarCambios.push(onSnapshot(
+      query(collection(db, 'cambiosPrecio'), where('creadorId', '==', uid)),
+      snap => { cambiosCreador = mapa(snap); refrescarCambios(); },
+      err => console.error('Votaciones de precio (creador):', err)
+    ));
+    cancelarCambios.push(onSnapshot(
+      query(collection(db, 'cambiosPrecio'), where('votantes', 'array-contains', uid)),
+      snap => { cambiosVotante = mapa(snap); refrescarCambios(); },
+      err => console.error('Votaciones de precio (votante):', err)
+    ));
+  }
+
+  function detenerCambiosPrecio(){
+    cancelarCambios.forEach(c => c());
+    cancelarCambios = [];
+    cambiosCreador = new Map();
+    cambiosVotante = new Map();
+    pintarVotaciones();
   }
 
   // ---------- invitar colaboradores (bloque 7) ----------
@@ -2581,8 +2878,17 @@
 
   async function pintarTurnos(){
     try {
-      const snap = await getDocs(query(collection(db, 'turnos'), where('revistaId', '==', invActual.revistaId)));
+      const quien = modoTurnos === 'contra' ? invActual.paraId : (auth.currentUser && auth.currentUser.uid);
+      const [snap, rv, cand] = await Promise.all([
+        getDocs(query(collection(db, 'turnos'), where('revistaId', '==', invActual.revistaId))),
+        getDoc(doc(db, 'revistas', invActual.revistaId)),
+        getDoc(doc(db, 'usuarios', quien))
+      ]);
       const ocupados = new Map(snap.docs.map(d => [d.data().n, d.data()]));
+      // si la revista lleva ilustrador, ese turno solo lo toma quien tenga el oficio Ilustrador
+      const tIl = rv.exists() ? (rv.data().turnoIlustrador || 0) : 0;
+      const rolesCand = cand.exists() && Array.isArray(cand.data().roles) ? cand.data().roles : [];
+      const puedeIl = rolesCand.includes('ilustrador');
       turnosGrid.innerHTML = '';
       for (let n = 1; n <= invActual.totalTurnos; n++) {
         const o = ocupados.get(n);
@@ -2592,9 +2898,11 @@
         const a = document.createElement('span');
         a.textContent = 'Turno ' + n;
         const c = document.createElement('small');
-        c.textContent = o ? (o.usuarioNombre || 'Ocupado') : 'Libre';
+        const esIl = n === tIl;
+        c.textContent = o ? (o.usuarioNombre || 'Ocupado') + (esIl ? ' · ilustración' : '')
+          : (esIl ? (puedeIl ? 'Libre · ilustración' : 'Solo ilustradores') : 'Libre');
         b.append(a, c);
-        if (o) b.disabled = true;
+        if (o || (esIl && !puedeIl)) b.disabled = true;
         else b.addEventListener('click', () => {
           turnoElegido = n;
           turnosAceptar.disabled = false;
@@ -4097,9 +4405,9 @@
       nodo('div', 'rev-card-t', r.nombre),
       nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
       ...(r.serieNombre ? [nodo('div', 'rev-card-m', 'Serie: ' + r.serieNombre)] : []),
-      nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
+      nodo('div', 'rev-card-m', [nombreFormato(r.formato), etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
       nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
-      nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
+      nodo('div', 'rev-card-m', etiquetaPrecio(r)));
     if (rol) card.append(nodo('div', 'rev-card-m', rol));
     card.tabIndex = 0;
     card.setAttribute('role', 'button');
@@ -4170,7 +4478,8 @@
     turno_confirmado: 'confirmó un turno', turno_aceptado: 'aceptó su turno',
     invitacion_rechazada: 'rechazó la invitación', pdf_subido: 'subió un PDF', portada_subida: 'subió la portada',
     aprobado: 'aprobó (verde)', protesta: 'protestó (rojo)', luz_retirada: 'retiró su luz',
-    prorroga: 'tomó una prórroga', revista_publicada: 'publicó el cuadernillo'
+    prorroga: 'tomó una prórroga', revista_publicada: 'publicó el cuadernillo',
+    precio_propuesto: 'propuso cambiar el precio', precio_aplicado: 'aplicó el cambio de precio'
   };
   const fmtDia = ms => new Date(ms).toLocaleDateString('es', { day: 'numeric', month: 'short' });
 
@@ -4190,9 +4499,9 @@
     datos.append(nodo('h3', null, r.nombre),
       nodo('div', 'rev-card-m', 'por ' + (r.creadorNombre || 'un creador')),
       ...(r.serieNombre ? [nodo('div', 'rev-card-m', 'Serie: ' + r.serieNombre)] : []),
-      nodo('div', 'rev-card-m', [r.formato === 'libro' ? 'Libro' : 'Revista', etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
+      nodo('div', 'rev-card-m', [nombreFormato(r.formato), etiquetaCategoria(r), r.paginasTotales ? r.paginasTotales + ' pág.' : ''].filter(Boolean).join(' · ')),
       nodo('div', 'rev-card-m', f ? 'Publicada el ' + f.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
-      nodo('div', 'rev-card-m', precioDe(r) + ' créditos'));
+      nodo('div', 'rev-card-m', etiquetaPrecio(r)));
     const cab = nodo('div', 'ficha-cab');
     cab.append(pt, datos);
 
@@ -4821,7 +5130,8 @@
 
   // ---------- compra y reparto de créditos (bloque 15) ----------
   const APP_PCT = 20;                                   // % del precio que se queda la app
-  const precioDe = r => (r.formato === 'libro' ? PRECIO_FORMATO.libro : PRECIO_FORMATO.revista);
+  const precioDe = r => typeof r.precio === 'number' ? r.precio : (PRECIO_FORMATO[r.formato] || PRECIO_FORMATO.revista);
+  const etiquetaPrecio = r => precioDe(r) === 0 ? 'Gratis' : precioDe(r) + ' créditos';
 
   // la app se queda el APP_PCT %; el resto se divide en partes iguales (enteras) entre quienes hicieron la revista;
   // lo que sobra por redondeo también se queda la app, así no se pierde ningún crédito
@@ -4847,18 +5157,26 @@
       return;
     }
     const precio = precioDe(r), { cuota, app } = repartoDe(precio, uids.length);
-    const comprar = botonRev('Comprar por ' + precio + ' créditos', 'btn-primary', async () => {
-      if (!confirm('¿Comprar \"' + r.nombre + '\" por ' + precio + ' créditos?')) return;
+    const esGratis = precio === 0;
+    const textoComprar = esGratis ? 'Obtener gratis' : ('Comprar por ' + precio + ' créditos');
+    const comprar = botonRev(textoComprar, 'btn-primary', async () => {
+      const confirmacion = esGratis
+        ? '¿Agregar "' + r.nombre + '" a tus lecturas? Es gratuita.'
+        : '¿Comprar "' + r.nombre + '" por ' + precio + ' créditos?';
+      if (!confirm(confirmacion)) return;
       comprar.disabled = true;
-      comprar.textContent = 'Comprando…';
+      comprar.textContent = esGratis ? 'Agregando…' : 'Comprando…';
       try {
         await runTransaction(db, async (tx) => {
           const refC = doc(db, 'compras', yo.uid + '_' + r.id), refU = doc(db, 'usuarios', yo.uid);
           const c = await tx.get(refC), u = await tx.get(refU);
           if (c.exists()) throw errorUsuario('Ya compraste esta revista.');
           if (((u.data() || {}).creditos || 0) < precio) throw errorUsuario('No te alcanzan los créditos. Recarga y vuelve a intentarlo.');
-          tx.update(refU, { creditos: increment(-precio) });
-          uids.forEach(uid => tx.update(doc(db, 'usuarios', uid), { creditos: increment(cuota), ventas: increment(1) }));
+          // una obra gratuita no mueve créditos y no cuenta como venta; la compra queda registrada para poder leer y reseñar
+          if (precio > 0) {
+            tx.update(refU, { creditos: increment(-precio) });
+            uids.forEach(uid => tx.update(doc(db, 'usuarios', uid), { creditos: increment(cuota), ventas: increment(1) }));
+          }
           tx.set(refC, {
             compradorId: yo.uid, compradorNombre: yo.displayName || '', revistaId: r.id, revistaNombre: r.nombre,
             precio, cuota, appParte: app, participantes: uids, creadoEn: serverTimestamp()
@@ -4869,11 +5187,12 @@
         console.error('Comprar:', err);
         alert(err.usuario ? err.message : 'No se pudo completar la compra. Revisa las reglas de Firestore.');
         comprar.disabled = false;
-        comprar.textContent = 'Comprar por ' + precio + ' créditos';
+        comprar.textContent = textoComprar;
       }
     });
-    accion.append(comprar, nodo('span', 'creada-m',
-      'Reparto: ' + cuota + ' crédito(s) para cada una de las ' + uids.length + ' personas que la hicieron y ' + app + ' para la app.'));
+    accion.append(comprar, nodo('span', 'creada-m', esGratis
+      ? 'Es gratuita: se agrega a tus lecturas (Mis revistas > Mis compras) y podrás dejar tu reseña.'
+      : 'Reparto: ' + cuota + ' crédito(s) para cada una de las ' + uids.length + ' personas que la hicieron y ' + app + ' para la app.'));
   }
 
   // ---------- subir revista: portada y PDFs por turno (bloque 10) ----------
@@ -5496,12 +5815,14 @@
       iniciarGuardados(user.uid);
       iniciarGruposFijos(user.uid);
       iniciarCompras(user.uid);
+      iniciarCambiosPrecio(user.uid);
       sincronizarPerfilPublico();
     } else {
       document.body.classList.remove('logged-in');
       limpiarPerfil();
       limpiarPerfilPublico();
       detenerCompras();
+      detenerCambiosPrecio();
       abrirBandeja('invitaciones');
       detenerMensajes();
       detenerChatsRevista();
